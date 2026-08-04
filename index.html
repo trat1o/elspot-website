@@ -3,429 +3,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ELSPOT — Elektromateriālu vairumtirdzniecība</title>
+<title>ELSPOT — Elektrības materiāli rūpniecībai un būvniecībai</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* ==== NOKLUSĒJUMA (GAIŠĀ) TĒMA ==== */
-  --surface:#FFFFFF;
-  --surface-alt:#F4F5F8;
-  --surface-strong:#161D42;
-  --surface-strong-2:#0B0E24;
-  --text:#161D42;
-  --text-muted:#5B6178;
-  --text-on-strong:#FFFFFF;
-  --text-on-strong-muted:#9BA1BF;
-  --accent:#FF4D4D;
-  --accent-soft:#FF7A7A;
-  --line:rgba(22,29,66,.12);
-  --line-on-strong:rgba(255,255,255,.14);
-  --nav-bg:rgba(255,255,255,.86);
-  --card-bg:#FFFFFF;
-}
-/* ==== SVĒTKU TĒMA: 14.-23. NOVEMBRIS (Latvijas karoga krāsas) ==== */
-html.lv-theme{
-  --surface:#0B0E24;
-  --surface-alt:#12173A;
-  --surface-strong:#161D42;
-  --surface-strong-2:#000000;
-  --text:#FFFFFF;
-  --text-muted:#AEB3CC;
-  --text-on-strong:#FFFFFF;
-  --text-on-strong-muted:#AEB3CC;
-  --accent:#9E3039;
-  --accent-soft:#C2454E;
-  --line:rgba(255,255,255,.14);
-  --line-on-strong:rgba(255,255,255,.14);
-  --nav-bg:rgba(11,14,36,.86);
-  --card-bg:#12173A;
+  --ink:#161D42;
+  --ink-deep:#0B0E24;
+  --coral:#FF4D4D;
+  --coral-soft:#FF7A7A;
+  --fog:#F4F5F8;
+  --paper:#FFFFFF;
+  --slate:#5B6178;
+  --mist:#9BA1BF;
+  --line:rgba(22,29,66,.1);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:'Inter',sans-serif;
-  color:var(--text);
-  background:var(--surface);
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-  transition:background .5s ease, color .5s ease;
-}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 h1,h2,h3,.font-display{font-family:'Poppins',sans-serif;}
 .mono{font-family:'JetBrains Mono',monospace;}
 a{color:inherit;text-decoration:none;}
 img,svg{max-width:100%;display:block;}
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
 @media(max-width:640px){.wrap{padding:0 20px;}}
+section{padding:110px 0;position:relative;}
+@media(max-width:640px){section{padding:70px 0;}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-size:14px;font-weight:600;border-radius:30px;transition:all .3s ease;cursor:pointer;border:1px solid transparent;}
+.btn-primary{background:var(--coral);color:#fff;}
+.btn-primary:hover{background:var(--coral-soft);transform:translateY(-2px);}
+.btn-ghost{border-color:var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--coral);background:var(--fog);}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);background:rgba(255,77,77,.09);padding:6px 14px;border-radius:20px;margin-bottom:18px;}
+.tag.on-dark{background:rgba(255,77,77,.15);}
 
-/* Precīza ritināšana pie enkuru saitēm — kompensē fiksēto navigācijas augstumu */
-#par-mums,#pakalpojumi,#objekti,#kontakti{scroll-margin-top:140px;}
-@media(max-width:640px){
-  #par-mums,#pakalpojumi,#objekti,#kontakti{scroll-margin-top:112px;}
+/* ===== PILL NAV ===== */
+.pill-nav-wrap{position:fixed;top:22px;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 20px;}
+.pill-nav{
+  display:flex;align-items:center;gap:36px;
+  background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border:1px solid var(--line);border-radius:40px;
+  padding:14px 18px 14px 30px;
+  box-shadow:0 10px 30px rgba(22,29,66,.08);
+  max-width:100%;
 }
-html.lv-theme #par-mums,html.lv-theme #pakalpojumi,html.lv-theme #objekti,html.lv-theme #kontakti{scroll-margin-top:146px;}
-
-/* Svētku josla — redzama tikai lv-theme laikā */
-.flag-bar{
-  display:none;height:5px;width:100%;position:fixed;top:0;left:0;z-index:200;
-  background:linear-gradient(90deg,#9E3039 0 33.3%, #ffffff 33.3% 66.6%, #9E3039 66.6% 100%);
+.pill-nav a{font-size:13px;font-weight:500;color:var(--slate);white-space:nowrap;transition:color .25s ease;}
+.pill-nav a:hover{color:var(--ink);}
+.pill-logo{display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 10px;}
+.pill-logo svg{height:48px;width:auto;}
+.pill-logo span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--mist);}
+.pill-nav .navcta{
+  background:#FF1F3D;color:#fff;font-size:13px;font-weight:700;padding:11px 22px;border-radius:30px;
+  box-shadow:0 8px 20px rgba(255,31,61,.35);transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
 }
-html.lv-theme .flag-bar{display:block;}
-html.lv-theme .nav{top:5px;}
+.pill-nav .navcta:hover{background:#E4132F;transform:translateY(-1px);box-shadow:0 10px 24px rgba(255,31,61,.42);}
 
-/* ===== "GAISMA IESLĒDZAS" IEEJAS ANIMĀCIJA ===== */
-/* 0-2s: melns fons + prožektora stars no augšas + logo nedaudz zemāk par centru. 2s: fons sāk lēzeni izzust (4s). 3s: arī logo sāk lēzeni izzust (4s). */
-.light-on-overlay{
-  position:fixed;inset:0;z-index:999;
-  background:#000000;
-  overflow:hidden;
+.lang-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:20px;padding:3px;}
+.lang-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:5px 10px;border-radius:16px;color:var(--slate);cursor:pointer;background:none;border:none;transition:background .25s ease,color .25s ease;}
+.lang-btn.active{background:var(--coral);color:#fff;}
+@media(max-width:760px){.lang-switch{display:none;}}
+
+.pill-links-left,.pill-links-right{display:flex;align-items:center;gap:28px;}
+@media(max-width:760px){.pill-links-left,.pill-links-right{display:none;}.pill-nav{gap:14px;}}
+
+/* Mobilā burger poga */
+.navburger{
+  display:none;background:none;border:none;color:var(--ink);font-size:26px;cursor:pointer;
+  line-height:1;padding:10px 12px;min-width:46px;min-height:46px;
+  -webkit-tap-highlight-color:rgba(255,77,77,.15);touch-action:manipulation;position:relative;z-index:2;
+}
+@media(max-width:760px){.navburger{display:flex;align-items:center;justify-content:center;}}
+.mobile-menu-close{-webkit-tap-highlight-color:rgba(255,77,77,.15);touch-action:manipulation;}
+
+/* Mobilā uzpeldošā izvēlne */
+.mobile-menu{
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:300;background:var(--paper);
+  display:flex;flex-direction:column;padding:110px 30px 40px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transform:translateX(100%);opacity:0;pointer-events:none;
+  transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+}
+.mobile-menu.open{transform:translateX(0);opacity:1;pointer-events:auto;}
+.mobile-menu-close{
+  position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  opacity:1;
-  pointer-events:none;
+}
+.mobile-menu-links{display:flex;flex-direction:column;gap:2px;margin-top:6px;}
+.mobile-menu-links a{font-family:'Poppins',sans-serif;font-size:26px;font-weight:600;color:var(--ink);padding:16px 0;border-bottom:1px solid var(--line);}
+.mobile-menu-foot{margin-top:auto;display:flex;flex-direction:column;gap:16px;padding-top:26px;}
+.mobile-menu-cta{display:flex;align-items:center;width:100%;justify-content:center;font-size:15px;padding:16px 26px;border-radius:30px;}
+.mobile-menu-lang{display:flex;gap:8px;}
+.mobile-menu-lang .lang-btn{border:1px solid var(--line);flex:1;padding:10px;border-radius:22px;text-align:center;}
+body.menu-open{overflow:hidden;}
+@media(min-width:761px){.mobile-menu{display:none;}}
+@media(max-width:480px){
+  .pill-logo svg{height:38px;}
+  .pill-nav{padding:10px 14px 10px 22px;}
+}
+
+/* ===== HERO ===== */
+.hero2{padding:180px 0 90px;background:linear-gradient(180deg,var(--fog) 0%, var(--paper) 70%);}
+.hero2-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;}
+@media(max-width:900px){.hero2-grid{grid-template-columns:1fr;}}
+.hero2 h1{font-size:clamp(38px,5.2vw,64px);font-weight:600;line-height:1.08;letter-spacing:-.01em;}
+.hero2 h1 .weak{color:var(--mist);}
+.hero2 p.lead{margin-top:22px;font-size:17px;line-height:1.65;color:var(--slate);max-width:480px;}
+.hero2-cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap;}
+/* Dinamiska realizēto objektu bilžu josla — vietturi, gatavi reālu foto nomaiņai */
+.hero2-art{
+  position:relative;height:420px;border-radius:24px;overflow:hidden;
+  background:var(--fog);border:1px solid var(--line);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+@media(max-width:640px){.hero2-art{height:300px;}.obj-card{height:130px;}}
+.obj-strip{display:flex;flex-direction:column;gap:14px;padding:14px;animation:objScroll 26s linear infinite;}
+.obj-card{
+  position:relative;height:170px;border-radius:16px;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(135deg,var(--ink) 0%, #2A3373 100%);
+}
+.obj-card .cap{
+  position:absolute;bottom:12px;left:14px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:#fff;opacity:.9;
+  background:rgba(11,14,36,.4);padding:4px 10px;border-radius:20px;
+}
+@keyframes objScroll{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-50%);}
+}
+
+/* ===== PROMO CARDS ===== */
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:800px){.promo-grid{grid-template-columns:1fr;}}
+.promo-card{background:var(--fog);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;}
+.promo-thumb{height:170px;border-radius:14px;background:linear-gradient(135deg,var(--ink) 0%, #2A3373 100%);position:relative;overflow:hidden;}
+.promo-thumb svg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;}
+.promo-card h3{font-size:19px;font-weight:600;line-height:1.4;}
+.promo-card p{font-size:14.5px;color:var(--slate);line-height:1.6;}
+
+/* ===== PROBLEM (dark) ===== */
+.problem{background:var(--ink-deep);color:#fff;}
+.problem-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;}
+@media(max-width:900px){.problem-grid{grid-template-columns:1fr;}}
+.problem h2{color:#fff;font-size:clamp(28px,3.6vw,40px);font-weight:600;line-height:1.15;}
+.problem p{color:var(--mist);margin-top:18px;font-size:16px;line-height:1.7;max-width:480px;}
+.problem-stat{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:clamp(90px,11vw,150px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.35);text-align:center;}
+.problem-stat span{font-size:.3em;-webkit-text-stroke:0;color:var(--coral-soft);vertical-align:super;}
+.problem-note{text-align:center;font-size:11px;color:var(--mist);margin-top:8px;font-family:'JetBrains Mono',monospace;}
+
+/* ===== SOLUTION ===== */
+.solution-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;}
+@media(max-width:900px){.solution-grid{grid-template-columns:1fr;}}
+.solution h2{font-size:clamp(28px,3.6vw,40px);font-weight:600;line-height:1.15;}
+.solution p{color:var(--slate);margin-top:18px;font-size:16px;line-height:1.7;}
+.iso-wrap{background:var(--fog);border-radius:24px;padding:40px;display:flex;align-items:center;justify-content:center;}
+
+/* ===== WAREHOUSE STATS ===== */
+.wh-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+@media(max-width:800px){.wh-grid{grid-template-columns:1fr;}}
+.wh-left h2{font-size:clamp(26px,3.2vw,36px);font-weight:600;}
+.wh-left .weak{color:var(--mist);display:block;}
+.wh-stat{font-family:'JetBrains Mono',monospace;font-size:clamp(60px,8vw,92px);font-weight:500;color:var(--coral);margin-top:10px;line-height:1;}
+.wh-stat span{font-size:.32em;color:var(--slate);}
+.wh-list{background:var(--fog);border-radius:18px;padding:8px 26px;}
+.wh-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);font-size:14.5px;}
+.wh-row:last-child{border-bottom:none;}
+.wh-row .k{color:var(--slate);}
+.wh-row .v{font-family:'JetBrains Mono',monospace;font-weight:500;color:var(--ink);}
+
+/* ===== DEMAND / RADIAL GRID ===== */
+.demand{background:var(--fog);}
+.demand-head{max-width:560px;margin-bottom:50px;}
+.demand-head h2{font-size:clamp(26px,3.2vw,36px);font-weight:600;}
+.demand-head p{color:var(--slate);margin-top:14px;font-size:15.5px;line-height:1.65;}
+.demand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:820px;margin:0 auto;}
+@media(max-width:700px){.demand-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:420px){.demand-grid{grid-template-columns:1fr;}}
+.demand-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;min-height:110px;}
+.demand-card .k{font-size:12.5px;color:var(--slate);}
+.demand-card .v{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:20px;color:var(--ink);margin-top:8px;}
+.demand-center{
+  background:var(--ink);color:#fff;border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:110px;position:relative;overflow:hidden;
+}
+.demand-center svg{height:26px;width:auto;margin-bottom:4px;}
+.demand-center span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--mist);}
+
+/* ===== IMPACT / CTA ===== */
+.impact{text-align:center;}
+.impact h2{font-size:clamp(26px,3.4vw,38px);font-weight:600;max-width:640px;margin:0 auto;line-height:1.25;}
+.impact p{color:var(--slate);max-width:520px;margin:18px auto 0;font-size:15.5px;line-height:1.65;}
+.impact .btn{margin-top:30px;}
+
+/* ===== FOOTER ===== */
+footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
+.foot-grid{display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr .7fr;gap:30px;}
+@media(max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.foot-grid{grid-template-columns:1fr;}}
+.foot-grid h3{font-size:26px;font-weight:600;max-width:280px;line-height:1.25;}
+.foot-col .h{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:16px;}
+.foot-col a{display:block;font-size:14px;color:#fff;opacity:.82;margin-bottom:11px;}
+.foot-col a:hover{opacity:1;color:var(--coral-soft);}
+.foot-bottom{margin-top:70px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--mist);}
+
+/* ===== IEEJAS ANIMĀCIJA (atkārtoti izmantota no galvenā šablona) ===== */
+.light-on-overlay{
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:999;background:#000000;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:none;
   animation:light-on-bg-fade 4s ease-in-out 0s forwards;
 }
 .light-on-beam{
-  position:absolute;
-  top:-8%;left:50%;
-  width:72vw;max-width:1050px;
-  height:82vh;
+  position:absolute;top:-8%;left:50%;width:72vw;max-width:1050px;height:82vh;
   transform:translateX(-50%);
-  background:radial-gradient(ellipse 42% 100% at 50% 0%,
-    rgba(255,225,195,.55) 0%,
-    rgba(255,225,195,.32) 28%,
-    rgba(255,225,195,.14) 52%,
-    rgba(255,225,195,0) 78%);
+  background:radial-gradient(ellipse 42% 100% at 50% 0%, rgba(255,225,195,.55) 0%, rgba(255,225,195,.32) 28%, rgba(255,225,195,.14) 52%, rgba(255,225,195,0) 78%);
   filter:blur(22px);
 }
 .light-on-floor{
-  position:absolute;
-  left:50%;bottom:15%;
-  width:90vw;max-width:1300px;height:340px;
+  position:absolute;left:50%;bottom:15%;width:90vw;max-width:1300px;height:340px;
   transform:translateX(-50%);
   background:radial-gradient(ellipse at center, rgba(255,225,195,.34) 0%, rgba(255,225,195,.13) 46%, transparent 76%);
   filter:blur(34px);
 }
-.light-on-logo-svg{
-  position:relative;
-  width:min(1600px, 61vw);
-  height:auto;
-  opacity:1;
-  transform:translateY(10vh);
-  animation:light-on-logo-fade 4s ease-in-out 1s forwards;
-}
-@keyframes light-on-bg-fade{
-  0%{opacity:1;}
-  100%{opacity:0;}
-}
-@keyframes light-on-logo-fade{
-  0%{opacity:1;}
-  100%{opacity:0;}
-}
-@media (prefers-reduced-motion: reduce){
-  .light-on-overlay{display:none;}
-}
-
-/* Reveal on scroll */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
-.reveal.in{opacity:1;transform:translateY(0);}
-
-/* Logo theme switching */
-.logo-img-wrap .logo-dark{display:none;}
-html.lv-theme .logo-img-wrap .logo-light{display:none;}
-html.lv-theme .logo-img-wrap .logo-dark{display:block;}
-
-/* ===== NAV ===== */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  padding:12px 0;
-  transition:background .4s ease, padding .4s ease, border-color .4s ease, top .4s ease;
-  border-bottom:1px solid transparent;
-}
-.nav.scrolled{
-  background:var(--nav-bg);
-  backdrop-filter:blur(14px);
-  padding:8px 0;
-  border-bottom:1px solid var(--line);
-}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;}
-.logo-img-wrap{display:flex;align-items:center;}
-.logo-img{height:102px;width:auto;display:block;}
-@media(max-width:640px){.logo-img{height:78px;}}
-.navlinks{display:flex;gap:38px;}
-.navlinks a{
-  font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);
-  font-weight:500;position:relative;padding-bottom:4px;transition:color .3s ease;
-}
-.navlinks a::after{
-  content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);
-  transition:width .3s ease;
-}
-.navlinks a:hover{color:var(--text);}
-.navlinks a:hover::after{width:100%;}
-.navcta{
-  font-size:13px;font-weight:600;color:#fff;background:var(--accent);
-  padding:10px 20px;border-radius:2px;letter-spacing:.03em;
-}
-.navburger{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;line-height:1;padding:4px;}
-@media(max-width:860px){
-  .navlinks,.navcta{display:none;}
-  .navburger{display:block;}
-}
-
-/* ===== MOBILĀ UZPELDOŠĀ IZVĒLNE ===== */
-.mobile-menu{
-  position:fixed;inset:0;z-index:300;
-  background:var(--surface);
-  display:flex;flex-direction:column;
-  padding:100px 32px 40px;
-  transform:translateX(100%);
-  opacity:0;
-  visibility:hidden;
-  transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .35s ease, visibility 0s linear .4s, background .5s ease;
-}
-.mobile-menu.open{
-  transform:translateX(0);
-  opacity:1;
-  visibility:visible;
-  transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .35s ease, visibility 0s linear 0s, background .5s ease;
-}
-.mobile-menu-close{
-  position:absolute;top:24px;right:24px;
-  width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--line);background:none;color:var(--text);
-  font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-}
-.mobile-menu-links{display:flex;flex-direction:column;gap:2px;margin-top:10px;}
-.mobile-menu-links a{
-  font-family:'Poppins',sans-serif;font-size:28px;font-weight:600;color:var(--text);
-  padding:18px 0;border-bottom:1px solid var(--line);
-}
-.mobile-menu-foot{margin-top:auto;display:flex;flex-direction:column;gap:18px;padding-top:30px;}
-.mobile-menu-cta{width:100%;justify-content:center;font-size:15px;padding:17px 28px;}
-.mobile-menu-lang{display:flex;gap:8px;}
-.mobile-menu-lang .lang-btn{border:1px solid var(--line);flex:1;padding:10px;border-radius:22px;text-align:center;}
-body.menu-open{overflow:hidden;}
-@media(min-width:861px){.mobile-menu{display:none;}}
-
-/* Valodu pārslēdzējs */
-.lang-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:20px;padding:3px;margin-right:8px;flex-shrink:0;}
-.lang-btn{
-  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.04em;
-  padding:5px 11px;border-radius:16px;color:var(--text-muted);cursor:pointer;
-  background:none;border:none;transition:background .25s ease,color .25s ease;
-}
-.lang-btn.active{background:var(--accent);color:#fff;}
-.lang-switch-mobile{display:none;}
-
-/* ===== HERO ===== */
-.hero{
-  position:relative;
-  min-height:92vh;
-  background:radial-gradient(120% 90% at 50% -10%, var(--surface-alt) 0%, var(--surface) 60%);
-  color:var(--text);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:150px 0 70px;
-  overflow:hidden;
-  transition:background .5s ease;
-}
-.hero-content{position:relative;z-index:2;}
-.eyebrow{
-  display:flex;align-items:center;gap:10px;
-  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
-  color:var(--accent);text-transform:uppercase;margin-bottom:28px;
-}
-.eyebrow::before{content:'';width:22px;height:1px;background:var(--accent);}
-.hero h1{
-  font-size:clamp(38px,6vw,72px);
-  font-weight:600;line-height:1.05;letter-spacing:-.01em;
-  max-width:820px;color:var(--text);
-}
-.hero h1 .accent{color:var(--accent);}
-.hero p.lead{
-  margin-top:26px;font-size:18px;line-height:1.6;color:var(--text-muted);max-width:520px;
-}
-.hero-cta{display:flex;gap:16px;margin-top:42px;flex-wrap:wrap;}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:15px 28px;font-size:14px;font-weight:600;letter-spacing:.02em;
-  border-radius:2px;transition:all .3s ease;cursor:pointer;border:1px solid transparent;
-}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-primary:hover{background:var(--accent-soft);transform:translateY(-2px);}
-.btn-ghost{border-color:var(--line);color:var(--text);}
-.btn-ghost:hover{border-color:var(--accent);background:var(--surface-alt);}
-
-/* marquee strip */
-.strip{
-  position:relative;z-index:2;margin-top:70px;border-top:1px solid var(--line);
-  padding-top:22px;overflow:hidden;
-}
-.strip-track{
-  display:flex;gap:48px;white-space:nowrap;
-  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;
-  color:var(--text-muted);text-transform:uppercase;
-  animation:scroll-left 32s linear infinite;
-  width:max-content;
-}
-.strip-track span::before{content:'◆';color:var(--accent);margin-right:14px;font-size:9px;}
-@keyframes scroll-left{
-  from{transform:translateX(0);} to{transform:translateX(-50%);}
-}
-
-/* ===== SECTION HEADERS ===== */
-.sec-head{margin-bottom:56px;max-width:640px;}
-.trace{display:flex;align-items:center;gap:0;margin-bottom:20px;}
-.trace .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
-.trace .line{height:1px;width:40px;background:var(--accent);opacity:.5;}
-.trace .num{
-  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;
-  color:var(--accent);text-transform:uppercase;margin-left:12px;
-}
-.sec-head h2{font-size:clamp(30px,4vw,44px);font-weight:600;line-height:1.1;color:var(--text);}
-.sec-head p{margin-top:16px;font-size:16px;line-height:1.65;color:var(--text-muted);}
-
-section{padding:110px 0;position:relative;transition:background .5s ease;}
-@media(max-width:640px){section{padding:76px 0;}}
-
-/* ===== PAR MUMS ===== */
-.about{background:var(--surface);}
-.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:start;}
-@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:48px;}}
-.about-text p{font-size:16px;line-height:1.75;color:var(--text-muted);margin-bottom:18px;}
-.about-text p strong{color:var(--text);font-weight:600;}
-
-.plate-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.plate{
-  background:var(--surface-strong);color:#fff;padding:26px 22px;border-radius:2px;
-  position:relative;overflow:hidden;
-}
-.plate::before{
-  content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);
-}
-.plate .val{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:500;color:#fff;}
-.plate .val span{color:var(--accent-soft);}
-.plate .lbl{
-  margin-top:8px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-on-strong-muted);
-}
-
-/* ===== PAKALPOJUMI ===== */
-.services{background:var(--surface-alt);}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
-@media(max-width:860px){.svc-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:560px){.svc-grid{grid-template-columns:1fr;}}
-.svc-card{
-  background:var(--card-bg);padding:38px 30px;transition:background .35s ease;
-  position:relative;
-}
-.svc-card:hover{background:var(--surface-alt);}
-.svc-node{width:34px;height:34px;margin-bottom:22px;}
-.svc-node path,.svc-node circle,.svc-node rect{stroke:var(--accent);}
-.svc-node circle[fill],.svc-node circle:not([stroke]){fill:var(--accent);}
-.svc-card h3{font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text);}
-.svc-card p{font-size:14.5px;line-height:1.65;color:var(--text-muted);}
-.svc-idx{
-  position:absolute;top:34px;right:30px;font-family:'JetBrains Mono',monospace;
-  font-size:12px;color:var(--text-muted);opacity:.6;
-}
-
-/* ===== REALIZĒTIE OBJEKTI ===== */
-.projects{background:var(--surface);}
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-@media(max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.proj-grid{grid-template-columns:1fr;}}
-.proj-card{
-  background:var(--card-bg);border:1px solid var(--line);border-radius:3px;overflow:hidden;
-  transition:transform .35s ease, box-shadow .35s ease;
-}
-.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(22,29,66,.1);}
-.proj-media{
-  height:170px;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,var(--surface-strong) 0%,#2A3373 100%);
-}
-.proj-media svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5;}
-.proj-tag{
-  position:absolute;bottom:12px;left:14px;font-family:'JetBrains Mono',monospace;
-  font-size:11px;letter-spacing:.06em;color:var(--accent-soft);text-transform:uppercase;
-  background:rgba(11,14,36,.55);padding:4px 9px;border-radius:2px;
-}
-.proj-body{padding:22px 22px 26px;}
-.proj-body h3{font-size:17px;font-weight:600;margin-bottom:6px;color:var(--text);}
-.proj-body .meta{
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);
-  display:flex;gap:14px;margin-top:14px;flex-wrap:wrap;
-}
-.proj-body .meta span::before{content:'· ';color:var(--accent);}
-.proj-body .meta span:first-child::before{content:'';}
-
-/* ===== KONTAKTI ===== */
-.contact{background:var(--surface-alt);position:relative;overflow:hidden;}
-.contact-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:70px;}
-@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:48px;}}
-.c-list{list-style:none;}
-.c-list li{
-  display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--line);
-  align-items:flex-start;
-}
-.c-list li:first-child{padding-top:0;}
-.c-list .k{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--accent);width:110px;flex-shrink:0;padding-top:2px;
-}
-.c-list .v{font-size:16px;color:var(--text);line-height:1.5;}
-.c-list .v .sub{display:block;font-size:13px;color:var(--text-muted);margin-top:2px;}
-
-/* Kā mūs atrast */
-.findus{margin-top:34px;}
-.findus-label{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:14px;
-}
-.findus-btns{display:flex;gap:10px;flex-wrap:wrap;}
-.findus-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 18px;border:1px solid var(--line);border-radius:20px;
-  font-size:13.5px;font-weight:500;color:var(--text);transition:all .25s ease;
-}
-.findus-btn svg{flex-shrink:0;color:var(--accent);}
-.findus-btn:hover{border-color:var(--accent);background:var(--surface-alt);transform:translateY(-1px);}
-
-/* Rekvizīti */
-.requisites{margin-top:34px;padding-top:28px;border-top:1px solid var(--line);}
-.req-label{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:14px;
-}
-.req-grid{display:flex;flex-direction:column;gap:2px;}
-.req-row{
-  display:flex;justify-content:space-between;gap:16px;padding:9px 0;
-  border-bottom:1px solid var(--line);font-size:14px;
-}
-.req-row:last-child{border-bottom:none;}
-.req-k{color:var(--text-muted);}
-.req-v{color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right;}
-
-.form{display:flex;flex-direction:column;gap:16px;}
-.form input,.form textarea{
-  background:var(--card-bg);border:1px solid var(--line);color:var(--text);
-  padding:15px 16px;font-family:'Inter',sans-serif;font-size:14.5px;border-radius:2px;
-  transition:border-color .3s ease, background .3s ease;
-}
-.form input::placeholder,.form textarea::placeholder{color:var(--text-muted);}
-.form input:focus,.form textarea:focus{
-  outline:none;border-color:var(--accent);
-}
-.form textarea{resize:vertical;min-height:110px;}
-.form button{align-self:flex-start;margin-top:6px;}
-
-footer{
-  background:var(--surface);border-top:1px solid var(--line);padding:32px 0;color:var(--text-muted);
-  transition:background .5s ease;
-}
-footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:13px;flex-wrap:wrap;gap:12px;}
-.footer-logo-img{height:26px;width:auto;display:block;}
+.light-on-logo-svg{position:relative;width:min(1600px, 61vw);height:auto;opacity:1;transform:translateY(10vh);animation:light-on-logo-fade 4s ease-in-out 1s forwards;}
+@keyframes light-on-bg-fade{0%{opacity:1;}100%{opacity:0;}}
+@keyframes light-on-logo-fade{0%{opacity:1;}100%{opacity:0;}}
+@media (prefers-reduced-motion: reduce){.light-on-overlay{display:none;}}
 </style>
 </head>
 <body>
+
 
 <div class="light-on-overlay" id="lightOverlay">
   <div class="light-on-beam"></div>
@@ -433,39 +243,39 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;font-
   <?xml version="1.0" encoding="UTF-8"?><svg class="light-on-logo-svg" id="introLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.introLogo_b{fill:#fff;}.introLogo_c{fill:#ff4d4d;}</style></defs><polygon class="introLogo_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="introLogo_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="introLogo_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="introLogo_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="introLogo_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="introLogo_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="introLogo_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="introLogo_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
 </div>
 
-<div class="flag-bar"></div>
-
-<nav class="nav" id="nav">
-  <div class="wrap">
-    <a href="#" class="logo-img-wrap">
-      <?xml version="1.0" encoding="UTF-8"?><svg class="logo-img logo-light" id="navLogoLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.navLogoLight_b{fill:#161d42;}.navLogoLight_c{fill:#ff4d4d;}</style></defs><polygon class="navLogoLight_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="navLogoLight_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="navLogoLight_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="navLogoLight_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="navLogoLight_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="navLogoLight_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="navLogoLight_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="navLogoLight_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
-      <?xml version="1.0" encoding="UTF-8"?><svg class="logo-img logo-dark" id="navLogoDark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.navLogoDark_b{fill:#fff;}.navLogoDark_c{fill:#ff4d4d;}</style></defs><polygon class="navLogoDark_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="navLogoDark_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="navLogoDark_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="navLogoDark_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="navLogoDark_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="navLogoDark_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="navLogoDark_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="navLogoDark_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
-    </a>
-    <div class="navlinks">
-      <a href="#par-mums" data-i18n="nav-about">Par mums</a>
+<div class="pill-nav-wrap">
+  <nav class="pill-nav">
+    <div class="pill-links-left">
+      <a href="#produkti" data-i18n="nav-products">Produkti</a>
       <a href="#pakalpojumi" data-i18n="nav-services">Pakalpojumi</a>
-      <a href="#objekti" data-i18n="nav-projects">Realizētie objekti</a>
+      <a href="#par-mums" data-i18n="nav-about">Par mums</a>
+    </div>
+    <a href="#" class="pill-logo">
+      <svg  id="navLogoLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.navLogoLight_b{fill:#161d42;}.navLogoLight_c{fill:#ff4d4d;}</style></defs><polygon class="navLogoLight_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="navLogoLight_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="navLogoLight_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="navLogoLight_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="navLogoLight_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="navLogoLight_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="navLogoLight_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="navLogoLight_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
+      <span data-i18n="pill-tagline">KOPŠ 2019</span>
+    </a>
+    <div class="pill-links-right">
       <a href="#kontakti" data-i18n="nav-contact">Kontakti</a>
+      <a href="#kontakti" class="navcta" data-i18n="nav-cta">Pieprasīt cenu</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="lv" onclick="setLang('lv')">LV</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
     </div>
-    <a href="#kontakti" class="navcta" data-i18n="nav-cta">Pieprasīt cenu</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lang="lv" onclick="setLang('lv')">LV</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-    </div>
-    <button class="navburger" id="burgerBtn" aria-label="Atvērt izvēlni">☰</button>
-  </div>
-</nav>
+    <button type="button" class="navburger" id="burgerBtn" aria-label="Atvērt izvēlni">☰</button>
+  </nav>
+</div>
 
 <div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-menu-close" id="closeMenuBtn" aria-label="Aizvērt izvēlni">✕</button>
+  <button type="button" class="mobile-menu-close" id="closeMenuBtn" aria-label="Aizvērt izvēlni">✕</button>
   <div class="mobile-menu-links">
-    <a href="#par-mums" data-i18n="nav-about">Par mums</a>
+    <a href="#produkti" data-i18n="nav-products">Produkti</a>
     <a href="#pakalpojumi" data-i18n="nav-services">Pakalpojumi</a>
-    <a href="#objekti" data-i18n="nav-projects">Realizētie objekti</a>
+    <a href="#par-mums" data-i18n="nav-about">Par mums</a>
     <a href="#kontakti" data-i18n="nav-contact">Kontakti</a>
   </div>
   <div class="mobile-menu-foot">
-    <a href="#kontakti" class="btn btn-primary mobile-menu-cta" data-i18n="nav-cta">Pieprasīt cenu</a>
+    <a href="#kontakti" class="navcta mobile-menu-cta" data-i18n="nav-cta">Pieprasīt cenu</a>
     <div class="mobile-menu-lang">
       <button class="lang-btn active" data-lang="lv" onclick="setLang('lv')">LV</button>
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
@@ -474,248 +284,183 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;font-
 </div>
 
 <!-- ===== HERO ===== -->
-<header class="hero">
-  <div class="wrap hero-content">
-    <div class="eyebrow" data-i18n="hero-eyebrow">Elektromateriālu vairumtirdzniecība</div>
-    <h1 data-i18n-html="hero-h1">Katrs savienojums sākas ar <span class="accent">precīzu punktu</span>.</h1>
-    <p class="lead" data-i18n="hero-lead">ELSPOT piegādā kabeļus, sadalnes, automātiku un instalācijas materiālus profesionāļiem — no pasūtījuma līdz objektam, bez kavēšanās.</p>
-    <div class="hero-cta">
-      <a href="#kontakti" class="btn btn-primary" data-i18n="hero-btn-primary">Pieprasīt piedāvājumu →</a>
-      <a href="#pakalpojumi" class="btn btn-ghost" data-i18n="hero-btn-ghost">Skatīt pakalpojumus</a>
+<header class="hero2">
+  <div class="wrap hero2-grid">
+    <div>
+      <span class="tag" data-i18n="hero-tag">Elektromateriālu vairumtirdzniecība</span>
+      <h1 data-i18n-html="hero-h1"><span class="weak">Elektrības materiāli</span><br>rūpniecībai un būvniecībai.</h1>
+      <p class="lead" data-i18n="hero-lead">Apgaismojums, rozetes, slēdži, zemējuma sistēmas un zibensaizsardzība — viss nepieciešamais no viena piegādātāja, modulāri un pēc jūsu projekta prasībām.</p>
+      <div class="hero2-cta">
+        <a href="#produkti" class="btn btn-primary" data-i18n="hero-btn1">Produktu klāsts →</a>
+        <a href="#pakalpojumi" class="btn btn-ghost" data-i18n="hero-btn2">Mūsu pakalpojumi</a>
+      </div>
     </div>
-  </div>
-  <div class="wrap strip">
-    <div class="strip-track">
-      <span data-i18n="strip-1">Kabeļi un vadi</span><span data-i18n="strip-2">Sadales skapji</span><span data-i18n="strip-3">Automātikas komponenti</span>
-      <span data-i18n="strip-4">Apgaismojuma risinājumi</span><span data-i18n="strip-5">Instalācijas materiāli</span><span data-i18n="strip-6">Kabeļu kanāli</span>
-      <span data-i18n="strip-1">Kabeļi un vadi</span><span data-i18n="strip-2">Sadales skapji</span><span data-i18n="strip-3">Automātikas komponenti</span>
-      <span data-i18n="strip-4">Apgaismojuma risinājumi</span><span data-i18n="strip-5">Instalācijas materiāli</span><span data-i18n="strip-6">Kabeļu kanāli</span>
-    </div>
+    <div class="hero2-art reveal" id="heroArt"></div>
   </div>
 </header>
 
-<!-- ===== PAR MUMS ===== -->
-<section class="about" id="par-mums">
+<!-- ===== PROMO CARDS ===== -->
+<section id="produkti">
   <div class="wrap">
-    <div class="about-grid">
-      <div>
-        <div class="sec-head reveal">
-          <div class="trace"><div class="dot"></div><div class="line"></div><span class="num" data-i18n="about-num">01 · Par mums</span></div>
-          <h2 data-i18n="about-h2">Uzticams elektromateriālu piegādātājs profesionāļiem</h2>
+    <div class="promo-grid reveal">
+      <div class="promo-card">
+        <div class="promo-thumb">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,140 140,100 220,140 140,180" fill="#FF4D4D" opacity=".85"/>
+            <polygon points="140,100 140,60 220,100 220,140" fill="#2A3373"/>
+            <polygon points="60,140 60,100 140,60 140,100" fill="#3B4590"/>
+            <polygon points="220,120 300,80 340,100 260,140" fill="#FF7A7A" opacity=".6"/>
+          </svg>
         </div>
-        <div class="about-text reveal">
-          <p data-i18n-html="about-p1"><strong>ELSPOT</strong> nodarbojas ar elektromateriālu vairumtirdzniecību, apkalpojot elektroinstalācijas uzņēmumus, būvniekus un projektu vadītājus visā Latvijā. Mūsu klāstā — no ikdienas instalācijas materiāliem līdz kompleksiem sadales risinājumiem.</p>
-          <p data-i18n="about-p2">Strādājam tieši ar ražotājiem un lieliem izplatītājiem, tāpēc varam piedāvāt konkurētspējīgas cenas un stabilus piegādes termiņus arī lieliem objektiem ar sarežģītu grafiku.</p>
-          <p data-i18n="about-p3">Katram pasūtījumam pieejama tehniskā konsultācija — palīdzam izvēlēties pareizos materiālus vēl pirms tāmes sastādīšanas.</p>
-        </div>
+        <h3 data-i18n="promo1-h3">ELSPOT vairumtirdzniecība</h3>
+        <p data-i18n="promo1-p">Plašs elektromateriālu klāsts rūpnieciskiem, komerciāliem un dzīvojamiem projektiem — vienuviet.</p>
+        <a href="#kontakti" class="btn btn-ghost" style="align-self:flex-start;" data-i18n="promo1-btn">Produktu katalogs</a>
       </div>
-      <div class="plate-grid reveal">
-        <div class="plate"><div class="val"><span>10</span>+</div><div class="lbl" data-i18n="plate-1">Gadu pieredze nozarē</div></div>
-        <div class="plate"><div class="val"><span>500</span>+</div><div class="lbl" data-i18n="plate-2">Realizēti objekti</div></div>
-        <div class="plate"><div class="val"><span>48</span>h</div><div class="lbl" data-i18n="plate-3">Vidējais piegādes laiks</div></div>
-        <div class="plate"><div class="val"><span>1200</span>+</div><div class="lbl" data-i18n="plate-4">Preču pozīcijas noliktavā</div></div>
+      <div class="promo-card">
+        <div class="promo-thumb">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="200" cy="100" r="46" fill="none" stroke="#FF4D4D" stroke-width="2"/>
+            <circle cx="200" cy="100" r="4" fill="#FF4D4D"/>
+            <path d="M200 54 L200 20 M200 146 L200 180 M154 100 L120 100 M246 100 L280 100" stroke="#9BA1BF" stroke-width="1.5"/>
+            <circle cx="120" cy="100" r="3" fill="#FF7A7A"/><circle cx="280" cy="100" r="3" fill="#FF7A7A"/>
+            <circle cx="200" cy="20" r="3" fill="#FF7A7A"/><circle cx="200" cy="180" r="3" fill="#FF7A7A"/>
+          </svg>
+        </div>
+        <h3 data-i18n="promo2-h3">Pakalpojumi profesionāļiem</h3>
+        <p data-i18n="promo2-p">No tehniskās konsultācijas un apgaismojuma aprēķiniem līdz projektēšanai un piegādei uz objektu.</p>
+        <a href="#pakalpojumi" class="btn btn-ghost" style="align-self:flex-start;" data-i18n="promo2-btn">Mūsu pakalpojumi</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== PAKALPOJUMI ===== -->
-<section class="services" id="pakalpojumi">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="trace"><div class="dot"></div><div class="line"></div><span class="num" data-i18n="services-num">02 · Pakalpojumi</span></div>
-      <h2 data-i18n="services-h2">Viss elektromateriālu ceļš — vienā vietā</h2>
-      <p data-i18n="services-p">No vairumtirdzniecības līdz piegādei uz objektu — katrs solis izstrādāts, lai jūsu projekts virzītos bez pārtraukumiem.</p>
+<!-- ===== PROBLĒMA ===== -->
+<section class="problem">
+  <div class="wrap problem-grid">
+    <div class="reveal">
+      <span class="tag on-dark" data-i18n="problem-tag">Izaicinājums</span>
+      <h2 data-i18n="problem-h2">Kavēts materiāls objektā nozīmē apstājušos darbu un zaudētu laiku</h2>
+      <p data-i18n="problem-p">Elektroinstalācijas darbi bieži kavējas nevis darbaspēka, bet materiālu piegādes dēļ — nepareizs sortiments, novēlota piegāde vai neparedzēts trūkums var apstādināt visu grafiku.</p>
     </div>
-  </div>
-  <div class="wrap" style="padding:0;max-width:1180px;">
-    <div class="svc-grid reveal">
-      <div class="svc-card">
-        <div class="svc-idx">01</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><circle cx="7" cy="27" r="3" style="fill:var(--accent)"/><circle cx="27" cy="7" r="3" style="fill:var(--accent)"/><circle cx="27" cy="27" r="2" style="fill:var(--text-muted)" opacity=".5"/><path d="M7 27 L27 27 L27 7" style="stroke:var(--accent)" stroke-width="1.5" fill="none" opacity=".6"/></svg>
-        <h3 data-i18n="svc-1-title">Vairumtirdzniecība</h3>
-        <p data-i18n="svc-1-desc">Kabeļi, vadi, sadales aparatūra, apgaismojums un instalācijas materiāli konkurētspējīgās vairumcenās.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-idx">02</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><rect x="6" y="6" width="22" height="22" rx="2" style="stroke:var(--accent)" stroke-width="1.5" fill="none"/><circle cx="17" cy="17" r="3" style="fill:var(--accent)"/></svg>
-        <h3 data-i18n="svc-2-title">Sadaļņu komplektācija</h3>
-        <p data-i18n="svc-2-desc">Palīdzam komplektēt sadales skapjus atbilstoši projekta prasībām un tāmei — precīzi un savlaicīgi.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-idx">03</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><path d="M4 24 L14 24 L18 12 L24 12" style="stroke:var(--accent)" stroke-width="1.5" fill="none"/><circle cx="4" cy="24" r="2.5" style="fill:var(--accent)"/><circle cx="24" cy="12" r="2.5" style="fill:var(--accent)"/><circle cx="30" cy="12" r="2" style="fill:var(--text-muted)" opacity=".5"/></svg>
-        <h3 data-i18n="svc-3-title">Piegāde uz objektu</h3>
-        <p data-i18n="svc-3-desc">Organizējam piegādi tieši uz būvobjektu, saskaņojot grafiku ar jūsu darbu norisi.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-idx">04</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><circle cx="17" cy="17" r="4" style="stroke:var(--accent)" stroke-width="1.5" fill="none"/><path d="M17 5 L17 9 M17 25 L17 29 M5 17 L9 17 M25 17 L29 17" style="stroke:var(--accent)" stroke-width="1.5"/></svg>
-        <h3 data-i18n="svc-4-title">Tehniskā konsultācija</h3>
-        <p data-i18n="svc-4-desc">Palīdzam izvēlēties pareizos materiālus un risinājumus jau projektēšanas stadijā.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-idx">05</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><path d="M6 27 L6 14 L17 6 L28 14 L28 27" style="stroke:var(--accent)" stroke-width="1.5" fill="none"/><circle cx="17" cy="20" r="2.5" style="fill:var(--accent)"/></svg>
-        <h3 data-i18n="svc-5-title">Individuāli risinājumi</h3>
-        <p data-i18n="svc-5-desc">Nestandarta apjomi un specifiskas prasības — piedāvājam risinājumu katram objektam.</p>
-      </div>
-      <div class="svc-card">
-        <div class="svc-idx">06</div>
-        <svg class="svc-node" viewBox="0 0 34 34"><rect x="8" y="4" width="18" height="26" rx="1.5" style="stroke:var(--accent)" stroke-width="1.5" fill="none"/><path d="M12 11 L22 11 M12 17 L22 17 M12 23 L18 23" style="stroke:var(--accent)" stroke-width="1.5"/></svg>
-        <h3 data-i18n="svc-6-title">Tāmju atbalsts</h3>
-        <p data-i18n="svc-6-desc">Sagatavojam materiālu specifikācijas un cenu piedāvājumus tāmju izstrādei.</p>
-      </div>
+    <div class="reveal">
+      <div class="problem-stat">63<span>%</span></div>
+      <div class="problem-note" data-i18n="problem-note">* ilustratīvs piemērs — nozares novērojumi par projektu kavēšanos materiālu dēļ</div>
     </div>
   </div>
 </section>
 
-<!-- ===== REALIZĒTIE OBJEKTI ===== -->
-<section class="projects" id="objekti">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="trace"><div class="dot"></div><div class="line"></div><span class="num" data-i18n="projects-num">03 · Realizētie objekti</span></div>
-      <h2 data-i18n="projects-h2">Objekti, kuros mūsu materiāli strādā katru dienu</h2>
-      <p data-i18n="projects-p">No dzīvojamām ēkām līdz rūpnieciskiem objektiem — izlase no pēdējā laika piegādēm.</p>
+<!-- ===== RISINĀJUMS ===== -->
+<section>
+  <div class="wrap solution-grid">
+    <div class="reveal">
+      <span class="tag" data-i18n="solution-tag">Risinājums</span>
+      <h2 class="solution" data-i18n="solution-h2">Viss elektromateriālu ceļš — vienuviet</h2>
+      <p data-i18n="solution-p">Strādājam tieši ar ražotājiem, tāpēc varam garantēt sortimentu, cenu un piegādes termiņu jebkura izmēra objektam — no viena slēdža līdz pilnai rūpnīcas elektroapgādei.</p>
     </div>
-    <div class="proj-grid reveal">
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 140 L60 140 L60 90 L140 90 L140 40 L220 40 L220 100 L300 100" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="60" cy="90" r="2.5" fill="#FF4D4D"/><circle cx="140" cy="40" r="2.5" fill="#FF4D4D"/><circle cx="220" cy="100" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-1-tag">Dzīvojamais fonds</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-1-h3">Daudzdzīvokļu māja, Rīga</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-1-p">Pilna elektroinstalācijas materiālu piegāde jaunbūvei.</p>
-          <div class="meta"><span data-i18n="proj-1-m1">84 dzīvokļi</span><span>2025</span><span data-i18n="proj-1-m3">Sadalnes + kabeļi</span></div>
-        </div>
-      </div>
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 60 L80 60 L80 120 L160 120 L160 30 L240 30 L240 90 L300 90" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="80" cy="60" r="2.5" fill="#FF4D4D"/><circle cx="160" cy="30" r="2.5" fill="#FF4D4D"/><circle cx="240" cy="90" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-2-tag">Rūpniecība</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-2-h3">Ražotnes paplašinājums, Jelgava</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-2-p">Rūpnieciskā apgaismojuma un sadales aparatūras piegāde.</p>
-          <div class="meta"><span data-i18n="proj-2-m1">3200 m²</span><span>2025</span><span data-i18n="proj-2-m3">Automātika</span></div>
-        </div>
-      </div>
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 100 L50 100 L50 50 L120 50 L120 130 L200 130 L200 70 L300 70" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="50" cy="50" r="2.5" fill="#FF4D4D"/><circle cx="120" cy="130" r="2.5" fill="#FF4D4D"/><circle cx="200" cy="70" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-3-tag">Komerctelpas</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-3-h3">Biroju centrs, Kurzeme</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-3-p">Instalācijas materiāli un kabeļu kanālu sistēmas.</p>
-          <div class="meta"><span data-i18n="proj-3-m1">1450 m²</span><span>2024</span><span data-i18n="proj-3-m3">Kabeļu kanāli</span></div>
-        </div>
-      </div>
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 40 L70 40 L70 110 L150 110 L150 60 L230 60 L230 130 L300 130" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="70" cy="40" r="2.5" fill="#FF4D4D"/><circle cx="150" cy="60" r="2.5" fill="#FF4D4D"/><circle cx="230" cy="130" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-4-tag">Privātmājas</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-4-h3">Privātmāju kvartāls, Engure</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-4-p">Materiāli 14 privātmāju pilnai elektroapgādei.</p>
-          <div class="meta"><span data-i18n="proj-4-m1">14 objekti</span><span>2024</span><span data-i18n="proj-4-m3">Sadalnes</span></div>
-        </div>
-      </div>
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 120 L90 120 L90 60 L170 60 L170 100 L260 100 L260 40 L300 40" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="90" cy="60" r="2.5" fill="#FF4D4D"/><circle cx="170" cy="100" r="2.5" fill="#FF4D4D"/><circle cx="260" cy="40" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-5-tag">Publiskā infrastruktūra</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-5-h3">Skolas rekonstrukcija, Tukums</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-5-p">Apgaismojuma un drošības sistēmu materiāli.</p>
-          <div class="meta"><span data-i18n="proj-5-m1">2600 m²</span><span>2023</span><span data-i18n="proj-5-m3">Apgaismojums</span></div>
-        </div>
-      </div>
-      <div class="proj-card">
-        <div class="proj-media">
-          <svg viewBox="0 0 300 170" preserveAspectRatio="none"><path d="M0 80 L60 80 L60 30 L140 30 L140 110 L220 110 L220 60 L300 60" stroke="#FF4D4D" stroke-width="1" fill="none" opacity=".8"/><circle cx="60" cy="30" r="2.5" fill="#FF4D4D"/><circle cx="140" cy="110" r="2.5" fill="#FF4D4D"/><circle cx="220" cy="60" r="2.5" fill="#FF4D4D"/></svg>
-          <span class="proj-tag" data-i18n="proj-6-tag">Loģistika</span>
-        </div>
-        <div class="proj-body">
-          <h3 data-i18n="proj-6-h3">Noliktavas komplekss, Ventspils</h3>
-          <p style="font-size:14px;color:var(--text-muted);" data-i18n="proj-6-p">Kabeļu un sadales sistēmu piegāde pilnam ciklam.</p>
-          <div class="meta"><span data-i18n="proj-6-m1">5000 m²</span><span>2023</span><span data-i18n="proj-6-m3">Kabeļi</span></div>
-        </div>
-      </div>
+    <div class="iso-wrap reveal">
+      <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;">
+        <polygon points="180,40 280,90 180,140 80,90" fill="#161D42"/>
+        <polygon points="80,90 180,140 180,220 80,170" fill="#2A3373"/>
+        <polygon points="280,90 180,140 180,220 280,170" fill="#3B4590"/>
+        <polygon points="150,105 180,120 180,150 150,135" fill="#FF4D4D"/>
+        <polygon points="180,120 210,105 210,135 180,150" fill="#FF7A7A"/>
+        <circle cx="180" cy="60" r="10" fill="none" stroke="#FF4D4D" stroke-width="2"/>
+        <path d="M180 70 L180 40" stroke="#FF4D4D" stroke-width="2"/>
+      </svg>
     </div>
   </div>
 </section>
 
-<!-- ===== KONTAKTI ===== -->
-<section class="contact" id="kontakti">
-  <div class="wrap contact-grid">
+<!-- ===== NOLIKTAVAS STATISTIKA ===== -->
+<section style="background:var(--fog);">
+  <div class="wrap wh-grid">
+    <div class="wh-left reveal">
+      <h2 data-i18n-html="wh-h2"><span class="weak">ELSPOT</span><br>noliktavas klāsts</h2>
+      <div class="wh-stat">1200<span data-i18n="wh-stat-label">+ pozīcijas</span></div>
+    </div>
+    <div class="wh-list reveal">
+      <div class="wh-row"><span class="k" data-i18n="wh-k1">Apgaismojums</span><span class="v">320</span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k2">Rozetes un slēdži</span><span class="v">280</span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k3">Zemējuma sistēmas</span><span class="v">140</span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k4">Zibensaizsardzība</span><span class="v">90</span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k5">Kabeļi un vadi</span><span class="v">370</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PIEPRASĪJUMU / KATEGORIJU TĪKLS ===== -->
+<section class="demand" id="pakalpojumi">
+  <div class="wrap">
+    <div class="demand-head reveal">
+      <span class="tag" data-i18n="demand-tag">Pakalpojumi un kategorijas</span>
+      <h2 data-i18n="demand-h2">Katrai vajadzībai — savs risinājums</h2>
+      <p data-i18n="demand-p">No standarta produktu piegādes līdz pilnam tehniskam atbalstam — izvēlieties, kas nepieciešams jūsu projektam.</p>
+    </div>
+    <div class="demand-grid reveal">
+      <div class="demand-card"><div class="k" data-i18n="dc1-k">Apgaismojums</div><div class="v" data-i18n="dc1-v">24h piegāde</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc2-k">Rozetes / slēdži</div><div class="v" data-i18n="dc2-v">280+ modeļi</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc3-k">Zemējums</div><div class="v" data-i18n="dc3-v">Pilns komplekts</div></div>
+      <div class="demand-center">
+        <svg  id="navLogoLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.navLogoLight_b{fill:#161d42;}.navLogoLight_c{fill:#ff4d4d;}</style></defs><polygon class="navLogoLight_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="navLogoLight_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="navLogoLight_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="navLogoLight_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="navLogoLight_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="navLogoLight_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="navLogoLight_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="navLogoLight_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
+        <span data-i18n="demand-center">PAKALPOJUMI</span>
+      </div>
+      <div class="demand-card"><div class="k" data-i18n="dc4-k">Zibensaizsardzība</div><div class="v" data-i18n="dc4-v">Projektēšana</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc5-k">Konsultācijas</div><div class="v" data-i18n="dc5-v">Bez maksas</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc6-k">Aprēķini</div><div class="v" data-i18n="dc6-v">Apgaismojums</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc7-k">Projektēšana</div><div class="v" data-i18n="dc7-v">Pēc pieprasījuma</div></div>
+      <div class="demand-card"><div class="k" data-i18n="dc8-k">Piegāde</div><div class="v" data-i18n="dc8-v">Uz objektu</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== IMPACT / CTA ===== -->
+<section class="impact" id="par-mums">
+  <div class="wrap">
+    <h2 data-i18n="impact-h2">Uzticams elektromateriālu partneris kopš 2019. gada</h2>
+    <p data-i18n="impact-p">ELSPOT apvieno plašu produktu klāstu ar tehnisko konsultāciju un uzticamu piegādi — lai jūsu nākamais projekts virzītos bez pārtraukumiem.</p>
+    <a href="#kontakti" class="btn btn-primary" data-i18n="impact-btn">Pieprasīt piedāvājumu →</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="kontakti">
+  <div class="wrap foot-grid">
     <div>
-      <div class="sec-head reveal">
-        <div class="trace"><div class="dot"></div><div class="line"></div><span class="num" data-i18n="contact-num">04 · Kontakti</span></div>
-        <h2 data-i18n="contact-h2">Runāsim par jūsu nākamo objektu</h2>
-        <p data-i18n="contact-p">Nosūtiet pieprasījumu vai sazinieties tieši — atbildam darba dienās līdz 24 stundām.</p>
-      </div>
-      <ul class="c-list reveal">
-        <li><span class="k" data-i18n="c-k1">Tālrunis</span><span class="v">+371 20 000 000<span class="sub" data-i18n="c-sub1">Darba dienās 8:00–17:00</span></span></li>
-        <li><span class="k" data-i18n="c-k2">E-pasts</span><span class="v">info@elspot.lv<span class="sub" data-i18n="c-sub2">Cenu pieprasījumi un jautājumi</span></span></li>
-        <li><span class="k" data-i18n="c-k3">Adrese</span><span class="v" data-i18n-html="c-v3">Cesvaines iela 4, Rīga, LV-1073<span class="sub" data-i18n="c-sub3">Noliktava un birojs</span></span></li>
-      </ul>
-
-      <div class="findus reveal">
-        <div class="findus-label" data-i18n="findus-label">Kā mūs atrast</div>
-        <div class="findus-btns">
-          <a href="https://www.google.com/maps/search/?api=1&query=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073" target="_blank" rel="noopener" class="findus-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
-            Google Maps
-          </a>
-          <a href="https://waze.com/ul?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073&navigate=yes" target="_blank" rel="noopener" class="findus-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
-            Waze
-          </a>
-          <a href="https://maps.apple.com/?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073" target="_blank" rel="noopener" class="findus-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
-            Apple Maps
-          </a>
-        </div>
-      </div>
-
-      <div class="requisites reveal">
-        <div class="req-label" data-i18n="req-label">Rekvizīti</div>
-        <div class="req-grid">
-          <div class="req-row"><span class="req-k" data-i18n="req-k1">Uzņēmums</span><span class="req-v">ELSPOT SIA</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k2">Reģ. Nr.</span><span class="req-v">42103101107</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k3">PVN maks. Nr.</span><span class="req-v">LV42103101107</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k4">Jur. adrese</span><span class="req-v">Cesvaines iela 4, Rīga, LV-1073</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k5">Banka</span><span class="req-v">Luminor Bank AS</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k6">Konts (IBAN)</span><span class="req-v">LV47 RIKO 0002 9302 82929</span></div>
-          <div class="req-row"><span class="req-k" data-i18n="req-k7">SWIFT/BIC</span><span class="req-v">RIKOLV2X</span></div>
-        </div>
-      </div>
+      <h3 data-i18n="foot-h3">Droša elektroapgāde ikvienam projektam.</h3>
     </div>
-    <form class="form reveal" onsubmit="return false;">
-      <input type="text" placeholder="Vārds, uzņēmums" data-i18n-ph="form-name">
-      <input type="text" placeholder="E-pasts vai tālrunis" data-i18n-ph="form-contact">
-      <textarea placeholder="Īss apraksts par nepieciešamajiem materiāliem vai objektu" data-i18n-ph="form-msg"></textarea>
-      <button type="submit" class="btn btn-primary" data-i18n="form-submit">Nosūtīt pieprasījumu →</button>
-    </form>
+    <div class="foot-col">
+      <div class="h" data-i18n="foot-col1">Produkti</div>
+      <a href="#" data-i18n="foot-p1">Apgaismojums</a>
+      <a href="#" data-i18n="foot-p2">Rozetes un slēdži</a>
+      <a href="#" data-i18n="foot-p3">Zemējums</a>
+      <a href="#" data-i18n="foot-p4">Zibensaizsardzība</a>
+      <a href="#" data-i18n="foot-p5">Kabeļi</a>
+    </div>
+    <div class="foot-col">
+      <div class="h" data-i18n="foot-col2">Pakalpojumi</div>
+      <a href="#" data-i18n="foot-s1">Konsultācijas</a>
+      <a href="#" data-i18n="foot-s2">Apgaismojuma aprēķini</a>
+      <a href="#" data-i18n="foot-s3">Projektēšana</a>
+      <a href="#" data-i18n="foot-s4">Piegāde</a>
+    </div>
+    <div class="foot-col">
+      <div class="h" data-i18n="foot-col3">Uzņēmums</div>
+      <a href="#" data-i18n="foot-u1">Par mums</a>
+      <a href="#" data-i18n="foot-u2">Karjera</a>
+    </div>
+    <div class="foot-col">
+      <div class="h" data-i18n="foot-col4">Kontakti</div>
+      <a href="#">info@elspot.lv</a>
+      <a href="#">+371 20 000 000</a>
+    </div>
   </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <a href="#" class="logo-img-wrap">
-      <?xml version="1.0" encoding="UTF-8"?><svg class="footer-logo-img logo-light" id="footLogoLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.footLogoLight_b{fill:#161d42;}.footLogoLight_c{fill:#ff4d4d;}</style></defs><polygon class="footLogoLight_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="footLogoLight_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="footLogoLight_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="footLogoLight_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="footLogoLight_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="footLogoLight_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="footLogoLight_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="footLogoLight_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
-      <?xml version="1.0" encoding="UTF-8"?><svg class="footer-logo-img logo-dark" id="footLogoDark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 710"><defs><style>.footLogoDark_b{fill:#fff;}.footLogoDark_c{fill:#ff4d4d;}</style></defs><polygon class="footLogoDark_c" points="1774.292 212.4 1761.292 212.4 1761.292 259.2 1788.892 259.2 1788.892 249.3 1774.292 249.3 1774.292 212.4"/><polygon class="footLogoDark_c" points="1822.792 212.4 1812.192 246.2 1801.592 212.4 1787.692 212.4 1803.892 259.2 1820.492 259.2 1836.592 212.4 1822.792 212.4"/><path class="footLogoDark_b" d="M1421.692,229.3c-22.1-12.5-46.6-18.7-73.4-18.7s-50.9,6.2-73.2,18.7c-22.2,12.5-39.8,29.7-52.9,51.8-13,22.1-19.5,47-19.5,74.6s6.5,52.9,19.5,75,30.6,39.4,52.9,51.8c22.2,12.5,46.6,18.7,73.2,18.7s50.9-6.2,73.2-18.7c22.2-12.5,39.7-29.7,52.6-51.8,12.9-22.1,19.3-47.1,19.3-75s-6.4-52.5-19.3-74.6c-12.9-22.1-30.3-39.3-52.4-51.8h0ZM1423.892,405.8c-7.3,14.4-17.5,25.4-30.5,33.1s-28.1,11.6-45.1,11.6-32.2-3.9-45.3-11.6c-13.2-7.7-23.4-18.8-30.7-33.1-7.3-14.4-11-31-11-50s3.7-35.6,11-49.8c7.3-14.2,17.5-25.1,30.7-32.7,13.1-7.6,28.2-11.4,45.3-11.4s32.1,3.8,45.1,11.4,23.2,18.5,30.5,32.7c7.3,14.2,11,30.8,11,49.8s-3.7,35.6-11,50Z"/><path class="footLogoDark_b" d="M1127.692,223.8c-15.4-7.6-34.1-11.4-56.1-11.4h-266.6c-19.2.1-36.3,3.4-51.2,10-15.2,6.6-27,15.8-35.4,28.3s-12.6,25.9-12.6,42.7,4.1,31.8,12.4,42.5c8.3,10.7,18.2,18.7,29.7,24s26.5,10.6,44.9,16.1c13.6,3.8,24.2,7.2,31.9,10.4,7.7,3.1,14.2,7.4,19.3,12.8,5.2,5.4,7.7,12,7.7,20.3s-3.8,18.2-11.4,24.6c-7.6,6.4-18,9.6-31.3,9.6h-79.9c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h81.1c20.9,0,38.9-3.9,54.1-11.6,15.2-7.7,26.7-18.1,34.6-31.1,7.8-13,11.8-26.7,11.8-41.9s-4.2-31.4-12.6-42.3c-8.4-10.8-18.4-19-30.1-24.4-11.7-5.4-26.7-10.8-45.1-16.3-13.6-4.1-24-7.7-31.5-10.8-7.5-3.1-13.7-7.2-18.7-12.2s-7.5-10.9-7.5-18.5c0-10.8,3.3-17.9,10-23.6,6.6-5.7,15.5-8.4,26.6-8.4h266.8c30.9,0,47,13.4,47,41s-30.6,41.1-46.4,41.1h-45.1c-31.4,0-56.9,25.5-56.9,56.9v73.6c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-66.7c0-9.9,8-17.9,17.9-17.9h29.7c23.3,0,42.6-4.1,57.9-12.2,15.3-8.1,26.6-18.8,33.7-32.1,7.2-13.3,10.8-27.5,10.8-42.7s-3.9-31.8-11.6-45.1c-7.7-13.3-19.3-23.7-34.8-31.3l-.1-.2Z"/><path class="footLogoDark_b" d="M1694.792,212.4h-177.8c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4h60.4v212.5c0,15.7,12.7,28.5,28.5,28.5s28.5-12.7,28.5-28.5v-212.5h60.4c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4Z"/><path class="footLogoDark_c" d="M424.292,453.5h-113.7c-9.9,0-17.9-8-17.9-17.9v-55.9h79.8c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-108.3c-15.7,0-28.5,12.7-28.5,28.5v80.6c0,32.2,26.1,58.3,58.3,58.3h130.2c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h.1Z"/><path class="footLogoDark_c" d="M259.292,259.2h164.7c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4h-164.7c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4Z"/><path class="footLogoDark_c" d="M646.792,453.5h-87.1c-9.9,0-17.9-8-17.9-17.9v-194.8c0-15.7-12.7-28.5-28.5-28.5s-28.5,12.7-28.5,28.5v201.1c0,32.2,26.1,58.3,58.3,58.3h103.6c12.9,0,23.4-10.5,23.4-23.4s-10.5-23.4-23.4-23.4l.1.1Z"/></svg>
-    </a>
-    <div data-i18n="footer-copy">© 2026 ELSPOT SIA. Visas tiesības aizsargātas.</div>
+  <div class="wrap foot-bottom">
+    <span data-i18n="foot-copy">© 2026 ELSPOT SIA. Visas tiesības aizsargātas.</span>
+    <span data-i18n="foot-since">Kopš 2019. gada</span>
   </div>
 </footer>
 
 <script>
-// ===== "Gaisma ieslēdzas" ieejas animācijas noņemšana pēc pabeigšanas =====
 (function initLightOn(){
   const overlay = document.getElementById('lightOverlay');
   const introLogo = document.getElementById('introLogo');
@@ -723,71 +468,55 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;font-
   const finish = ()=> overlay.remove();
   if(introLogo){ introLogo.addEventListener('animationend', finish); }
   else { overlay.addEventListener('animationend', finish); }
-  // drošības tīkls, ja animationend nenostrādā (piem., cilne bija fonā) — logo animācija beidzas ~7s
   setTimeout(()=>{ if(overlay.parentNode) overlay.remove(); }, 5800);
-})();
-
-// ===== Svētku tēma: 14.-23. novembris (Latvijas valsts svētku periods) =====
-(function applySeasonalTheme(){
-  const now = new Date();
-  const month = now.getMonth(); // novembris = 10
-  const day = now.getDate();
-  const isCelebration = (month === 10 && day >= 14 && day <= 23);
-  if(isCelebration){
-    document.documentElement.classList.add('lv-theme');
-  }
 })();
 
 // ===== Valodu pārslēgšana (LV noklusējuma / EN) =====
 const translations = {
   en: {
-    'nav-about':'About', 'nav-services':'Services', 'nav-projects':'Completed Projects', 'nav-contact':'Contact', 'nav-cta':'Request a Quote',
-    'hero-eyebrow':'Electrical Materials Wholesale',
-    'hero-h1':'Every connection starts with <span class="accent">a precise point</span>.',
-    'hero-lead':'ELSPOT supplies cables, switchboards, automation and installation materials to professionals — from order to site, without delays.',
-    'hero-btn-primary':'Request a Quote →', 'hero-btn-ghost':'View Services',
-    'strip-1':'Cables & Wires', 'strip-2':'Distribution Boards', 'strip-3':'Automation Components',
-    'strip-4':'Lighting Solutions', 'strip-5':'Installation Materials', 'strip-6':'Cable Trunking',
-    'about-num':'01 · About Us',
-    'about-h2':'A Trusted Electrical Materials Supplier for Professionals',
-    'about-p1':'<strong>ELSPOT</strong> is a wholesale supplier of electrical materials, serving electrical installation companies, contractors and project managers across Latvia. Our range spans everyday installation materials to complex distribution solutions.',
-    'about-p2':'We work directly with manufacturers and major distributors, allowing us to offer competitive prices and reliable delivery times — even for large projects with complex schedules.',
-    'about-p3':'Technical consultation is available for every order — we help you choose the right materials before the estimate is even drawn up.',
-    'plate-1':'Years of Industry Experience', 'plate-2':'Completed Projects', 'plate-3':'Average Delivery Time', 'plate-4':'Items in Stock',
-    'services-num':'02 · Services',
-    'services-h2':'The Entire Electrical Materials Journey — In One Place',
-    'services-p':'From wholesale supply to on-site delivery — every step is designed to keep your project moving without interruption.',
-    'svc-1-title':'Wholesale Supply', 'svc-1-desc':'Cables, wires, switchgear, lighting and installation materials at competitive wholesale prices.',
-    'svc-2-title':'Switchboard Assembly', 'svc-2-desc':'We help assemble distribution boards to match your project requirements and estimate — accurately and on time.',
-    'svc-3-title':'On-Site Delivery', 'svc-3-desc':'We arrange delivery directly to the construction site, coordinated with your work schedule.',
-    'svc-4-title':'Technical Consultation', 'svc-4-desc':'We help you choose the right materials and solutions as early as the design stage.',
-    'svc-5-title':'Custom Solutions', 'svc-5-desc':'Non-standard volumes and specific requirements — we offer a solution for every project.',
-    'svc-6-title':'Estimate Support', 'svc-6-desc':'We prepare material specifications and price quotes to support your cost estimates.',
-    'projects-num':'03 · Completed Projects',
-    'projects-h2':'Projects Where Our Materials Work Every Day',
-    'projects-p':'From residential buildings to industrial sites — a selection of our recent deliveries.',
-    'proj-1-tag':'Residential', 'proj-1-h3':'Apartment Building, Riga', 'proj-1-p':'Full electrical installation materials supply for a new-build.', 'proj-1-m1':'84 apartments', 'proj-1-m3':'Switchboards + cables',
-    'proj-2-tag':'Industrial', 'proj-2-h3':'Factory Expansion, Jelgava', 'proj-2-p':'Industrial lighting and switchgear supply.', 'proj-2-m1':'3200 m²', 'proj-2-m3':'Automation',
-    'proj-3-tag':'Commercial Space', 'proj-3-h3':'Office Center, Kurzeme', 'proj-3-p':'Installation materials and cable trunking systems.', 'proj-3-m1':'1450 m²', 'proj-3-m3':'Cable trunking',
-    'proj-4-tag':'Private Homes', 'proj-4-h3':'Private Home Quarter, Engure', 'proj-4-p':'Materials for the full electrical supply of 14 private homes.', 'proj-4-m1':'14 properties', 'proj-4-m3':'Switchboards',
-    'proj-5-tag':'Public Infrastructure', 'proj-5-h3':'School Renovation, Tukums', 'proj-5-p':'Lighting and security system materials.', 'proj-5-m1':'2600 m²', 'proj-5-m3':'Lighting',
-    'proj-6-tag':'Logistics', 'proj-6-h3':'Warehouse Complex, Ventspils', 'proj-6-p':'Full-cycle cable and distribution system supply.', 'proj-6-m1':'5000 m²', 'proj-6-m3':'Cables',
-    'contact-num':'04 · Contact',
-    'contact-h2':"Let's Talk About Your Next Project",
-    'contact-p':'Send a request or contact us directly — we respond within 24 hours on business days.',
-    'c-k1':'Phone', 'c-sub1':'Business days 8:00–17:00',
-    'c-k2':'Email', 'c-sub2':'Price inquiries and questions',
-    'c-k3':'Address', 'c-v3':'Cesvaines iela 4, Riga, LV-1073<span class="sub" data-i18n="c-sub3">Warehouse and office</span>', 'c-sub3':'Warehouse and office',
-    'findus-label':'How to Find Us',
-    'req-label':'Company Details',
-    'req-k1':'Company', 'req-k2':'Reg. No.', 'req-k3':'VAT No.', 'req-k4':'Legal Address', 'req-k5':'Bank', 'req-k6':'Account (IBAN)', 'req-k7':'SWIFT/BIC',
-    'form-name':'Name, company', 'form-contact':'Email or phone', 'form-msg':'Brief description of required materials or project',
-    'form-submit':'Send Request →',
-    'footer-copy':'© 2026 ELSPOT SIA. All rights reserved.',
+    'nav-products':'Products', 'nav-services':'Services', 'nav-about':'About Us', 'nav-contact':'Contact', 'nav-cta':'Request a Quote',
+    'pill-tagline':'SINCE 2019',
+    'hero-tag':'Electrical Materials Wholesale',
+    'hero-h1':'<span class="weak">Electrical materials</span><br>for industry and construction.',
+    'hero-lead':'Lighting, sockets, switches, grounding systems and lightning protection — everything you need from one supplier, modular and tailored to your project.',
+    'hero-btn1':'Product Range →', 'hero-btn2':'Our Services',
+    'promo1-h3':'ELSPOT Wholesale', 'promo1-p':'A wide range of electrical materials for industrial, commercial and residential projects — all in one place.', 'promo1-btn':'Product Catalog',
+    'promo2-h3':'Services for Professionals', 'promo2-p':'From technical consultation and lighting calculations to design and on-site delivery.', 'promo2-btn':'Our Services',
+    'problem-tag':'The Challenge',
+    'problem-h2':'A delayed material on site means stalled work and lost time',
+    'problem-p':'Electrical installation work is often delayed not by labor, but by material supply — the wrong assortment, late delivery, or an unexpected shortage can halt the whole schedule.',
+    'problem-note':'* Illustrative example — industry observations on project delays due to materials',
+    'solution-tag':'The Solution',
+    'solution-h2':'The entire electrical materials journey — in one place',
+    'solution-p':'We work directly with manufacturers, so we can guarantee assortment, price and delivery time for any size of project — from a single switch to a full factory power supply.',
+    'wh-h2':'<span class="weak">ELSPOT</span><br>warehouse range',
+    'wh-stat-label':'+ items',
+    'wh-k1':'Lighting', 'wh-k2':'Sockets and switches', 'wh-k3':'Grounding systems', 'wh-k4':'Lightning protection', 'wh-k5':'Cables and wires',
+    'demand-tag':'Services and categories',
+    'demand-h2':'A solution for every need',
+    'demand-p':'From standard product delivery to full technical support — choose what your project needs.',
+    'dc1-k':'Lighting', 'dc1-v':'24h delivery',
+    'dc2-k':'Sockets / switches', 'dc2-v':'280+ models',
+    'dc3-k':'Grounding', 'dc3-v':'Full set',
+    'demand-center':'SERVICES',
+    'dc4-k':'Lightning protection', 'dc4-v':'Design',
+    'dc5-k':'Consultations', 'dc5-v':'Free of charge',
+    'dc6-k':'Calculations', 'dc6-v':'Lighting',
+    'dc7-k':'Design', 'dc7-v':'On request',
+    'dc8-k':'Delivery', 'dc8-v':'To the site',
+    'impact-h2':'A trusted electrical materials partner since 2019',
+    'impact-p':'ELSPOT combines a wide product range with technical consultation and reliable delivery — so your next project keeps moving without interruption.',
+    'impact-btn':'Request a Quote →',
+    'foot-h3':'Reliable power supply for every project.',
+    'foot-col1':'Products', 'foot-p1':'Lighting', 'foot-p2':'Sockets and switches', 'foot-p3':'Grounding', 'foot-p4':'Lightning protection', 'foot-p5':'Cables',
+    'foot-col2':'Services', 'foot-s1':'Consultations', 'foot-s2':'Lighting calculations', 'foot-s3':'Design', 'foot-s4':'Delivery',
+    'foot-col3':'Company', 'foot-u1':'About Us', 'foot-u2':'Careers',
+    'foot-col4':'Contact',
+    'foot-copy':'© 2026 ELSPOT SIA. All rights reserved.',
+    'foot-since':'Since 2019',
   }
 };
-const i18nOriginals = { text:{}, html:{}, ph:{} };
-let currentLang = 'lv';
+const i18nOriginals = { text:{}, html:{} };
 
 function captureOriginals(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -798,12 +527,7 @@ function captureOriginals(){
     const key = el.getAttribute('data-i18n-html');
     if(!(key in i18nOriginals.html)) i18nOriginals.html[key] = el.innerHTML;
   });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    const key = el.getAttribute('data-i18n-ph');
-    if(!(key in i18nOriginals.ph)) i18nOriginals.ph[key] = el.getAttribute('placeholder');
-  });
 }
-
 function setLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
@@ -813,52 +537,61 @@ function setLang(lang){
     const key = el.getAttribute('data-i18n-html');
     el.innerHTML = (lang === 'en' && translations.en[key]) ? translations.en[key] : i18nOriginals.html[key];
   });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    const key = el.getAttribute('data-i18n-ph');
-    el.setAttribute('placeholder', (lang === 'en' && translations.en[key]) ? translations.en[key] : i18nOriginals.ph[key]);
-  });
   document.documentElement.lang = lang;
   document.querySelectorAll('.lang-btn').forEach(b=>{
     b.classList.toggle('active', b.getAttribute('data-lang') === lang);
   });
-  currentLang = lang;
 }
 captureOriginals();
 
-// Reveal on scroll
+// mobilā uzpeldošā izvēlne — notikumu deleģēšana (noturīga pret jebkādu elementu stāvokli)
+const mobileMenu = document.getElementById('mobileMenu');
+function openMobileMenu(){
+  if(!mobileMenu) return;
+  mobileMenu.classList.add('open');
+  document.body.classList.add('menu-open');
+}
+function closeMobileMenu(){
+  if(!mobileMenu) return;
+  mobileMenu.classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+document.addEventListener('click', function(e){
+  if(e.target.closest('#burgerBtn')){ e.preventDefault(); openMobileMenu(); return; }
+  if(e.target.closest('#closeMenuBtn')){ e.preventDefault(); closeMobileMenu(); return; }
+  if(e.target.closest('#mobileMenu a')){ closeMobileMenu(); }
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeMobileMenu();
+});
+
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
 },{threshold:.15});
 revealEls.forEach(el=>io.observe(el));
 
-// Nav scroll state
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', ()=>{
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-});
-
-// mobile uzpeldošā izvēlne
-const burgerBtn = document.getElementById('burgerBtn');
-const closeMenuBtn = document.getElementById('closeMenuBtn');
-const mobileMenu = document.getElementById('mobileMenu');
-
-function openMobileMenu(){
-  mobileMenu.classList.add('open');
-  document.body.classList.add('menu-open');
-}
-function closeMobileMenu(){
-  mobileMenu.classList.remove('open');
-  document.body.classList.remove('menu-open');
-}
-burgerBtn.addEventListener('click', openMobileMenu);
-closeMenuBtn.addEventListener('click', closeMobileMenu);
-mobileMenu.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click', closeMobileMenu);
-});
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape') closeMobileMenu();
-});
+// Dinamiska realizēto objektu bilžu josla (vietturi — nomainiet ar reāliem foto <img> tagiem)
+(function buildHeroArt(){
+  const art = document.getElementById('heroArt');
+  if(!art) return;
+  const objects = [
+    { label: 'Daudzdzīvokļu māja, Rīga', from: '#161D42', to: '#2A3373' },
+    { label: 'Ražotnes elektroapgāde, Jelgava', from: '#2A3373', to: '#FF4D4D' },
+    { label: 'Biroju centrs, Kurzeme', from: '#0B0E24', to: '#3B4590' },
+    { label: 'Noliktavas komplekss, Ventspils', from: '#161D42', to: '#FF7A7A' },
+    { label: 'Privātmāju kvartāls, Engure', from: '#2A3373', to: '#161D42' },
+  ];
+  const renderSet = () => objects.map(o =>
+    `<div class="obj-card" style="background:linear-gradient(135deg, ${o.from} 0%, ${o.to} 100%);">
+       <span class="cap">${o.label}</span>
+     </div>`
+  ).join('');
+  // Saturs dublēts, lai izveidotu nepārtrauktu, bezgalīgu ritināšanas cilpu
+  art.innerHTML = `<div class="obj-strip">${renderSet()}${renderSet()}</div>`;
+})();
 </script>
+
+
 </body>
 </html>
