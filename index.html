@@ -54,11 +54,12 @@ section{padding:110px 0;position:relative;}
 .pill-logo{display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 10px;}
 .pill-logo svg{height:48px;width:auto;}
 .pill-logo span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--mist);}
-.pill-nav .navcta{
+.navcta{
   background:#FF1F3D;color:#fff;font-size:13px;font-weight:700;padding:11px 22px;border-radius:30px;
   box-shadow:0 8px 20px rgba(255,31,61,.35);transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
 }
-.pill-nav .navcta:hover{background:#E4132F;transform:translateY(-1px);box-shadow:0 10px 24px rgba(255,31,61,.42);}
+.navcta:hover{background:#E4132F;transform:translateY(-1px);box-shadow:0 10px 24px rgba(255,31,61,.42);}
+.mobile-menu .navcta{font-size:15px;padding:15px 24px;box-shadow:0 10px 26px rgba(255,31,61,.38);}
 
 .lang-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:20px;padding:3px;}
 .lang-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;padding:5px 10px;border-radius:16px;color:var(--slate);cursor:pointer;background:none;border:none;transition:background .25s ease,color .25s ease;}
@@ -80,7 +81,7 @@ section{padding:110px 0;position:relative;}
 /* Mobilā uzpeldošā izvēlne */
 /* Nolaižamais panelis zem navigācijas kapsulas */
 .mobile-menu{
-  position:fixed;top:104px;left:16px;right:16px;z-index:300;
+  position:fixed;top:104px;left:16px;width:auto;z-index:300;
   background:#fff;border:1px solid var(--line);border-radius:24px;
   box-shadow:0 22px 55px rgba(22,29,66,.18);
   display:flex;flex-direction:column;padding:14px 18px 18px;
@@ -576,8 +577,8 @@ body.edit-mode .light-on-overlay{display:none !important;}
           <span data-i18n="map-hint">Brauc pie mums</span>
         </span>
       </button>
-      <iframe
-        src="https://www.google.com/maps?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073&output=embed"
+      <iframe id="mapFrame"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=24.1971%2C56.9246%2C24.2171%2C56.9346&layer=mapnik&marker=56.9296211%2C24.2071313"
         loading="lazy" referrerpolicy="no-referrer-when-downgrade"
         title="ELSPOT SIA atrašanās vieta"></iframe>
     </div>
@@ -783,6 +784,7 @@ captureOriginals();
       const list = data.partners || data.objects;
       if(Array.isArray(list) && list.length) siteObjects = list;
       if(data.numbers) applyNumbers(data.numbers);
+      if(data.map) applyMap(data.map);
       if(data.images) applyImages(data.images);
       buildHeroArt();
       setLang(document.documentElement.lang === 'en' ? 'en' : 'lv');
@@ -797,8 +799,12 @@ function positionMenu(){
   const nav = document.querySelector('.pill-nav');
   if(nav && mobileMenu){
     const r = nav.getBoundingClientRect();
-    mobileMenu.style.top = (r.bottom + 12) + 'px';
-    mobileMenu.style.maxHeight = 'calc(100vh - ' + (r.bottom + 30) + 'px)';
+    // Panelis nolaižas tieši zem kapsulas, tādā pašā platumā
+    const w = Math.max(r.width, 240);
+    mobileMenu.style.top = (r.bottom + 10) + 'px';
+    mobileMenu.style.left = Math.max(8, r.left + (r.width - w) / 2) + 'px';
+    mobileMenu.style.width = w + 'px';
+    mobileMenu.style.maxHeight = 'calc(100vh - ' + (r.bottom + 28) + 'px)';
   }
 }
 function openMobileMenu(){
@@ -954,6 +960,23 @@ function refreshFooterLinks(){
   if(mainPhone) mainPhone.href = 'tel:' + mainPhone.textContent.trim().replace(/[^\d+]/g, '');
 }
 
+
+// ===== Kartes pozīcija (koordinātas no content.json) =====
+let siteMap = { lat: 56.9296211, lon: 24.2071313 };
+function applyMap(m){
+  if(!m) return;
+  const lat = Number(m.lat), lon = Number(m.lon);
+  if(!isFinite(lat) || !isFinite(lon)) return;
+  siteMap = { lat, lon };
+  const f = document.getElementById('mapFrame');
+  if(f){
+    const d = 0.010;
+    const bbox = [(lon-d).toFixed(6), (lat-d/2).toFixed(6), (lon+d).toFixed(6), (lat+d/2).toFixed(6)].join('%2C');
+    f.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox +
+            '&layer=mapnik&marker=' + lat + '%2C' + lon;
+  }
+}
+
 // ===== Navigācijas izvēle, uzklikšķinot uz kartes =====
 (function initMapNav(){
   const hit = document.getElementById('mapHit');
@@ -966,9 +989,16 @@ function refreshFooterLinks(){
   }
   function refreshLinks(){
     const a = encodeURIComponent(currentAddress());
-    document.getElementById('navGoogle').href = 'https://www.google.com/maps/dir/?api=1&destination=' + a;
-    document.getElementById('navWaze').href   = 'https://waze.com/ul?q=' + a + '&navigate=yes';
-    document.getElementById('navApple').href  = 'https://maps.apple.com/?daddr=' + a;
+    const ll = (typeof siteMap !== 'undefined') ? (siteMap.lat + ',' + siteMap.lon) : null;
+    document.getElementById('navGoogle').href = ll
+      ? 'https://www.google.com/maps/dir/?api=1&destination=' + ll
+      : 'https://www.google.com/maps/dir/?api=1&destination=' + a;
+    document.getElementById('navWaze').href = ll
+      ? 'https://waze.com/ul?ll=' + ll + '&navigate=yes'
+      : 'https://waze.com/ul?q=' + a + '&navigate=yes';
+    document.getElementById('navApple').href = ll
+      ? 'https://maps.apple.com/?daddr=' + ll
+      : 'https://maps.apple.com/?daddr=' + a;
     const addrEl = modal.querySelector('.addr');
     if(addrEl) addrEl.textContent = currentAddress();
   }
