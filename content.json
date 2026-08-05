@@ -88,7 +88,11 @@
     "cf-l3": "Tālrunis",
     "cf-l4": "Jūsu jautājums vai objekta apraksts *",
     "cf-btn": "Nosūtīt pieprasījumu →",
-    "cf-note": "Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu."
+    "cf-note": "Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.",
+    "map-hint": "Norādīt ceļu",
+    "navm-title": "Kā jūs vēlaties navigēt?",
+    "navm-addr": "Cesvaines iela 4, Rīga, LV-1073",
+    "navm-cancel": "Atcelt"
   },
   "en": {
     "nav-products": "Products",
@@ -179,7 +183,11 @@
     "cf-l3": "Phone",
     "cf-l4": "Your question or project description *",
     "cf-btn": "Send request →",
-    "cf-note": "By sending this request you agree that we may contact you about this enquiry."
+    "cf-note": "By sending this request you agree that we may contact you about this enquiry.",
+    "map-hint": "Get directions",
+    "navm-title": "How would you like to navigate?",
+    "navm-addr": "Cesvaines iela 4, Riga, LV-1073",
+    "navm-cancel": "Cancel"
   },
   "objects": [
     {
