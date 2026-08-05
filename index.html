@@ -215,18 +215,25 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 
 /* ===== KONTAKTU SADAĻA ===== */
 .contact-sec{background:var(--fog);}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
-@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:32px;}}
-.cinfo{list-style:none;margin:26px 0 0;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;align-items:stretch;}
+@media(max-width:1000px){
+  .contact-grid{grid-template-columns:1fr 1fr;gap:20px;}
+  .cmap{grid-column:1 / -1;}
+}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr;gap:18px;}}
+.ccol{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;}
+.cinfo{list-style:none;margin:22px 0 0;}
+.cinfo li:last-child{border-bottom:none;}
 .cinfo li{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--line);align-items:flex-start;}
 .cinfo li:first-child{padding-top:0;}
 .cinfo .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);width:96px;flex-shrink:0;padding-top:3px;}
 .cinfo .v{font-size:15.5px;color:var(--ink);line-height:1.5;}
 .cinfo .v a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
 .cinfo .v a:hover{border-color:var(--coral);color:var(--coral);}
-.cmap{margin-top:26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);line-height:0;}
-.cmap iframe{width:100%;height:260px;border:0;}
-.cform{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;}
+.cmap{border-radius:18px;overflow:hidden;border:1px solid var(--line);line-height:0;height:100%;min-height:420px;}
+.cmap iframe{width:100%;height:100%;min-height:420px;border:0;display:block;}
+@media(max-width:1000px){.cmap,.cmap iframe{min-height:300px;height:300px;}}
+.cform{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;height:100%;}
 .cform .row{margin-bottom:15px;}
 .cform label{display:block;font-size:12.5px;font-weight:600;color:var(--slate);margin-bottom:6px;}
 .cform input,.cform textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 13px;font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fff;}
@@ -234,6 +241,7 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 .cform textarea{resize:vertical;min-height:118px;}
 .cform button{width:100%;justify-content:center;margin-top:6px;}
 .cform .note{font-size:12px;color:var(--slate);margin-top:12px;line-height:1.5;}
+.cform .spacer{flex:1;min-height:6px;}
 .formmsg{font-size:13.5px;margin-top:12px;display:none;padding:11px 13px;border-radius:9px;}
 .formmsg.ok{display:block;background:#E8F7EF;color:#0A7C42;}
 .formmsg.bad{display:block;background:#FDECEF;color:#C0122C;}
@@ -473,22 +481,23 @@ body.edit-mode .light-on-overlay{display:none !important;}
 <!-- ===== KONTAKTI ===== -->
 <section class="contact-sec" id="kontakti">
   <div class="wrap contact-grid">
-    <div class="reveal">
-      <span class="tag" data-i18n="contact-tag">Kontakti</span>
+    <div class="ccol reveal">
+      <span class="tag" style="align-self:flex-start;" data-i18n="contact-tag">Kontakti</span>
       <h2 style="font-size:clamp(26px,3.2vw,36px);font-weight:600;line-height:1.15;" data-i18n="contact-h2">Sazinieties ar mums</h2>
       <p style="color:var(--slate);margin-top:14px;font-size:15.5px;line-height:1.65;" data-i18n="contact-p">Atbildam darba dienās 24 stundu laikā. Nosūtiet pieprasījumu vai zvaniet tieši.</p>
       <ul class="cinfo">
-        <li><span class="k" data-i18n="ci-k1">Tālrunis</span><span class="v"><a href="tel:+37120000000" data-i18n="ci-v1">+371 20 000 000</a></span></li>
+        <li><span class="k" data-i18n="ci-k1">Tālrunis</span><span class="v"><a href="tel:+37125620670" data-i18n="ci-v1">+371 25 620 670</a></span></li>
         <li><span class="k" data-i18n="ci-k2">E-pasts</span><span class="v"><a href="mailto:info@elspot.lv" data-i18n="ci-v2">info@elspot.lv</a></span></li>
         <li><span class="k" data-i18n="ci-k3">Adrese</span><span class="v" data-i18n="ci-v3">Cesvaines iela 4, Rīga, LV-1073</span></li>
         <li><span class="k" data-i18n="ci-k4">Darba laiks</span><span class="v" data-i18n="ci-v4">P–Pk 8:00–17:00</span></li>
       </ul>
-      <div class="cmap">
-        <iframe
-          src="https://www.google.com/maps?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073&output=embed"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          title="ELSPOT SIA atrašanās vieta"></iframe>
-      </div>
+    </div>
+
+    <div class="cmap reveal">
+      <iframe
+        src="https://www.google.com/maps?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="ELSPOT SIA atrašanās vieta"></iframe>
     </div>
 
     <form class="cform reveal" id="contactForm" novalidate>
@@ -508,6 +517,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
         <label data-i18n="cf-l4">Jūsu jautājums vai objekta apraksts *</label>
         <textarea name="message" required></textarea>
       </div>
+      <div class="spacer"></div>
       <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
       <button type="submit" class="btn btn-primary" id="cfBtn" data-i18n="cf-btn">Nosūtīt pieprasījumu →</button>
       <div class="note" data-i18n="cf-note">Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.</div>
@@ -603,7 +613,7 @@ const translations = {
     'impact-btn':'Request a Quote →',
     'contact-tag':'Contact', 'contact-h2':'Get in touch',
     'contact-p':'We reply within 24 hours on business days. Send a request or call us directly.',
-    'ci-k1':'Phone', 'ci-v1':'+371 20 000 000',
+    'ci-k1':'Phone', 'ci-v1':'+371 25 620 670',
     'ci-k2':'Email', 'ci-v2':'info@elspot.lv',
     'ci-k3':'Address', 'ci-v3':'Cesvaines iela 4, Riga, LV-1073',
     'ci-k4':'Opening hours', 'ci-v4':'Mon–Fri 8:00–17:00',
