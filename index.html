@@ -232,6 +232,21 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 @keyframes light-on-bg-fade{0%{opacity:1;}100%{opacity:0;}}
 @keyframes light-on-logo-fade{0%{opacity:1;}100%{opacity:0;}}
 @media (prefers-reduced-motion: reduce){.light-on-overlay{display:none;}}
+
+/* ===== REDIĢĒŠANAS REŽĪMS (aktīvs tikai /admin priekšskatījumā) ===== */
+body.edit-mode [data-i18n],
+body.edit-mode [data-i18n-html],
+body.edit-mode .obj-card{
+  cursor:pointer;outline:1.5px dashed rgba(255,77,77,.45);outline-offset:3px;
+  transition:outline-color .2s ease, background-color .2s ease;
+}
+body.edit-mode [data-i18n]:hover,
+body.edit-mode [data-i18n-html]:hover,
+body.edit-mode .obj-card:hover{
+  outline:2px solid var(--coral);outline-offset:3px;background-color:rgba(255,77,77,.07);
+}
+body.edit-mode .edit-active{outline:2px solid #FF1F3D !important;background-color:rgba(255,31,61,.12) !important;}
+body.edit-mode .light-on-overlay{display:none !important;}
 </style>
 </head>
 <body>
@@ -584,6 +599,66 @@ document.addEventListener('keydown', function(e){
   if(e.key === 'Escape') closeMobileMenu();
 });
 
+// ===== REDIĢĒŠANAS REŽĪMS — sazinās ar /admin redaktoru caur postMessage =====
+(function initEditMode(){
+  const params = new URLSearchParams(location.search);
+  if(params.get('edit') !== '1' || window.parent === window) return;
+
+  document.body.classList.add('edit-mode');
+  const ov = document.getElementById('lightOverlay');
+  if(ov) ov.remove();
+  document.querySelectorAll('.reveal').forEach(el=> el.classList.add('in'));
+
+  let activeEl = null;
+  function markActive(el){
+    if(activeEl) activeEl.classList.remove('edit-active');
+    activeEl = el;
+    if(el) el.classList.add('edit-active');
+  }
+
+  document.addEventListener('click', function(e){
+    const card = e.target.closest('.obj-card');
+    const htmlEl = e.target.closest('[data-i18n-html]');
+    const textEl = e.target.closest('[data-i18n]');
+    let msg = null;
+
+    if(card){
+      markActive(card);
+      msg = { type:'elspot-select', kind:'object', index: Number(card.dataset.objIndex) };
+    } else if(htmlEl){
+      markActive(htmlEl);
+      msg = { type:'elspot-select', kind:'html', key: htmlEl.getAttribute('data-i18n-html') };
+    } else if(textEl){
+      markActive(textEl);
+      msg = { type:'elspot-select', kind:'text', key: textEl.getAttribute('data-i18n') };
+    }
+    if(msg){
+      e.preventDefault(); e.stopPropagation();
+      parent.postMessage(msg, '*');
+    }
+  }, true);
+
+  window.addEventListener('message', function(e){
+    const d = e.data || {};
+    if(d.type === 'elspot-update'){
+      if(d.content){
+        if(d.content.lv) Object.assign(i18nOriginals.text, d.content.lv);
+        if(d.content.lv) Object.keys(d.content.lv).forEach(k=>{
+          if(k in i18nOriginals.html) i18nOriginals.html[k] = d.content.lv[k];
+        });
+        if(d.content.en) Object.assign(translations.en, d.content.en);
+        if(Array.isArray(d.content.objects)) siteObjects = d.content.objects;
+      }
+      setLang(d.lang === 'en' ? 'en' : 'lv');
+      if(activeEl && !document.body.contains(activeEl)) activeEl = null;
+    }
+    if(d.type === 'elspot-setlang'){ setLang(d.lang === 'en' ? 'en' : 'lv'); }
+  });
+
+  parent.postMessage({ type:'elspot-ready' }, '*');
+})();
+
+
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
@@ -612,7 +687,7 @@ function buildHeroArt(){
     const bg = o.image
       ? `background-image:url('${o.image}');background-size:cover;background-position:center;`
       : `background:linear-gradient(135deg, ${fb[0]} 0%, ${fb[1]} 100%);`;
-    return `<div class="obj-card" style="${bg}"><span class="cap">${label}</span></div>`;
+    return `<div class="obj-card" data-obj-index="${i}" style="${bg}"><span class="cap">${label}</span></div>`;
   }).join('');
   // Saturs dublēts, lai izveidotu nepārtrauktu ritināšanas cilpu
   art.innerHTML = `<div class="obj-strip">${renderSet()}${renderSet()}</div>`;
