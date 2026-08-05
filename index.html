@@ -541,8 +541,27 @@ function setLang(lang){
   document.querySelectorAll('.lang-btn').forEach(b=>{
     b.classList.toggle('active', b.getAttribute('data-lang') === lang);
   });
+  if(typeof buildHeroArt === 'function') buildHeroArt();
 }
 captureOriginals();
+
+// ===== Satura ielāde no content.json (rediģējams caur /admin) =====
+// Ja fails nav pieejams, lapa turpina darboties ar iebūvētajiem tekstiem.
+(function loadContent(){
+  fetch('content.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => {
+      if(data.lv) Object.assign(i18nOriginals.text, data.lv);
+      if(data.lv) Object.keys(data.lv).forEach(k=>{
+        if(k in i18nOriginals.html) i18nOriginals.html[k] = data.lv[k];
+      });
+      if(data.en) Object.assign(translations.en, data.en);
+      if(Array.isArray(data.objects) && data.objects.length) siteObjects = data.objects;
+      buildHeroArt();
+      setLang(document.documentElement.lang === 'en' ? 'en' : 'lv');
+    })
+    .catch(()=>{ /* atkāpšanās: paliek iebūvētais saturs */ });
+})();
 
 // mobilā uzpeldošā izvēlne — notikumu deleģēšana (noturīga pret jebkādu elementu stāvokli)
 const mobileMenu = document.getElementById('mobileMenu');
@@ -571,25 +590,34 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:.15});
 revealEls.forEach(el=>io.observe(el));
 
-// Dinamiska realizēto objektu bilžu josla (vietturi — nomainiet ar reāliem foto <img> tagiem)
-(function buildHeroArt(){
+// Dinamiska realizēto objektu bilžu josla — dati no content.json
+let siteObjects = [
+  { label_lv: 'Daudzdzīvokļu māja, Rīga', label_en: 'Apartment building, Riga', image: '' },
+  { label_lv: 'Ražotnes elektroapgāde, Jelgava', label_en: 'Factory power supply, Jelgava', image: '' },
+  { label_lv: 'Biroju centrs, Kurzeme', label_en: 'Office center, Kurzeme', image: '' },
+  { label_lv: 'Noliktavas komplekss, Ventspils', label_en: 'Warehouse complex, Ventspils', image: '' },
+  { label_lv: 'Privātmāju kvartāls, Engure', label_en: 'Private home quarter, Engure', image: '' },
+];
+const objFallbacks = [
+  ['#161D42','#2A3373'], ['#2A3373','#FF4D4D'], ['#0B0E24','#3B4590'],
+  ['#161D42','#FF7A7A'], ['#2A3373','#161D42'],
+];
+function buildHeroArt(){
   const art = document.getElementById('heroArt');
   if(!art) return;
-  const objects = [
-    { label: 'Daudzdzīvokļu māja, Rīga', from: '#161D42', to: '#2A3373' },
-    { label: 'Ražotnes elektroapgāde, Jelgava', from: '#2A3373', to: '#FF4D4D' },
-    { label: 'Biroju centrs, Kurzeme', from: '#0B0E24', to: '#3B4590' },
-    { label: 'Noliktavas komplekss, Ventspils', from: '#161D42', to: '#FF7A7A' },
-    { label: 'Privātmāju kvartāls, Engure', from: '#2A3373', to: '#161D42' },
-  ];
-  const renderSet = () => objects.map(o =>
-    `<div class="obj-card" style="background:linear-gradient(135deg, ${o.from} 0%, ${o.to} 100%);">
-       <span class="cap">${o.label}</span>
-     </div>`
-  ).join('');
-  // Saturs dublēts, lai izveidotu nepārtrauktu, bezgalīgu ritināšanas cilpu
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'lv';
+  const renderSet = () => siteObjects.map((o, i) => {
+    const label = (lang === 'en' ? (o.label_en || o.label_lv) : o.label_lv) || '';
+    const fb = objFallbacks[i % objFallbacks.length];
+    const bg = o.image
+      ? `background-image:url('${o.image}');background-size:cover;background-position:center;`
+      : `background:linear-gradient(135deg, ${fb[0]} 0%, ${fb[1]} 100%);`;
+    return `<div class="obj-card" style="${bg}"><span class="cap">${label}</span></div>`;
+  }).join('');
+  // Saturs dublēts, lai izveidotu nepārtrauktu ritināšanas cilpu
   art.innerHTML = `<div class="obj-strip">${renderSet()}${renderSet()}</div>`;
-})();
+}
+buildHeroArt();
 </script>
 
 
