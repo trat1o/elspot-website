@@ -89,10 +89,11 @@
     "cf-l4": "Jūsu jautājums vai objekta apraksts *",
     "cf-btn": "Nosūtīt pieprasījumu →",
     "cf-note": "Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.",
-    "map-hint": "Norādīt ceļu",
+    "map-hint": "Brauc pie mums",
     "navm-title": "Kā jūs vēlaties navigēt?",
     "navm-addr": "Cesvaines iela 4, Rīga, LV-1073",
-    "navm-cancel": "Atcelt"
+    "navm-cancel": "Atcelt",
+    "partners-label": "Sadarbības partneri un ražotāji"
   },
   "en": {
     "nav-products": "Products",
@@ -184,38 +185,12 @@
     "cf-l4": "Your question or project description *",
     "cf-btn": "Send request →",
     "cf-note": "By sending this request you agree that we may contact you about this enquiry.",
-    "map-hint": "Get directions",
+    "map-hint": "Drive to us",
     "navm-title": "How would you like to navigate?",
     "navm-addr": "Cesvaines iela 4, Riga, LV-1073",
-    "navm-cancel": "Cancel"
+    "navm-cancel": "Cancel",
+    "partners-label": "Partners and manufacturers"
   },
-  "objects": [
-    {
-      "label_lv": "Daudzdzīvokļu māja, Rīga",
-      "label_en": "Apartment building, Riga",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotnes elektroapgāde, Jelgava",
-      "label_en": "Factory power supply, Jelgava",
-      "image": ""
-    },
-    {
-      "label_lv": "Biroju centrs, Kurzeme",
-      "label_en": "Office center, Kurzeme",
-      "image": ""
-    },
-    {
-      "label_lv": "Noliktavas komplekss, Ventspils",
-      "label_en": "Warehouse complex, Ventspils",
-      "image": ""
-    },
-    {
-      "label_lv": "Privātmāju kvartāls, Engure",
-      "label_en": "Private home quarter, Engure",
-      "image": ""
-    }
-  ],
   "numbers": {
     "wh-total": "1200",
     "wh-1": "320",
@@ -228,5 +203,107 @@
     "promo1": "",
     "promo2": "",
     "solution": ""
-  }
+  },
+  "partners": [
+    {
+      "label_lv": "Ražotājs 1",
+      "label_en": "Manufacturer 1",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 2",
+      "label_en": "Manufacturer 2",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 3",
+      "label_en": "Manufacturer 3",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 4",
+      "label_en": "Manufacturer 4",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 5",
+      "label_en": "Manufacturer 5",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 6",
+      "label_en": "Manufacturer 6",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 7",
+      "label_en": "Manufacturer 7",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 8",
+      "label_en": "Manufacturer 8",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 9",
+      "label_en": "Manufacturer 9",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 10",
+      "label_en": "Manufacturer 10",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 11",
+      "label_en": "Manufacturer 11",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 12",
+      "label_en": "Manufacturer 12",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 13",
+      "label_en": "Manufacturer 13",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 14",
+      "label_en": "Manufacturer 14",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 15",
+      "label_en": "Manufacturer 15",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 16",
+      "label_en": "Manufacturer 16",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 17",
+      "label_en": "Manufacturer 17",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 18",
+      "label_en": "Manufacturer 18",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 19",
+      "label_en": "Manufacturer 19",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 20",
+      "label_en": "Manufacturer 20",
+      "image": ""
+    }
+  ]
 }

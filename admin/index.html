@@ -82,7 +82,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.55;}
     <div class="side-body" id="panel">
       <div class="hint">
         <b>Kā rediģēt:</b> uzklikšķiniet uz jebkura teksta, virsraksta vai objekta bildes priekšskatījumā pa kreisi — šeit atvērsies rediģēšanas lauki.<br><br>
-        Rediģēt var arī <b>skaitļus</b>, <b>attēlus</b> un <b>objektu bildes</b> — vienkārši uzklikšķiniet uz tiem.<br><br>Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
+        Rediģēt var arī <b>skaitļus</b>, <b>attēlus</b> un <b>partneru logotipus</b> — vienkārši uzklikšķiniet uz tiem.<br><br>Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
         Kad viss gatavs, spiediet <b>Publicēt</b> — izmaiņas parādīsies lapā ~20 sekundēs.
       </div>
     </div>
@@ -130,7 +130,7 @@ $('loginBtn').onclick = async () => {
     PW = pw;
     const c = await fetch('/content.json?t=' + Date.now());
     content = await c.json();
-    if(!Array.isArray(content.objects)) content.objects = [];
+    if(!Array.isArray(content.partners)) content.partners = Array.isArray(content.objects) ? content.objects : [];
     if(!content.numbers) content.numbers = {};
     if(!content.images) content.images = {};
     $('login').style.display = 'none';
@@ -168,15 +168,15 @@ function renderPanel(){
 
   if(sel.kind === 'object'){
     const i = sel.index;
-    const o = content.objects[i] || {};
+    const o = content.partners[i] || {};
     p.innerHTML = `
-      <div class="objnav">${content.objects.map((_,n)=>
+      <div class="objnav">${content.partners.map((_,n)=>
         `<button class="${n===i?'on':''}" data-go="${n}">${n+1}.</button>`).join('')}</div>
       <div class="field">
-        <label>Objekta bilde</label>
+        <label>Ražotāja logotips</label>
         <div class="thumb" id="thumb" style="${o.image?`background-image:url('${o.image}')`:''}"></div>
         <input type="file" id="imgFile" accept="image/*">
-        <div class="k">Ieteicams: platums vismaz 900 px, JPG vai WebP</div>
+        <div class="k">Ieteicams: PNG ar caurspīdīgu fonu, platums 400–800 px</div>
       </div>
       <div class="field">
         <label>Nosaukums (latviski)</label>
@@ -187,24 +187,24 @@ function renderPanel(){
         <input type="text" id="oen" value="${(o.label_en||'').replace(/"/g,'&quot;')}">
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="btn btn-sec" id="addObj">+ Pievienot objektu</button>
+        <button class="btn btn-sec" id="addObj">+ Pievienot partneri</button>
         <button class="btn btn-sec" id="delObj" style="color:#FF1F3D;">Dzēst šo</button>
       </div>`;
 
     p.querySelectorAll('[data-go]').forEach(b => b.onclick = () => {
       sel = { kind:'object', index: Number(b.dataset.go) }; renderPanel();
     });
-    $('olv').oninput = e => { content.objects[i].label_lv = e.target.value; markDirty(); pushToPreview(); };
-    $('oen').oninput = e => { content.objects[i].label_en = e.target.value; markDirty(); pushToPreview(); };
+    $('olv').oninput = e => { content.partners[i].label_lv = e.target.value; markDirty(); pushToPreview(); };
+    $('oen').oninput = e => { content.partners[i].label_en = e.target.value; markDirty(); pushToPreview(); };
     $('imgFile').onchange = e => {
       const f = e.target.files[0]; if(!f) return;
       if(f.size > 4 * 1024 * 1024){ setStatus('Bilde par lielu (maks. 4 MB)', 'bad'); return; }
       const rd = new FileReader();
       rd.onload = () => {
-        const name = 'obj-' + Date.now() + '-' + f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
+        const name = 'logo-' + Date.now() + '-' + f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
         const path = 'images/' + name;
         newImages.push({ path, dataUrl: rd.result });
-        content.objects[i].image = '/' + path;
+        content.partners[i].image = '/' + path;
         $('thumb').style.backgroundImage = `url('${rd.result}')`;
         markDirty();
         // priekšskatījumam rādām pagaidu attēlu
@@ -216,14 +216,14 @@ function renderPanel(){
       rd.readAsDataURL(f);
     };
     $('addObj').onclick = () => {
-      content.objects.push({ label_lv:'Jauns objekts', label_en:'New project', image:'' });
-      sel = { kind:'object', index: content.objects.length - 1 };
+      content.partners.push({ label_lv:'Jauns ražotājs', label_en:'New manufacturer', image:'' });
+      sel = { kind:'object', index: content.partners.length - 1 };
       markDirty(); pushToPreview(); renderPanel();
     };
     $('delObj').onclick = () => {
-      if(content.objects.length <= 1){ setStatus('Jāpaliek vismaz vienam objektam', 'bad'); return; }
-      if(!confirm('Dzēst šo objektu?')) return;
-      content.objects.splice(i, 1);
+      if(content.partners.length <= 1){ setStatus('Jāpaliek vismaz vienam partnerim', 'bad'); return; }
+      if(!confirm('Dzēst šo partneri?')) return;
+      content.partners.splice(i, 1);
       sel = { kind:'object', index: Math.max(0, i-1) };
       markDirty(); pushToPreview(); renderPanel();
     };

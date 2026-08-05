@@ -78,26 +78,36 @@ section{padding:110px 0;position:relative;}
 .mobile-menu-close{-webkit-tap-highlight-color:rgba(255,77,77,.15);touch-action:manipulation;}
 
 /* Mobilā uzpeldošā izvēlne */
+/* Nolaižamais panelis zem navigācijas kapsulas */
 .mobile-menu{
-  position:fixed;top:0;right:0;bottom:0;left:0;z-index:300;background:var(--paper);
-  display:flex;flex-direction:column;padding:110px 30px 40px;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
-  transform:translateX(100%);opacity:0;pointer-events:none;
-  transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+  position:fixed;top:104px;left:16px;right:16px;z-index:300;
+  background:#fff;border:1px solid var(--line);border-radius:24px;
+  box-shadow:0 22px 55px rgba(22,29,66,.18);
+  display:flex;flex-direction:column;padding:14px 18px 18px;
+  max-height:calc(100vh - 130px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transform:translateY(-14px) scale(.97);transform-origin:top center;
+  opacity:0;pointer-events:none;
+  transition:transform .32s cubic-bezier(.34,1.2,.4,1), opacity .24s ease;
 }
-.mobile-menu.open{transform:translateX(0);opacity:1;pointer-events:auto;}
-.mobile-menu-close{
-  position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
+.mobile-menu.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+.mobile-menu-close{display:none;}
+.menu-backdrop{
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:299;
+  background:rgba(11,14,36,.18);opacity:0;pointer-events:none;transition:opacity .28s ease;
 }
-.mobile-menu-links{display:flex;flex-direction:column;gap:2px;margin-top:6px;}
-.mobile-menu-links a{font-family:'Poppins',sans-serif;font-size:26px;font-weight:600;color:var(--ink);padding:16px 0;border-bottom:1px solid var(--line);}
-.mobile-menu-foot{margin-top:auto;display:flex;flex-direction:column;gap:16px;padding-top:26px;}
-.mobile-menu-cta{display:flex;align-items:center;width:100%;justify-content:center;font-size:15px;padding:16px 26px;border-radius:30px;}
+.menu-backdrop.open{opacity:1;pointer-events:auto;}
+.mobile-menu-links{display:flex;flex-direction:column;gap:0;}
+.mobile-menu-links a{
+  font-family:'Poppins',sans-serif;font-size:18px;font-weight:600;color:var(--ink);
+  padding:15px 6px;border-bottom:1px solid var(--line);border-radius:10px;
+}
+.mobile-menu-links a:active{background:var(--fog);}
+.mobile-menu-links a:last-child{border-bottom:none;}
+.mobile-menu-foot{display:flex;flex-direction:column;gap:12px;padding-top:14px;}
+.mobile-menu-cta{display:flex;align-items:center;width:100%;justify-content:center;font-size:15px;padding:15px 24px;border-radius:30px;}
 .mobile-menu-lang{display:flex;gap:8px;}
 .mobile-menu-lang .lang-btn{border:1px solid var(--line);flex:1;padding:10px;border-radius:22px;text-align:center;}
-body.menu-open{overflow:hidden;}
+
 @media(min-width:761px){.mobile-menu{display:none;}}
 @media(max-width:480px){
   .pill-logo svg{height:38px;}
@@ -120,15 +130,27 @@ body.menu-open{overflow:hidden;}
   mask-image:linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
 @media(max-width:640px){.hero2-art{height:300px;}.obj-card{height:130px;}}
-.obj-strip{display:flex;flex-direction:column;gap:14px;padding:14px;animation:objScroll 26s linear infinite;}
+.obj-strip{display:flex;flex-direction:column;gap:12px;padding:12px;animation:objScroll 72s linear infinite;}
+.obj-strip:hover{animation-play-state:paused;}
 .obj-card{
-  position:relative;height:170px;border-radius:16px;overflow:hidden;flex-shrink:0;
-  background:linear-gradient(135deg,var(--ink) 0%, #2A3373 100%);
+  position:relative;height:110px;border-radius:14px;flex-shrink:0;
+  background:#fff;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;padding:18px 22px;
+  transition:border-color .25s ease, box-shadow .25s ease;
 }
+.obj-card:hover{border-color:rgba(255,77,77,.4);box-shadow:0 6px 18px rgba(22,29,66,.07);}
+.obj-card img{
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  filter:grayscale(1);opacity:.72;transition:filter .25s ease, opacity .25s ease;
+}
+.obj-card:hover img{filter:none;opacity:1;}
 .obj-card .cap{
-  position:absolute;bottom:12px;left:14px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:#fff;opacity:.9;
-  background:rgba(11,14,36,.4);padding:4px 10px;border-radius:20px;
+  font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;
+  color:var(--mist);letter-spacing:.01em;text-align:center;
+}
+.partners-label{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--slate);margin-bottom:10px;
 }
 @keyframes objScroll{
   0%{transform:translateY(0);}
@@ -239,13 +261,14 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 }
 .cmap-hit:hover{background:rgba(22,29,66,.16);}
 .cmap-hint{
-  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink);
-  background:#fff;border-radius:24px;padding:10px 18px;margin-bottom:18px;
-  box-shadow:0 6px 20px rgba(22,29,66,.16);line-height:1.2;
-  display:inline-flex;align-items:center;gap:8px;
-  transform:translateY(4px);opacity:.94;transition:transform .25s ease, opacity .25s ease;
+  font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;
+  background:#FF1F3D;border-radius:34px;padding:16px 30px;margin-bottom:24px;
+  box-shadow:0 12px 30px rgba(255,31,61,.42);line-height:1.2;
+  display:inline-flex;align-items:center;gap:10px;
+  transform:translateY(4px);transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
 }
-.cmap-hit:hover .cmap-hint{transform:translateY(0);opacity:1;}
+.cmap-hit:hover .cmap-hint{transform:translateY(0);background:#E4132F;box-shadow:0 16px 36px rgba(255,31,61,.5);}
+@media(max-width:520px){.cmap-hint{font-size:15px;padding:14px 24px;}}
 
 /* Navigācijas izvēles logs */
 .navmodal{
@@ -309,6 +332,11 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
   filter:blur(34px);
 }
 .light-on-logo-svg{position:relative;width:min(1600px, 61vw);height:auto;opacity:1;transform:translateY(10vh);animation:light-on-logo-fade 4s ease-in-out 1s forwards;}
+@media(max-width:760px){
+  .light-on-logo-svg{width:88vw;transform:translateY(-6vh);}
+  .light-on-beam{width:120vw;max-width:none;}
+  .light-on-floor{width:130vw;max-width:none;bottom:26%;}
+}
 @keyframes light-on-bg-fade{0%{opacity:1;}100%{opacity:0;}}
 @keyframes light-on-logo-fade{0%{opacity:1;}100%{opacity:0;}}
 @media (prefers-reduced-motion: reduce){.light-on-overlay{display:none;}}
@@ -365,6 +393,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
   </nav>
 </div>
 
+<div class="menu-backdrop" id="menuBackdrop"></div>
 <div class="mobile-menu" id="mobileMenu">
   <button type="button" class="mobile-menu-close" id="closeMenuBtn" aria-label="Aizvērt izvēlni">✕</button>
   <div class="mobile-menu-links">
@@ -394,7 +423,10 @@ body.edit-mode .light-on-overlay{display:none !important;}
         <a href="#pakalpojumi" class="btn btn-ghost" data-i18n="hero-btn2">Mūsu pakalpojumi</a>
       </div>
     </div>
-    <div class="hero2-art reveal" id="heroArt"></div>
+    <div class="reveal">
+        <div class="partners-label" data-i18n="partners-label">Sadarbības partneri un ražotāji</div>
+        <div class="hero2-art" id="heroArt"></div>
+      </div>
   </div>
 </header>
 
@@ -540,8 +572,8 @@ body.edit-mode .light-on-overlay{display:none !important;}
     <div class="cmap reveal">
       <button type="button" class="cmap-hit" id="mapHit" aria-label="Atvērt navigāciju">
         <span class="cmap-hint">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
-          <span data-i18n="map-hint">Norādīt ceļu</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s7-7.1 7-12a7 7 0 1 0-14 0c0 4.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>
+          <span data-i18n="map-hint">Brauc pie mums</span>
         </span>
       </button>
       <iframe
@@ -625,8 +657,9 @@ body.edit-mode .light-on-overlay{display:none !important;}
     </div>
     <div class="foot-col">
       <div class="h" data-i18n="foot-col4">Kontakti</div>
-      <a href="#">info@elspot.lv</a>
-      <a href="#">+371 20 000 000</a>
+      <a href="mailto:info@elspot.lv" id="footMail" data-i18n="ci-v2">info@elspot.lv</a>
+      <a href="tel:+37125620670" id="footPhone" data-i18n="ci-v1">+371 25 620 670</a>
+      <a href="#kontakti" data-i18n="ci-v3">Cesvaines iela 4, Rīga, LV-1073</a>
     </div>
   </div>
   <div class="wrap foot-bottom">
@@ -651,6 +684,7 @@ const translations = {
   en: {
     'nav-products':'Products', 'nav-services':'Services', 'nav-about':'About Us', 'nav-contact':'Contact', 'nav-cta':'Request a Quote',
     'pill-tagline':'SINCE 2019',
+    'partners-label':'Partners and manufacturers',
     'hero-tag':'Electrical Materials Wholesale',
     'hero-h1':'<span class="weak">Electrical materials</span><br>for industry and construction.',
     'hero-lead':'Lighting, sockets, switches, grounding systems and lightning protection — everything you need from one supplier, modular and tailored to your project.',
@@ -684,7 +718,7 @@ const translations = {
     'impact-btn':'Request a Quote →',
     'contact-tag':'Contact', 'contact-h2':'Get in touch',
     'contact-p':'We reply within 24 hours on business days. Send a request or call us directly.',
-    'map-hint':'Get directions',
+    'map-hint':'Drive to us',
     'navm-title':'How would you like to navigate?',
     'navm-addr':'Cesvaines iela 4, Riga, LV-1073',
     'navm-cancel':'Cancel',
@@ -731,6 +765,7 @@ function setLang(lang){
     b.classList.toggle('active', b.getAttribute('data-lang') === lang);
   });
   if(typeof buildHeroArt === 'function') buildHeroArt();
+  if(typeof refreshFooterLinks === 'function') refreshFooterLinks();
 }
 captureOriginals();
 
@@ -745,7 +780,8 @@ captureOriginals();
         if(k in i18nOriginals.html) i18nOriginals.html[k] = data.lv[k];
       });
       if(data.en) Object.assign(translations.en, data.en);
-      if(Array.isArray(data.objects) && data.objects.length) siteObjects = data.objects;
+      const list = data.partners || data.objects;
+      if(Array.isArray(list) && list.length) siteObjects = list;
       if(data.numbers) applyNumbers(data.numbers);
       if(data.images) applyImages(data.images);
       buildHeroArt();
@@ -756,21 +792,45 @@ captureOriginals();
 
 // mobilā uzpeldošā izvēlne — notikumu deleģēšana (noturīga pret jebkādu elementu stāvokli)
 const mobileMenu = document.getElementById('mobileMenu');
+const menuBackdrop = document.getElementById('menuBackdrop');
+function positionMenu(){
+  const nav = document.querySelector('.pill-nav');
+  if(nav && mobileMenu){
+    const r = nav.getBoundingClientRect();
+    mobileMenu.style.top = (r.bottom + 12) + 'px';
+    mobileMenu.style.maxHeight = 'calc(100vh - ' + (r.bottom + 30) + 'px)';
+  }
+}
 function openMobileMenu(){
   if(!mobileMenu) return;
+  positionMenu();
   mobileMenu.classList.add('open');
-  document.body.classList.add('menu-open');
+  if(menuBackdrop) menuBackdrop.classList.add('open');
 }
 function closeMobileMenu(){
   if(!mobileMenu) return;
   mobileMenu.classList.remove('open');
-  document.body.classList.remove('menu-open');
+  if(menuBackdrop) menuBackdrop.classList.remove('open');
+}
+function toggleMobileMenu(){
+  if(mobileMenu && mobileMenu.classList.contains('open')) closeMobileMenu();
+  else openMobileMenu();
 }
 document.addEventListener('click', function(e){
-  if(e.target.closest('#burgerBtn')){ e.preventDefault(); openMobileMenu(); return; }
+  if(e.target.closest('#burgerBtn')){ e.preventDefault(); toggleMobileMenu(); return; }
   if(e.target.closest('#closeMenuBtn')){ e.preventDefault(); closeMobileMenu(); return; }
-  if(e.target.closest('#mobileMenu a')){ closeMobileMenu(); }
+  if(e.target.closest('#mobileMenu a')){ closeMobileMenu(); return; }
+  // klikšķis ārpus izvēlnes
+  if(mobileMenu && mobileMenu.classList.contains('open') && !e.target.closest('#mobileMenu')){
+    closeMobileMenu();
+  }
 });
+window.addEventListener('resize', function(){
+  if(mobileMenu && mobileMenu.classList.contains('open')) positionMenu();
+});
+window.addEventListener('scroll', function(){
+  if(mobileMenu && mobileMenu.classList.contains('open')) positionMenu();
+}, { passive: true });
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape') closeMobileMenu();
 });
@@ -881,6 +941,19 @@ function applyImages(imgs){
 })();
 
 
+
+// ===== Footera kontaktu saites seko galvenajiem kontaktu laukiem =====
+function refreshFooterLinks(){
+  const m = document.getElementById('footMail');
+  const p = document.getElementById('footPhone');
+  if(m) m.href = 'mailto:' + m.textContent.trim();
+  if(p) p.href = 'tel:' + p.textContent.trim().replace(/[^\d+]/g, '');
+  const mainMail = document.querySelector('.cinfo a[href^="mailto:"]');
+  if(mainMail) mainMail.href = 'mailto:' + mainMail.textContent.trim();
+  const mainPhone = document.querySelector('.cinfo a[href^="tel:"]');
+  if(mainPhone) mainPhone.href = 'tel:' + mainPhone.textContent.trim().replace(/[^\d+]/g, '');
+}
+
 // ===== Navigācijas izvēle, uzklikšķinot uz kartes =====
 (function initMapNav(){
   const hit = document.getElementById('mapHit');
@@ -965,7 +1038,8 @@ function applyImages(imgs){
           if(k in i18nOriginals.html) i18nOriginals.html[k] = d.content.lv[k];
         });
         if(d.content.en) Object.assign(translations.en, d.content.en);
-        if(Array.isArray(d.content.objects)) siteObjects = d.content.objects;
+        const pl = d.content.partners || d.content.objects;
+        if(Array.isArray(pl)) siteObjects = pl;
         if(d.content.numbers) applyNumbers(d.content.numbers);
         if(d.content.images) applyImages(d.content.images);
       }
@@ -987,30 +1061,30 @@ revealEls.forEach(el=>io.observe(el));
 
 // Dinamiska realizēto objektu bilžu josla — dati no content.json
 let siteObjects = [
-  { label_lv: 'Daudzdzīvokļu māja, Rīga', label_en: 'Apartment building, Riga', image: '' },
-  { label_lv: 'Ražotnes elektroapgāde, Jelgava', label_en: 'Factory power supply, Jelgava', image: '' },
-  { label_lv: 'Biroju centrs, Kurzeme', label_en: 'Office center, Kurzeme', image: '' },
-  { label_lv: 'Noliktavas komplekss, Ventspils', label_en: 'Warehouse complex, Ventspils', image: '' },
-  { label_lv: 'Privātmāju kvartāls, Engure', label_en: 'Private home quarter, Engure', image: '' },
+  { label_lv: 'Ražotājs 1', label_en: 'Manufacturer 1', image: '' },
+  { label_lv: 'Ražotājs 2', label_en: 'Manufacturer 2', image: '' },
+  { label_lv: 'Ražotājs 3', label_en: 'Manufacturer 3', image: '' },
+  { label_lv: 'Ražotājs 4', label_en: 'Manufacturer 4', image: '' },
+  { label_lv: 'Ražotājs 5', label_en: 'Manufacturer 5', image: '' },
+  { label_lv: 'Ražotājs 6', label_en: 'Manufacturer 6', image: '' },
 ];
-const objFallbacks = [
-  ['#161D42','#2A3373'], ['#2A3373','#FF4D4D'], ['#0B0E24','#3B4590'],
-  ['#161D42','#FF7A7A'], ['#2A3373','#161D42'],
-];
+function escAttr(s){ return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
 function buildHeroArt(){
   const art = document.getElementById('heroArt');
   if(!art) return;
   const lang = document.documentElement.lang === 'en' ? 'en' : 'lv';
   const renderSet = () => siteObjects.map((o, i) => {
-    const label = (lang === 'en' ? (o.label_en || o.label_lv) : o.label_lv) || '';
-    const fb = objFallbacks[i % objFallbacks.length];
-    const bg = o.image
-      ? `background-image:url('${o.image}');background-size:cover;background-position:center;`
-      : `background:linear-gradient(135deg, ${fb[0]} 0%, ${fb[1]} 100%);`;
-    return `<div class="obj-card" data-obj-index="${i}" style="${bg}"><span class="cap">${label}</span></div>`;
+    const name = (lang === 'en' ? (o.label_en || o.label_lv) : o.label_lv) || '';
+    const inner = o.image
+      ? `<img src="${escAttr(o.image)}" alt="${escAttr(name)}" loading="lazy">`
+      : `<span class="cap">${escAttr(name)}</span>`;
+    return `<div class="obj-card" data-obj-index="${i}" title="${escAttr(name)}">${inner}</div>`;
   }).join('');
   // Saturs dublēts, lai izveidotu nepārtrauktu ritināšanas cilpu
   art.innerHTML = `<div class="obj-strip">${renderSet()}${renderSet()}</div>`;
+  // Ilgums aug līdz ar partneru skaitu -> ritināšanas ātrums paliek nemainīgs
+  const strip = art.querySelector('.obj-strip');
+  if(strip) strip.style.animationDuration = Math.max(40, siteObjects.length * 12) + 's';
 }
 buildHeroArt();
 </script>
