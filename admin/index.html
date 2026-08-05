@@ -77,11 +77,12 @@ textarea{resize:vertical;min-height:110px;line-height:1.55;}
         <button id="lvBtn" class="on">LV</button>
         <button id="enBtn">EN</button>
       </div>
+      <button class="btn btn-sec" id="logoutBtn" style="padding:8px 14px;font-size:12.5px;">Iziet</button>
     </div>
     <div class="side-body" id="panel">
       <div class="hint">
         <b>Kā rediģēt:</b> uzklikšķiniet uz jebkura teksta, virsraksta vai objekta bildes priekšskatījumā pa kreisi — šeit atvērsies rediģēšanas lauki.<br><br>
-        Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
+        Rediģēt var arī <b>skaitļus</b>, <b>attēlus</b> un <b>objektu bildes</b> — vienkārši uzklikšķiniet uz tiem.<br><br>Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
         Kad viss gatavs, spiediet <b>Publicēt</b> — izmaiņas parādīsies lapā ~20 sekundēs.
       </div>
     </div>
@@ -130,6 +131,8 @@ $('loginBtn').onclick = async () => {
     const c = await fetch('/content.json?t=' + Date.now());
     content = await c.json();
     if(!Array.isArray(content.objects)) content.objects = [];
+    if(!content.numbers) content.numbers = {};
+    if(!content.images) content.images = {};
     $('login').style.display = 'none';
     $('app').style.display = 'grid';
   }catch(err){
@@ -227,6 +230,57 @@ function renderPanel(){
     return;
   }
 
+  if(sel.kind === 'number'){
+    const k = sel.key;
+    content.numbers = content.numbers || {};
+    const cur = content.numbers[k] || '';
+    p.innerHTML = `
+      <div class="field">
+        <label>Skaitlis</label>
+        <input type="text" id="nv" value="${String(cur).replace(/"/g,'&quot;')}">
+        <div class="k">${k}</div>
+      </div>
+      <div class="warn">Šis ir jūsu pašu norādīts skaitlis — pārliecinieties, ka tas atbilst patiesībai, jo tas ir publiski redzams.</div>`;
+    $('nv').oninput = e => { content.numbers[k] = e.target.value; markDirty(); pushToPreview(); };
+    return;
+  }
+
+  if(sel.kind === 'image'){
+    const k = sel.key;
+    content.images = content.images || {};
+    const cur = content.images[k] || '';
+    const names = { promo1:'1. kartes attēls', promo2:'2. kartes attēls', solution:'Risinājuma sadaļas attēls' };
+    p.innerHTML = `
+      <div class="field">
+        <label>${names[k] || k}</label>
+        <div class="thumb" id="thumb" style="${cur?`background-image:url('${cur}')`:''}"></div>
+        <input type="file" id="imgFile" accept="image/*">
+        <div class="k">Ja atstāsiet tukšu, rādīsies zīmētā ilustrācija</div>
+      </div>
+      ${cur ? `<button class="btn btn-sec" id="clearImg" style="color:#FF1F3D;">Noņemt attēlu</button>` : ''}`;
+    $('imgFile').onchange = e => {
+      const f = e.target.files[0]; if(!f) return;
+      if(f.size > 4*1024*1024){ setStatus('Bilde par lielu (maks. 4 MB)','bad'); return; }
+      const rd = new FileReader();
+      rd.onload = () => {
+        const name = k + '-' + Date.now() + '-' + f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
+        const path = 'images/' + name;
+        newImages.push({ path, dataUrl: rd.result });
+        content.images[k] = '/' + path;
+        $('thumb').style.backgroundImage = `url('${rd.result}')`;
+        markDirty();
+        const tmp = JSON.parse(JSON.stringify(content));
+        tmp.images[k] = rd.result;
+        frame().postMessage({ type:'elspot-update', content: tmp, lang }, '*');
+        setStatus('Bilde tiks augšupielādēta, kad spiedīsiet Publicēt');
+      };
+      rd.readAsDataURL(f);
+    };
+    const ci = $('clearImg');
+    if(ci) ci.onclick = () => { content.images[k] = ''; markDirty(); pushToPreview(); renderPanel(); };
+    return;
+  }
+
   // Teksta lauki
   const key = sel.key;
   const isHtml = sel.kind === 'html';
@@ -271,6 +325,13 @@ $('pubBtn').onclick = async () => {
 };
 
 $('reloadBtn').onclick = () => { $('preview').src = '/?edit=1&t=' + Date.now(); };
+
+$('logoutBtn').onclick = () => {
+  if(dirty && !confirm('Ir nesaglabātas izmaiņas. Tomēr iziet?')) return;
+  PW = ''; content = null; dirty = false; newImages = []; sel = null;
+  try{ sessionStorage.clear(); }catch(e){}
+  location.reload();
+};
 
 window.addEventListener('beforeunload', e => {
   if(dirty){ e.preventDefault(); e.returnValue = ''; }

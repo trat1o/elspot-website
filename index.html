@@ -152,14 +152,16 @@ body.menu-open{overflow:hidden;}
 .problem p{color:var(--mist);margin-top:18px;font-size:16px;line-height:1.7;max-width:480px;}
 .problem-stat{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:clamp(90px,11vw,150px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.35);text-align:center;}
 .problem-stat span{font-size:.3em;-webkit-text-stroke:0;color:var(--coral-soft);vertical-align:super;}
-.problem-note{text-align:center;font-size:11px;color:var(--mist);margin-top:8px;font-family:'JetBrains Mono',monospace;}
+.problem-stat{font-size:clamp(52px,7.5vw,96px);}
+.problem-note{text-align:center;font-size:11px;color:var(--mist);margin-top:10px;font-family:'JetBrains Mono',monospace;line-height:1.6;}
+.problem-note a{color:var(--coral-soft);text-decoration:underline;}
 
 /* ===== SOLUTION ===== */
 .solution-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;}
 @media(max-width:900px){.solution-grid{grid-template-columns:1fr;}}
 .solution h2{font-size:clamp(28px,3.6vw,40px);font-weight:600;line-height:1.15;}
 .solution p{color:var(--slate);margin-top:18px;font-size:16px;line-height:1.7;}
-.iso-wrap{background:var(--fog);border-radius:24px;padding:40px;display:flex;align-items:center;justify-content:center;}
+.iso-wrap{background:var(--fog) center/cover no-repeat;min-height:280px;border-radius:24px;padding:40px;display:flex;align-items:center;justify-content:center;}
 
 /* ===== WAREHOUSE STATS ===== */
 .wh-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
@@ -210,6 +212,32 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 .foot-col a:hover{opacity:1;color:var(--coral-soft);}
 .foot-bottom{margin-top:70px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--mist);}
 
+
+/* ===== KONTAKTU SADAĻA ===== */
+.contact-sec{background:var(--fog);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:32px;}}
+.cinfo{list-style:none;margin:26px 0 0;}
+.cinfo li{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--line);align-items:flex-start;}
+.cinfo li:first-child{padding-top:0;}
+.cinfo .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);width:96px;flex-shrink:0;padding-top:3px;}
+.cinfo .v{font-size:15.5px;color:var(--ink);line-height:1.5;}
+.cinfo .v a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
+.cinfo .v a:hover{border-color:var(--coral);color:var(--coral);}
+.cmap{margin-top:26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);line-height:0;}
+.cmap iframe{width:100%;height:260px;border:0;}
+.cform{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;}
+.cform .row{margin-bottom:15px;}
+.cform label{display:block;font-size:12.5px;font-weight:600;color:var(--slate);margin-bottom:6px;}
+.cform input,.cform textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 13px;font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fff;}
+.cform input:focus,.cform textarea:focus{outline:none;border-color:var(--coral);}
+.cform textarea{resize:vertical;min-height:118px;}
+.cform button{width:100%;justify-content:center;margin-top:6px;}
+.cform .note{font-size:12px;color:var(--slate);margin-top:12px;line-height:1.5;}
+.formmsg{font-size:13.5px;margin-top:12px;display:none;padding:11px 13px;border-radius:9px;}
+.formmsg.ok{display:block;background:#E8F7EF;color:#0A7C42;}
+.formmsg.bad{display:block;background:#FDECEF;color:#C0122C;}
+
 /* ===== IEEJAS ANIMĀCIJA (atkārtoti izmantota no galvenā šablona) ===== */
 .light-on-overlay{
   position:fixed;top:0;right:0;bottom:0;left:0;z-index:999;background:#000000;overflow:hidden;
@@ -236,12 +264,16 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 /* ===== REDIĢĒŠANAS REŽĪMS (aktīvs tikai /admin priekšskatījumā) ===== */
 body.edit-mode [data-i18n],
 body.edit-mode [data-i18n-html],
+body.edit-mode [data-num],
+body.edit-mode [data-img],
 body.edit-mode .obj-card{
   cursor:pointer;outline:1.5px dashed rgba(255,77,77,.45);outline-offset:3px;
   transition:outline-color .2s ease, background-color .2s ease;
 }
 body.edit-mode [data-i18n]:hover,
 body.edit-mode [data-i18n-html]:hover,
+body.edit-mode [data-num]:hover,
+body.edit-mode [data-img]:hover,
 body.edit-mode .obj-card:hover{
   outline:2px solid var(--coral);outline-offset:3px;background-color:rgba(255,77,77,.07);
 }
@@ -319,7 +351,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
   <div class="wrap">
     <div class="promo-grid reveal">
       <div class="promo-card">
-        <div class="promo-thumb">
+        <div class="promo-thumb" data-img="promo1">
           <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
             <polygon points="60,140 140,100 220,140 140,180" fill="#FF4D4D" opacity=".85"/>
             <polygon points="140,100 140,60 220,100 220,140" fill="#2A3373"/>
@@ -332,7 +364,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
         <a href="#kontakti" class="btn btn-ghost" style="align-self:flex-start;" data-i18n="promo1-btn">Produktu katalogs</a>
       </div>
       <div class="promo-card">
-        <div class="promo-thumb">
+        <div class="promo-thumb" data-img="promo2">
           <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
             <circle cx="200" cy="100" r="46" fill="none" stroke="#FF4D4D" stroke-width="2"/>
             <circle cx="200" cy="100" r="4" fill="#FF4D4D"/>
@@ -353,13 +385,13 @@ body.edit-mode .light-on-overlay{display:none !important;}
 <section class="problem">
   <div class="wrap problem-grid">
     <div class="reveal">
-      <span class="tag on-dark" data-i18n="problem-tag">Izaicinājums</span>
-      <h2 data-i18n="problem-h2">Kavēts materiāls objektā nozīmē apstājušos darbu un zaudētu laiku</h2>
-      <p data-i18n="problem-p">Elektroinstalācijas darbi bieži kavējas nevis darbaspēka, bet materiālu piegādes dēļ — nepareizs sortiments, novēlota piegāde vai neparedzēts trūkums var apstādināt visu grafiku.</p>
+      <span class="tag on-dark" data-i18n="problem-tag">Nozares dati</span>
+      <h2 data-i18n="problem-h2">Elektroinstalācijas darbu tirgus Latvijā</h2>
+      <p data-i18n="problem-p">Elektroinstalācijas un saistīto darbu apjoms Latvijā tiek mērīts katru ceturksni. Zemāk redzams jaunākais pieejamais rādītājs, kas atjaunojas automātiski.</p>
     </div>
     <div class="reveal">
-      <div class="problem-stat">63<span>%</span></div>
-      <div class="problem-note" data-i18n="problem-note">* ilustratīvs piemērs — nozares novērojumi par projektu kavēšanos materiālu dēļ</div>
+      <div class="problem-stat" id="statValue">—</div>
+      <div class="problem-note" id="statNote" data-i18n="problem-note">Ielādē aktuālos datus…</div>
     </div>
   </div>
 </section>
@@ -372,7 +404,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
       <h2 class="solution" data-i18n="solution-h2">Viss elektromateriālu ceļš — vienuviet</h2>
       <p data-i18n="solution-p">Strādājam tieši ar ražotājiem, tāpēc varam garantēt sortimentu, cenu un piegādes termiņu jebkura izmēra objektam — no viena slēdža līdz pilnai rūpnīcas elektroapgādei.</p>
     </div>
-    <div class="iso-wrap reveal">
+    <div class="iso-wrap reveal" data-img="solution">
       <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;">
         <polygon points="180,40 280,90 180,140 80,90" fill="#161D42"/>
         <polygon points="80,90 180,140 180,220 80,170" fill="#2A3373"/>
@@ -391,14 +423,14 @@ body.edit-mode .light-on-overlay{display:none !important;}
   <div class="wrap wh-grid">
     <div class="wh-left reveal">
       <h2 data-i18n-html="wh-h2"><span class="weak">ELSPOT</span><br>noliktavas klāsts</h2>
-      <div class="wh-stat">1200<span data-i18n="wh-stat-label">+ pozīcijas</span></div>
+      <div class="wh-stat"><span data-num="wh-total">1200</span><span data-i18n="wh-stat-label">+ pozīcijas</span></div>
     </div>
     <div class="wh-list reveal">
-      <div class="wh-row"><span class="k" data-i18n="wh-k1">Apgaismojums</span><span class="v">320</span></div>
-      <div class="wh-row"><span class="k" data-i18n="wh-k2">Rozetes un slēdži</span><span class="v">280</span></div>
-      <div class="wh-row"><span class="k" data-i18n="wh-k3">Zemējuma sistēmas</span><span class="v">140</span></div>
-      <div class="wh-row"><span class="k" data-i18n="wh-k4">Zibensaizsardzība</span><span class="v">90</span></div>
-      <div class="wh-row"><span class="k" data-i18n="wh-k5">Kabeļi un vadi</span><span class="v">370</span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k1">Apgaismojums</span><span class="v"><span data-num="wh-1">320</span></span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k2">Rozetes un slēdži</span><span class="v"><span data-num="wh-2">280</span></span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k3">Zemējuma sistēmas</span><span class="v"><span data-num="wh-3">140</span></span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k4">Zibensaizsardzība</span><span class="v"><span data-num="wh-4">90</span></span></div>
+      <div class="wh-row"><span class="k" data-i18n="wh-k5">Kabeļi un vadi</span><span class="v"><span data-num="wh-5">370</span></span></div>
     </div>
   </div>
 </section>
@@ -437,8 +469,55 @@ body.edit-mode .light-on-overlay{display:none !important;}
   </div>
 </section>
 
+
+<!-- ===== KONTAKTI ===== -->
+<section class="contact-sec" id="kontakti">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <span class="tag" data-i18n="contact-tag">Kontakti</span>
+      <h2 style="font-size:clamp(26px,3.2vw,36px);font-weight:600;line-height:1.15;" data-i18n="contact-h2">Sazinieties ar mums</h2>
+      <p style="color:var(--slate);margin-top:14px;font-size:15.5px;line-height:1.65;" data-i18n="contact-p">Atbildam darba dienās 24 stundu laikā. Nosūtiet pieprasījumu vai zvaniet tieši.</p>
+      <ul class="cinfo">
+        <li><span class="k" data-i18n="ci-k1">Tālrunis</span><span class="v"><a href="tel:+37120000000" data-i18n="ci-v1">+371 20 000 000</a></span></li>
+        <li><span class="k" data-i18n="ci-k2">E-pasts</span><span class="v"><a href="mailto:info@elspot.lv" data-i18n="ci-v2">info@elspot.lv</a></span></li>
+        <li><span class="k" data-i18n="ci-k3">Adrese</span><span class="v" data-i18n="ci-v3">Cesvaines iela 4, Rīga, LV-1073</span></li>
+        <li><span class="k" data-i18n="ci-k4">Darba laiks</span><span class="v" data-i18n="ci-v4">P–Pk 8:00–17:00</span></li>
+      </ul>
+      <div class="cmap">
+        <iframe
+          src="https://www.google.com/maps?q=Cesvaines%20iela%204%2C%20R%C4%ABga%2C%20LV-1073&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="ELSPOT SIA atrašanās vieta"></iframe>
+      </div>
+    </div>
+
+    <form class="cform reveal" id="contactForm" novalidate>
+      <div class="row">
+        <label data-i18n="cf-l1">Vārds, uzņēmums *</label>
+        <input type="text" name="name" required>
+      </div>
+      <div class="row">
+        <label data-i18n="cf-l2">E-pasts *</label>
+        <input type="email" name="email" required>
+      </div>
+      <div class="row">
+        <label data-i18n="cf-l3">Tālrunis</label>
+        <input type="tel" name="phone">
+      </div>
+      <div class="row">
+        <label data-i18n="cf-l4">Jūsu jautājums vai objekta apraksts *</label>
+        <textarea name="message" required></textarea>
+      </div>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+      <button type="submit" class="btn btn-primary" id="cfBtn" data-i18n="cf-btn">Nosūtīt pieprasījumu →</button>
+      <div class="note" data-i18n="cf-note">Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.</div>
+      <div class="formmsg" id="cfMsg"></div>
+    </form>
+  </div>
+</section>
+
 <!-- ===== FOOTER ===== -->
-<footer id="kontakti">
+<footer>
   <div class="wrap foot-grid">
     <div>
       <h3 data-i18n="foot-h3">Droša elektroapgāde ikvienam projektam.</h3>
@@ -497,10 +576,10 @@ const translations = {
     'hero-btn1':'Product Range →', 'hero-btn2':'Our Services',
     'promo1-h3':'ELSPOT Wholesale', 'promo1-p':'A wide range of electrical materials for industrial, commercial and residential projects — all in one place.', 'promo1-btn':'Product Catalog',
     'promo2-h3':'Services for Professionals', 'promo2-p':'From technical consultation and lighting calculations to design and on-site delivery.', 'promo2-btn':'Our Services',
-    'problem-tag':'The Challenge',
-    'problem-h2':'A delayed material on site means stalled work and lost time',
-    'problem-p':'Electrical installation work is often delayed not by labor, but by material supply — the wrong assortment, late delivery, or an unexpected shortage can halt the whole schedule.',
-    'problem-note':'* Illustrative example — industry observations on project delays due to materials',
+    'problem-tag':'Industry data',
+    'problem-h2':'The electrical installation market in Latvia',
+    'problem-p':'The volume of electrical installation and related works in Latvia is measured every quarter. Below is the latest available figure, updated automatically.',
+    'problem-note':'Loading current data…',
     'solution-tag':'The Solution',
     'solution-h2':'The entire electrical materials journey — in one place',
     'solution-p':'We work directly with manufacturers, so we can guarantee assortment, price and delivery time for any size of project — from a single switch to a full factory power supply.',
@@ -522,6 +601,16 @@ const translations = {
     'impact-h2':'A trusted electrical materials partner since 2019',
     'impact-p':'ELSPOT combines a wide product range with technical consultation and reliable delivery — so your next project keeps moving without interruption.',
     'impact-btn':'Request a Quote →',
+    'contact-tag':'Contact', 'contact-h2':'Get in touch',
+    'contact-p':'We reply within 24 hours on business days. Send a request or call us directly.',
+    'ci-k1':'Phone', 'ci-v1':'+371 20 000 000',
+    'ci-k2':'Email', 'ci-v2':'info@elspot.lv',
+    'ci-k3':'Address', 'ci-v3':'Cesvaines iela 4, Riga, LV-1073',
+    'ci-k4':'Opening hours', 'ci-v4':'Mon–Fri 8:00–17:00',
+    'cf-l1':'Name, company *', 'cf-l2':'Email *', 'cf-l3':'Phone',
+    'cf-l4':'Your question or project description *',
+    'cf-btn':'Send request →',
+    'cf-note':'By sending this request you agree that we may contact you about this enquiry.',
     'foot-h3':'Reliable power supply for every project.',
     'foot-col1':'Products', 'foot-p1':'Lighting', 'foot-p2':'Sockets and switches', 'foot-p3':'Grounding', 'foot-p4':'Lightning protection', 'foot-p5':'Cables',
     'foot-col2':'Services', 'foot-s1':'Consultations', 'foot-s2':'Lighting calculations', 'foot-s3':'Design', 'foot-s4':'Delivery',
@@ -572,6 +661,8 @@ captureOriginals();
       });
       if(data.en) Object.assign(translations.en, data.en);
       if(Array.isArray(data.objects) && data.objects.length) siteObjects = data.objects;
+      if(data.numbers) applyNumbers(data.numbers);
+      if(data.images) applyImages(data.images);
       buildHeroArt();
       setLang(document.documentElement.lang === 'en' ? 'en' : 'lv');
     })
@@ -599,6 +690,111 @@ document.addEventListener('keydown', function(e){
   if(e.key === 'Escape') closeMobileMenu();
 });
 
+
+// ===== Rediģējamie skaitļi un statiskās bildes =====
+function applyNumbers(nums){
+  Object.keys(nums).forEach(k=>{
+    document.querySelectorAll(`[data-num="${k}"]`).forEach(el=>{ el.textContent = nums[k]; });
+  });
+}
+function applyImages(imgs){
+  Object.keys(imgs).forEach(k=>{
+    const url = imgs[k];
+    document.querySelectorAll(`[data-img="${k}"]`).forEach(el=>{
+      if(url){
+        el.style.backgroundImage = `url('${url}')`;
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+        const svg = el.querySelector('svg');
+        if(svg) svg.style.display = 'none';
+      } else {
+        el.style.backgroundImage = '';
+        const svg = el.querySelector('svg');
+        if(svg) svg.style.display = '';
+      }
+    });
+  });
+}
+
+// ===== Reāla nozares statistika (Oficiālās statistikas portāls) =====
+(function loadStat(){
+  const v = document.getElementById('statValue');
+  const n = document.getElementById('statNote');
+  if(!v || !n) return;
+  fetch('/api/stats')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      v.textContent = d.valueMEur.toFixed(1).replace('.', ',');
+      v.insertAdjacentHTML('beforeend', '<span>M€</span>');
+      const sign = d.changePct >= 0 ? '+' : '−';
+      const pct = Math.abs(d.changePct).toFixed(1).replace('.', ',');
+      const isEn = document.documentElement.lang === 'en';
+      n.innerHTML = isEn
+        ? `Electrical installation works in Latvia, ${d.period} · ${sign}${pct}% year on year<br>Source: <a href="https://data.stat.gov.lv/pxweb/lv/OSP_PUB/START__NOZ__BU__BUP/BUP020c/" target="_blank" rel="noopener">Official Statistics Portal of Latvia</a>`
+        : `Elektroinstalācijas darbu apjoms Latvijā, ${d.period} · ${sign}${pct}% pret gadu iepriekš<br>Avots: <a href="https://data.stat.gov.lv/pxweb/lv/OSP_PUB/START__NOZ__BU__BUP/BUP020c/" target="_blank" rel="noopener">Oficiālās statistikas portāls</a>`;
+      n.removeAttribute('data-i18n');
+    })
+    .catch(()=>{
+      v.textContent = '—';
+      n.textContent = document.documentElement.lang === 'en'
+        ? 'Industry data temporarily unavailable'
+        : 'Nozares dati īslaicīgi nav pieejami';
+      n.removeAttribute('data-i18n');
+    });
+})();
+
+// ===== Kontaktforma =====
+(function initContactForm(){
+  const f = document.getElementById('contactForm');
+  if(!f) return;
+  const btn = document.getElementById('cfBtn');
+  const msg = document.getElementById('cfMsg');
+
+  // Formas talons — izsniedz serveris; ļauj atsijāt robotus, kas sūta uzreiz
+  let formToken = null;
+  function fetchToken(){
+    fetch('/api/contact', { cache:'no-store' })
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(t => { formToken = t; })
+      .catch(()=>{ formToken = null; });
+  }
+  fetchToken();
+
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(f).entries());
+    const isEn = document.documentElement.lang === 'en';
+    if(!data.name || !data.email || !data.message){
+      msg.className = 'formmsg bad';
+      msg.textContent = isEn ? 'Please fill in all required fields.' : 'Lūdzu, aizpildiet visus obligātos laukus.';
+      return;
+    }
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = isEn ? 'Sending…' : 'Sūta…';
+    try{
+      const r = await fetch('/api/contact', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({}, data, formToken || {}))
+      });
+      const j = await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(j.error || 'error');
+      f.reset();
+      fetchToken();
+      msg.className = 'formmsg ok';
+      msg.textContent = isEn ? 'Thank you! We will get back to you shortly.' : 'Paldies! Sazināsimies ar jums tuvākajā laikā.';
+    }catch(err){
+      msg.className = 'formmsg bad';
+      msg.textContent = (err && err.message && err.message !== 'error')
+        ? err.message
+        : (isEn ? 'Sending failed. Please write to us by email instead.'
+                : 'Neizdevās nosūtīt. Lūdzu, rakstiet mums uz e-pastu.');
+    }finally{
+      btn.disabled = false; btn.textContent = orig;
+    }
+  });
+})();
+
 // ===== REDIĢĒŠANAS REŽĪMS — sazinās ar /admin redaktoru caur postMessage =====
 (function initEditMode(){
   const params = new URLSearchParams(location.search);
@@ -618,11 +814,19 @@ document.addEventListener('keydown', function(e){
 
   document.addEventListener('click', function(e){
     const card = e.target.closest('.obj-card');
+    const numEl = e.target.closest('[data-num]');
+    const imgEl = e.target.closest('[data-img]');
     const htmlEl = e.target.closest('[data-i18n-html]');
     const textEl = e.target.closest('[data-i18n]');
     let msg = null;
 
-    if(card){
+    if(numEl){
+      markActive(numEl);
+      msg = { type:'elspot-select', kind:'number', key: numEl.getAttribute('data-num') };
+    } else if(imgEl){
+      markActive(imgEl);
+      msg = { type:'elspot-select', kind:'image', key: imgEl.getAttribute('data-img') };
+    } else if(card){
       markActive(card);
       msg = { type:'elspot-select', kind:'object', index: Number(card.dataset.objIndex) };
     } else if(htmlEl){
@@ -648,6 +852,8 @@ document.addEventListener('keydown', function(e){
         });
         if(d.content.en) Object.assign(translations.en, d.content.en);
         if(Array.isArray(d.content.objects)) siteObjects = d.content.objects;
+        if(d.content.numbers) applyNumbers(d.content.numbers);
+        if(d.content.images) applyImages(d.content.images);
       }
       setLang(d.lang === 'en' ? 'en' : 'lv');
       if(activeEl && !document.body.contains(activeEl)) activeEl = null;

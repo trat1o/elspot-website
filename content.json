@@ -16,10 +16,10 @@
     "promo2-h3": "Pakalpojumi profesionāļiem",
     "promo2-p": "No tehniskās konsultācijas un apgaismojuma aprēķiniem līdz projektēšanai un piegādei uz objektu.",
     "promo2-btn": "Mūsu pakalpojumi",
-    "problem-tag": "Izaicinājums",
-    "problem-h2": "Kavēts materiāls objektā nozīmē apstājušos darbu un zaudētu laiku",
-    "problem-p": "Elektroinstalācijas darbi bieži kavējas nevis darbaspēka, bet materiālu piegādes dēļ — nepareizs sortiments, novēlota piegāde vai neparedzēts trūkums var apstādināt visu grafiku.",
-    "problem-note": "* ilustratīvs piemērs — nozares novērojumi par projektu kavēšanos materiālu dēļ",
+    "problem-tag": "Nozares dati",
+    "problem-h2": "Elektroinstalācijas darbu tirgus Latvijā",
+    "problem-p": "Elektroinstalācijas un saistīto darbu apjoms Latvijā tiek mērīts katru ceturksni. Zemāk redzams jaunākais pieejamais rādītājs, kas atjaunojas automātiski.",
+    "problem-note": "Ielādē aktuālos datus…",
     "solution-tag": "Risinājums",
     "solution-h2": "Viss elektromateriālu ceļš — vienuviet",
     "solution-p": "Strādājam tieši ar ražotājiem, tāpēc varam garantēt sortimentu, cenu un piegādes termiņu jebkura izmēra objektam — no viena slēdža līdz pilnai rūpnīcas elektroapgādei.",
@@ -71,7 +71,24 @@
     "foot-copy": "© 2026 ELSPOT SIA. Visas tiesības aizsargātas.",
     "foot-since": "Kopš 2019. gada",
     "hero-h1": "<span class=\"weak\">Elektrības materiāli</span><br>rūpniecībai un būvniecībai.",
-    "wh-h2": "<span class=\"weak\">ELSPOT</span><br>noliktavas klāsts"
+    "wh-h2": "<span class=\"weak\">ELSPOT</span><br>noliktavas klāsts",
+    "contact-tag": "Kontakti",
+    "contact-h2": "Sazinieties ar mums",
+    "contact-p": "Atbildam darba dienās 24 stundu laikā. Nosūtiet pieprasījumu vai zvaniet tieši.",
+    "ci-k1": "Tālrunis",
+    "ci-v1": "+371 20 000 000",
+    "ci-k2": "E-pasts",
+    "ci-v2": "info@elspot.lv",
+    "ci-k3": "Adrese",
+    "ci-v3": "Cesvaines iela 4, Rīga, LV-1073",
+    "ci-k4": "Darba laiks",
+    "ci-v4": "P–Pk 8:00–17:00",
+    "cf-l1": "Vārds, uzņēmums *",
+    "cf-l2": "E-pasts *",
+    "cf-l3": "Tālrunis",
+    "cf-l4": "Jūsu jautājums vai objekta apraksts *",
+    "cf-btn": "Nosūtīt pieprasījumu →",
+    "cf-note": "Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu."
   },
   "en": {
     "nav-products": "Products",
@@ -91,10 +108,10 @@
     "promo2-h3": "Services for Professionals",
     "promo2-p": "From technical consultation and lighting calculations to design and on-site delivery.",
     "promo2-btn": "Our Services",
-    "problem-tag": "The Challenge",
-    "problem-h2": "A delayed material on site means stalled work and lost time",
-    "problem-p": "Electrical installation work is often delayed not by labor, but by material supply — the wrong assortment, late delivery, or an unexpected shortage can halt the whole schedule.",
-    "problem-note": "* Illustrative example — industry observations on project delays due to materials",
+    "problem-tag": "Industry data",
+    "problem-h2": "The electrical installation market in Latvia",
+    "problem-p": "The volume of electrical installation and related works in Latvia is measured every quarter. Below is the latest available figure, updated automatically.",
+    "problem-note": "Loading current data…",
     "solution-tag": "The Solution",
     "solution-h2": "The entire electrical materials journey — in one place",
     "solution-p": "We work directly with manufacturers, so we can guarantee assortment, price and delivery time for any size of project — from a single switch to a full factory power supply.",
@@ -145,13 +162,30 @@
     "foot-u2": "Careers",
     "foot-col4": "Contact",
     "foot-copy": "© 2026 ELSPOT SIA. All rights reserved.",
-    "foot-since": "Since 2019"
+    "foot-since": "Since 2019",
+    "contact-tag": "Contact",
+    "contact-h2": "Get in touch",
+    "contact-p": "We reply within 24 hours on business days. Send a request or call us directly.",
+    "ci-k1": "Phone",
+    "ci-v1": "+371 20 000 000",
+    "ci-k2": "Email",
+    "ci-v2": "info@elspot.lv",
+    "ci-k3": "Address",
+    "ci-v3": "Cesvaines iela 4, Riga, LV-1073",
+    "ci-k4": "Opening hours",
+    "ci-v4": "Mon–Fri 8:00–17:00",
+    "cf-l1": "Name, company *",
+    "cf-l2": "Email *",
+    "cf-l3": "Phone",
+    "cf-l4": "Your question or project description *",
+    "cf-btn": "Send request →",
+    "cf-note": "By sending this request you agree that we may contact you about this enquiry."
   },
   "objects": [
     {
-      "label_lv": "Testa bilde",
-      "label_en": "Test picture",
-      "image": "/images/obj-1785920524452-star-wars-darth-vader-solo-4k-hd.jpg"
+      "label_lv": "Daudzdzīvokļu māja, Rīga",
+      "label_en": "Apartment building, Riga",
+      "image": ""
     },
     {
       "label_lv": "Ražotnes elektroapgāde, Jelgava",
@@ -173,5 +207,18 @@
       "label_en": "Private home quarter, Engure",
       "image": ""
     }
-  ]
+  ],
+  "numbers": {
+    "wh-total": "1200",
+    "wh-1": "320",
+    "wh-2": "280",
+    "wh-3": "140",
+    "wh-4": "90",
+    "wh-5": "370"
+  },
+  "images": {
+    "promo1": "",
+    "promo2": "",
+    "solution": ""
+  }
 }
