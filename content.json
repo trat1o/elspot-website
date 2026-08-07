@@ -113,7 +113,8 @@
     "about-team": "Mūsu komandā strādā speciālisti ar ilggadēju pieredzi elektroinstalācijā un materiālu piegādē. Zinām, ko nozīmē objekta grafiks, tāpēc konsultējam, aprēķinām un piegādājam tā, lai darbi neapstātos.",
     "projects-label": "Realizētie objekti",
     "proj-hint": "Uzklikšķiniet uz objekta, lai apskatītu vairāk",
-    "proj-back": "Spied šeit"
+    "proj-back": "Atpakaļ",
+    "lb-back": "Samazināt"
   },
   "en": {
     "nav-products": "Products",
@@ -229,7 +230,8 @@
     "about-team": "Our team brings years of experience in electrical installation and materials supply. We know what a site schedule means, so we advise, calculate and deliver so that work never stops.",
     "projects-label": "Completed projects",
     "proj-hint": "Click a project to see more",
-    "proj-back": "Back"
+    "proj-back": "Back",
+    "lb-back": "Shrink"
   },
   "numbers": {
     "wh-total": "1200",

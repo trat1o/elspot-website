@@ -175,6 +175,28 @@ window.addEventListener('message', e => {
   const d = e.data || {};
   if(d.type === 'elspot-ready'){ if(content) pushToPreview(); }
   if(d.type === 'elspot-select'){ sel = d; renderPanel(); }
+
+  // Pārvietošana / izmēra maiņa priekšskatījumā
+  if(d.type === 'elspot-style'){
+    content.styles = content.styles || {};
+    content.styles[d.key] = Object.assign({}, content.styles[d.key], d.style);
+    markDirty();
+    if(sel && sel.key === d.key) renderPanel();
+  }
+  if(d.type === 'elspot-style-action'){
+    content.styles = content.styles || {};
+    if(d.action === 'reset'){
+      if(!confirm('Atiestatīt šī lauka izmēru un novietojumu?')) return;
+      delete content.styles[d.key];
+      markDirty(); pushToPreview(); renderPanel();
+    }
+    if(d.action === 'del'){
+      if(!confirm('Dzēst šo lauku no mājaslapas?')) return;
+      if(!confirm('Vai tiešām? Lauks vairs nebūs redzams apmeklētājiem.')) return;
+      content.styles[d.key] = Object.assign({}, content.styles[d.key], { hidden: true });
+      markDirty(); pushToPreview(); renderPanel();
+    }
+  }
 });
 
 /* ---------- Rediģēšanas panelis ---------- */
@@ -424,6 +446,14 @@ function renderStyleBlock(key, p){
       <input type="range" id="stSpace" min="-40" max="80" step="2" value="${space === '' ? 0 : space}">
       <span class="val" id="stSpaceV">${space === '' ? 'auto' : space + 'px'}</span>
     </div>
+    <div class="ctrl" style="margin-bottom:14px;">
+      <label>Nobīde</label>
+      <span class="val" style="width:auto;flex:1;text-align:left;">${(st.dx||0)} / ${(st.dy||0)} px</span>
+      <button class="btn btn-sec" id="stNudgeReset" style="padding:6px 10px;font-size:11.5px;">Nullēt</button>
+    </div>
+    <div class="warn" style="background:#fff;border-color:var(--line);color:var(--slate);margin-bottom:12px;">
+      Lauku var arī <b>vilkt ar peli</b> priekšskatījumā, bet izmēru mainīt, velkot <b>stūra apļus</b>.
+    </div>
     <button class="danger" id="stHide">${st.hidden ? 'Atjaunot lauku' : 'Paslēpt šo lauku'}</button>
     <button class="btn btn-sec" id="stReset" style="width:100%;margin-top:8px;">Atiestatīt noformējumu</button>`;
   p.appendChild(box);
@@ -453,6 +483,12 @@ function renderStyleBlock(key, p){
       upd({ align: b.dataset.al });
     };
   });
+  const nr = box.querySelector('#stNudgeReset');
+  if(nr) nr.onclick = () => {
+    if(!confirm('Atgriezt lauku sākotnējā vietā?')) return;
+    upd({ dx: 0, dy: 0 });
+    renderPanel();
+  };
   box.querySelector('#stHide').onclick = () => {
     const cur = (content.styles[key] || {}).hidden;
     if(!cur){
