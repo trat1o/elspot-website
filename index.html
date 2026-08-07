@@ -226,7 +226,15 @@ section{padding:110px 0;position:relative;}
 
 /* ===== FOOTER ===== */
 footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
-.foot-grid{display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr .7fr;gap:30px;}
+.foot-grid{display:grid;grid-template-columns:1.15fr .62fr .62fr .55fr 1.35fr;gap:30px;}
+.foot-req .rq-company{font-size:14.5px;font-weight:700;color:#fff;margin-bottom:12px;}
+.rq{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 14px;}
+.rq dt{font-size:12px;color:var(--mist);white-space:nowrap;}
+.rq dd{font-size:12.5px;color:#fff;opacity:.9;margin:0;word-break:break-word;}
+.rq-contact{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);}
+.rq-contact a{margin-bottom:0;}
+@media(max-width:800px){.foot-req{grid-column:1 / -1;}}
+@media(max-width:420px){.rq{grid-template-columns:1fr;gap:1px 0;}.rq dd{margin-bottom:8px;}}
 @media(max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:520px){.foot-grid{grid-template-columns:1fr;}}
 .foot-grid h3{font-size:26px;font-weight:600;max-width:280px;line-height:1.25;}
@@ -235,6 +243,68 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 .foot-col a:hover{opacity:1;color:var(--coral-soft);}
 .foot-bottom{margin-top:70px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--mist);}
 
+
+
+/* ===== PAR MUMS + REALIZĒTIE OBJEKTI ===== */
+.about-sec{background:var(--paper);}
+.about-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center;}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:34px;}}
+.about-text h2{font-size:clamp(26px,3.4vw,38px);font-weight:600;line-height:1.2;}
+.about-text p{color:var(--slate);margin-top:16px;font-size:15.5px;line-height:1.7;}
+.about-text .btn{margin-top:26px;}
+
+.proj-stage{
+  position:relative;height:440px;border-radius:22px;overflow:hidden;
+  background:var(--fog);border:1px solid var(--line);
+}
+.proj-strip{
+  display:flex;flex-direction:column;gap:12px;padding:12px;
+  animation:objScroll 60s linear infinite;
+}
+.proj-stage:hover .proj-strip{animation-play-state:paused;}
+.proj-item{
+  position:relative;height:150px;border-radius:16px;overflow:hidden;flex-shrink:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--ink) 0%, #2A3373 100%);
+  display:flex;align-items:flex-end;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.proj-item:hover{transform:scale(.985);box-shadow:0 10px 26px rgba(22,29,66,.18);}
+.proj-item img{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%;object-fit:cover;}
+.proj-item .lbl{
+  position:relative;z-index:1;width:100%;padding:14px 16px;color:#fff;
+  background:linear-gradient(to top, rgba(11,14,36,.78), rgba(11,14,36,0));
+  font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;line-height:1.3;
+}
+.proj-item .cnt{
+  position:absolute;top:12px;right:12px;z-index:1;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;
+  background:rgba(11,14,36,.5);border-radius:20px;padding:4px 10px;
+}
+.proj-detail{
+  position:absolute;top:0;right:0;bottom:0;left:0;z-index:3;background:#fff;
+  display:flex;flex-direction:column;padding:14px;overflow-y:auto;
+}
+.proj-back{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:6px;
+  background:var(--fog);border:none;border-radius:20px;padding:8px 14px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:12px;
+}
+.proj-back:hover{background:#E9EBF2;}
+.proj-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.proj-gallery img{width:100%;height:110px;object-fit:cover;border-radius:10px;cursor:zoom-in;}
+.proj-gallery img:first-child{grid-column:1 / -1;height:190px;}
+.proj-info h3{font-size:18px;font-weight:600;margin-bottom:8px;}
+.proj-info p{font-size:14px;line-height:1.65;color:var(--slate);}
+.proj-hint{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+  color:var(--slate);margin-top:10px;text-align:center;
+}
+@media(max-width:640px){
+  .proj-stage{height:360px;}
+  .proj-item{height:130px;}
+  .proj-gallery img{height:84px;}
+  .proj-gallery img:first-child{height:150px;}
+}
 
 /* ===== KONTAKTU SADAĻA ===== */
 .contact-sec{background:var(--fog);}
@@ -347,6 +417,7 @@ body.edit-mode [data-i18n],
 body.edit-mode [data-i18n-html],
 body.edit-mode [data-num],
 body.edit-mode [data-img],
+body.edit-mode .proj-item,
 body.edit-mode .obj-card{
   cursor:pointer;outline:1.5px dashed rgba(255,77,77,.45);outline-offset:3px;
   transition:outline-color .2s ease, background-color .2s ease;
@@ -355,6 +426,7 @@ body.edit-mode [data-i18n]:hover,
 body.edit-mode [data-i18n-html]:hover,
 body.edit-mode [data-num]:hover,
 body.edit-mode [data-img]:hover,
+body.edit-mode .proj-item:hover,
 body.edit-mode .obj-card:hover{
   outline:2px solid var(--coral);outline-offset:3px;background-color:rgba(255,77,77,.07);
 }
@@ -546,11 +618,34 @@ body.edit-mode .light-on-overlay{display:none !important;}
 </section>
 
 <!-- ===== IMPACT / CTA ===== -->
-<section class="impact" id="par-mums">
-  <div class="wrap">
-    <h2 data-i18n="impact-h2">Uzticams elektromateriālu partneris kopš 2019. gada</h2>
-    <p data-i18n="impact-p">ELSPOT apvieno plašu produktu klāstu ar tehnisko konsultāciju un uzticamu piegādi — lai jūsu nākamais projekts virzītos bez pārtraukumiem.</p>
-    <a href="#kontakti" class="btn btn-primary" data-i18n="impact-btn">Pieprasīt piedāvājumu →</a>
+<section class="about-sec" id="par-mums">
+  <div class="wrap about-grid">
+    <div class="about-text reveal">
+      <span class="tag" data-i18n="about-tag">Par mums</span>
+      <h2 data-i18n="impact-h2">Uzticams elektromateriālu partneris kopš 2019. gada</h2>
+      <p data-i18n="impact-p">ELSPOT apvieno plašu produktu klāstu ar tehnisko konsultāciju un uzticamu piegādi — lai jūsu nākamais projekts virzītos bez pārtraukumiem.</p>
+      <p data-i18n="about-team">Mūsu komandā strādā speciālisti ar ilggadēju pieredzi elektroinstalācijā un materiālu piegādē. Zinām, ko nozīmē objekta grafiks, tāpēc konsultējam, aprēķinām un piegādājam tā, lai darbi neapstātos.</p>
+      <a href="#kontakti" class="btn btn-primary" data-i18n="impact-btn">Pieprasīt piedāvājumu →</a>
+    </div>
+
+    <div class="reveal">
+      <div class="partners-label" data-i18n="projects-label">Realizētie objekti</div>
+      <div class="proj-stage" id="projStage">
+        <div class="proj-strip" id="projStrip"></div>
+        <div class="proj-detail" id="projDetail" hidden>
+          <button type="button" class="proj-back" id="projBack">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+            <span data-i18n="proj-back">Atpakaļ</span>
+          </button>
+          <div class="proj-gallery" id="projGallery"></div>
+          <div class="proj-info">
+            <h3 id="projTitle"></h3>
+            <p id="projDesc"></p>
+          </div>
+        </div>
+      </div>
+      <div class="proj-hint" data-i18n="proj-hint">Uzklikšķiniet uz objekta, lai apskatītu vairāk</div>
+    </div>
   </div>
 </section>
 
@@ -656,11 +751,22 @@ body.edit-mode .light-on-overlay{display:none !important;}
       <a href="#" data-i18n="foot-u1">Par mums</a>
       <a href="#" data-i18n="foot-u2">Karjera</a>
     </div>
-    <div class="foot-col">
-      <div class="h" data-i18n="foot-col4">Kontakti</div>
-      <a href="mailto:info@elspot.lv" id="footMail" data-i18n="ci-v2">info@elspot.lv</a>
-      <a href="tel:+37125620670" id="footPhone" data-i18n="ci-v1">+371 25 620 670</a>
-      <a href="#kontakti" data-i18n="ci-v3">Cesvaines iela 4, Rīga, LV-1073</a>
+    <div class="foot-col foot-req">
+      <div class="h" data-i18n="foot-col4">Rekvizīti</div>
+      <div class="rq-company" data-i18n="rq-company">SIA "ELSPOT"</div>
+      <dl class="rq">
+        <dt data-i18n="rq-l1">Juridiskā adrese</dt><dd data-i18n="rq-v1">Cesvaines iela 4, Rīga, LV-1073</dd>
+        <dt data-i18n="rq-l2">Biroja adrese</dt><dd data-i18n="rq-v2">Cesvaines iela 4, Rīga, LV-1073</dd>
+        <dt data-i18n="rq-l3">Reģistrācijas nr.</dt><dd data-i18n="rq-v3">42103101107</dd>
+        <dt data-i18n="rq-l4">PVN nr.</dt><dd data-i18n="rq-v4">LV42103101107</dd>
+        <dt data-i18n="rq-l5">Banka</dt><dd data-i18n="rq-v5">Luminor Bank AS Latvijas filiāle</dd>
+        <dt data-i18n="rq-l6">Konta nr.</dt><dd data-i18n="rq-v6">LV47RIKO0002930282929</dd>
+        <dt data-i18n="rq-l7">SWIFT</dt><dd data-i18n="rq-v7">RIKOLV2X</dd>
+      </dl>
+      <div class="rq-contact">
+        <a href="mailto:info@elspot.lv" id="footMail" data-i18n="ci-v2">info@elspot.lv</a>
+        <a href="tel:+37125620670" id="footPhone" data-i18n="ci-v1">+371 25 620 670</a>
+      </div>
     </div>
   </div>
   <div class="wrap foot-bottom">
@@ -686,6 +792,11 @@ const translations = {
     'nav-products':'Products', 'nav-services':'Services', 'nav-about':'About Us', 'nav-contact':'Contact', 'nav-cta':'Request a Quote',
     'pill-tagline':'SINCE 2019',
     'partners-label':'Partners and manufacturers',
+    'about-tag':'About us',
+    'about-team':'Our team brings years of experience in electrical installation and materials supply. We know what a site schedule means, so we advise, calculate and deliver so that work never stops.',
+    'projects-label':'Completed projects',
+    'proj-hint':'Click a project to see more',
+    'proj-back':'Back',
     'hero-tag':'Electrical Materials Wholesale',
     'hero-h1':'<span class="weak">Electrical materials</span><br>for industry and construction.',
     'hero-lead':'Lighting, sockets, switches, grounding systems and lightning protection — everything you need from one supplier, modular and tailored to your project.',
@@ -735,7 +846,15 @@ const translations = {
     'foot-col1':'Products', 'foot-p1':'Lighting', 'foot-p2':'Sockets and switches', 'foot-p3':'Grounding', 'foot-p4':'Lightning protection', 'foot-p5':'Cables',
     'foot-col2':'Services', 'foot-s1':'Consultations', 'foot-s2':'Lighting calculations', 'foot-s3':'Design', 'foot-s4':'Delivery',
     'foot-col3':'Company', 'foot-u1':'About Us', 'foot-u2':'Careers',
-    'foot-col4':'Contact',
+    'foot-col4':'Company details',
+    'rq-company':'SIA "ELSPOT"',
+    'rq-l1':'Legal address', 'rq-v1':'Cesvaines iela 4, Riga, LV-1073',
+    'rq-l2':'Office address', 'rq-v2':'Cesvaines iela 4, Riga, LV-1073',
+    'rq-l3':'Registration No.', 'rq-v3':'42103101107',
+    'rq-l4':'VAT No.', 'rq-v4':'LV42103101107',
+    'rq-l5':'Bank', 'rq-v5':'Luminor Bank AS Latvian branch',
+    'rq-l6':'Account No.', 'rq-v6':'LV47RIKO0002930282929',
+    'rq-l7':'SWIFT', 'rq-v7':'RIKOLV2X',
     'foot-copy':'© 2026 ELSPOT SIA. All rights reserved.',
     'foot-since':'Since 2019',
   }
@@ -767,6 +886,7 @@ function setLang(lang){
   });
   if(typeof buildHeroArt === 'function') buildHeroArt();
   if(typeof refreshFooterLinks === 'function') refreshFooterLinks();
+  if(typeof buildProjects === 'function') buildProjects();
 }
 captureOriginals();
 
@@ -785,6 +905,8 @@ captureOriginals();
       if(Array.isArray(list) && list.length) siteObjects = list;
       if(data.numbers) applyNumbers(data.numbers);
       if(data.map) applyMap(data.map);
+      if(data.styles) applyStyles(data.styles);
+      if(Array.isArray(data.projects) && data.projects.length){ siteProjects = data.projects; buildProjects(); closeProject(); }
       if(data.images) applyImages(data.images);
       buildHeroArt();
       setLang(document.documentElement.lang === 'en' ? 'en' : 'lv');
@@ -961,6 +1083,82 @@ function refreshFooterLinks(){
 }
 
 
+
+
+// ===== Teksta lauku noformējums (izmērs, novietojums, redzamība) =====
+const baseFontSizes = {};
+function applyStyles(styles){
+  if(!styles) return;
+  Object.keys(styles).forEach(key => {
+    const st = styles[key] || {};
+    document.querySelectorAll(`[data-i18n="${key}"],[data-i18n-html="${key}"],[data-num="${key}"]`).forEach(el => {
+      if(!(key in baseFontSizes)){
+        baseFontSizes[key] = parseFloat(getComputedStyle(el).fontSize) || 16;
+      }
+      el.style.fontSize = st.scale && st.scale !== 1
+        ? (baseFontSizes[key] * st.scale).toFixed(2) + 'px' : '';
+      el.style.textAlign = st.align || '';
+      el.style.marginTop = (st.space || st.space === 0) && st.space !== ''
+        ? st.space + 'px' : '';
+      el.style.display = st.hidden ? 'none' : '';
+    });
+  });
+}
+
+// ===== Realizēto objektu slaideris ar galeriju =====
+let siteProjects = [
+  { title_lv:'Objekts 1', title_en:'Project 1', desc_lv:'', desc_en:'', images:[] },
+  { title_lv:'Objekts 2', title_en:'Project 2', desc_lv:'', desc_en:'', images:[] },
+  { title_lv:'Objekts 3', title_en:'Project 3', desc_lv:'', desc_en:'', images:[] },
+];
+function buildProjects(){
+  const strip = document.getElementById('projStrip');
+  if(!strip) return;
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'lv';
+  const set = () => siteProjects.map((p, i) => {
+    const title = (lang === 'en' ? (p.title_en || p.title_lv) : p.title_lv) || '';
+    const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
+    const cover = imgs[0] ? `<img src="${escAttr(imgs[0])}" alt="${escAttr(title)}" loading="lazy">` : '';
+    const count = imgs.length > 1 ? `<span class="cnt">${imgs.length}</span>` : '';
+    return `<div class="proj-item" data-proj="${i}" role="button" tabindex="0">${cover}${count}<div class="lbl">${escAttr(title)}</div></div>`;
+  }).join('');
+  strip.innerHTML = set() + set();
+  strip.style.animationDuration = Math.max(30, siteProjects.length * 12) + 's';
+}
+function openProject(i){
+  const p = siteProjects[i];
+  if(!p) return;
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'lv';
+  const detail = document.getElementById('projDetail');
+  const gal = document.getElementById('projGallery');
+  const imgs = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
+  gal.innerHTML = imgs.length
+    ? imgs.map(src => `<img src="${escAttr(src)}" alt="" loading="lazy">`).join('')
+    : `<div style="grid-column:1/-1;height:150px;border-radius:10px;background:linear-gradient(135deg,#161D42,#2A3373);"></div>`;
+  document.getElementById('projTitle').textContent = (lang === 'en' ? (p.title_en || p.title_lv) : p.title_lv) || '';
+  document.getElementById('projDesc').textContent = (lang === 'en' ? (p.desc_en || p.desc_lv) : p.desc_lv) || '';
+  detail.hidden = false;
+  detail.scrollTop = 0;
+}
+function closeProject(){
+  const d = document.getElementById('projDetail');
+  if(d) d.hidden = true;
+}
+(function initProjects(){
+  const stage = document.getElementById('projStage');
+  if(!stage) return;
+  buildProjects();
+  stage.addEventListener('click', e => {
+    if(e.target.closest('#projBack')){ closeProject(); return; }
+    const item = e.target.closest('.proj-item');
+    if(item) openProject(Number(item.dataset.proj));
+  });
+  stage.addEventListener('keydown', e => {
+    const item = e.target.closest && e.target.closest('.proj-item');
+    if(item && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openProject(Number(item.dataset.proj)); }
+  });
+})();
+
 // ===== Kartes pozīcija (koordinātas no content.json) =====
 let siteMap = { lat: 56.9296211, lon: 24.2071313 };
 function applyMap(m){
@@ -1037,6 +1235,14 @@ function applyMap(m){
     const textEl = e.target.closest('[data-i18n]');
     let msg = null;
 
+    const projEl = e.target.closest('.proj-item');
+    if(projEl){
+      markActive(projEl);
+      msg = { type:'elspot-select', kind:'project', index: Number(projEl.dataset.proj) };
+      e.preventDefault(); e.stopPropagation();
+      parent.postMessage(msg, '*');
+      return;
+    }
     if(numEl){
       markActive(numEl);
       msg = { type:'elspot-select', kind:'number', key: numEl.getAttribute('data-num') };
@@ -1072,6 +1278,8 @@ function applyMap(m){
         if(Array.isArray(pl)) siteObjects = pl;
         if(d.content.numbers) applyNumbers(d.content.numbers);
         if(d.content.images) applyImages(d.content.images);
+        if(Array.isArray(d.content.projects)){ siteProjects = d.content.projects; }
+        if(d.content.styles) applyStyles(d.content.styles);
       }
       setLang(d.lang === 'en' ? 'en' : 'lv');
       if(activeEl && !document.body.contains(activeEl)) activeEl = null;

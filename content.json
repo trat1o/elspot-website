@@ -67,7 +67,7 @@
     "foot-col3": "Uzņēmums",
     "foot-u1": "Par mums",
     "foot-u2": "Karjera",
-    "foot-col4": "Kontakti",
+    "foot-col4": "Rekvizīti",
     "foot-copy": "© 2026 ELSPOT SIA. Visas tiesības aizsargātas.",
     "foot-since": "Kopš 2019. gada",
     "hero-h1": "<span class=\"weak\">Elektrības materiāli</span><br>rūpniecībai un būvniecībai.",
@@ -93,7 +93,27 @@
     "navm-title": "Kā jūs vēlaties navigēt?",
     "navm-addr": "Cesvaines iela 4, Rīga, LV-1073",
     "navm-cancel": "Atcelt",
-    "partners-label": "Sadarbības partneri un ražotāji"
+    "partners-label": "Sadarbības partneri un ražotāji",
+    "rq-company": "SIA \"ELSPOT\"",
+    "rq-l1": "Juridiskā adrese",
+    "rq-v1": "Cesvaines iela 4, Rīga, LV-1073",
+    "rq-l2": "Biroja adrese",
+    "rq-v2": "Cesvaines iela 4, Rīga, LV-1073",
+    "rq-l3": "Reģistrācijas nr.",
+    "rq-v3": "42103101107",
+    "rq-l4": "PVN nr.",
+    "rq-v4": "LV42103101107",
+    "rq-l5": "Banka",
+    "rq-v5": "Luminor Bank AS Latvijas filiāle",
+    "rq-l6": "Konta nr.",
+    "rq-v6": "LV47RIKO0002930282929",
+    "rq-l7": "SWIFT",
+    "rq-v7": "RIKOLV2X",
+    "about-tag": "Par mums",
+    "about-team": "Mūsu komandā strādā speciālisti ar ilggadēju pieredzi elektroinstalācijā un materiālu piegādē. Zinām, ko nozīmē objekta grafiks, tāpēc konsultējam, aprēķinām un piegādājam tā, lai darbi neapstātos.",
+    "projects-label": "Realizētie objekti",
+    "proj-hint": "Uzklikšķiniet uz objekta, lai apskatītu vairāk",
+    "proj-back": "Atpakaļ"
   },
   "en": {
     "nav-products": "Products",
@@ -165,7 +185,7 @@
     "foot-col3": "Company",
     "foot-u1": "About Us",
     "foot-u2": "Careers",
-    "foot-col4": "Contact",
+    "foot-col4": "Company details",
     "foot-copy": "© 2026 ELSPOT SIA. All rights reserved.",
     "foot-since": "Since 2019",
     "contact-tag": "Contact",
@@ -189,7 +209,27 @@
     "navm-title": "How would you like to navigate?",
     "navm-addr": "Cesvaines iela 4, Riga, LV-1073",
     "navm-cancel": "Cancel",
-    "partners-label": "Partners and manufacturers"
+    "partners-label": "Partners and manufacturers",
+    "rq-company": "SIA \"ELSPOT\"",
+    "rq-l1": "Legal address",
+    "rq-v1": "Cesvaines iela 4, Riga, LV-1073",
+    "rq-l2": "Office address",
+    "rq-v2": "Cesvaines iela 4, Riga, LV-1073",
+    "rq-l3": "Registration No.",
+    "rq-v3": "42103101107",
+    "rq-l4": "VAT No.",
+    "rq-v4": "LV42103101107",
+    "rq-l5": "Bank",
+    "rq-v5": "Luminor Bank AS Latvian branch",
+    "rq-l6": "Account No.",
+    "rq-v6": "LV47RIKO0002930282929",
+    "rq-l7": "SWIFT",
+    "rq-v7": "RIKOLV2X",
+    "about-tag": "About us",
+    "about-team": "Our team brings years of experience in electrical installation and materials supply. We know what a site schedule means, so we advise, calculate and deliver so that work never stops.",
+    "projects-label": "Completed projects",
+    "proj-hint": "Click a project to see more",
+    "proj-back": "Back"
   },
   "numbers": {
     "wh-total": "1200",
@@ -208,7 +248,7 @@
     {
       "label_lv": "Ražotājs 1",
       "label_en": "Manufacturer 1",
-      "image": "/images/logo-1786093008165-sylvania-logo.svg"
+      "image": ""
     },
     {
       "label_lv": "Ražotājs 2",
@@ -278,7 +318,7 @@
     {
       "label_lv": "Ražotājs 15",
       "label_en": "Manufacturer 15",
-      "image": "/images/logo-1786092798474-star-wars-darth-vader-solo-4k-hd.jpg"
+      "image": ""
     },
     {
       "label_lv": "Ražotājs 16",
@@ -309,5 +349,29 @@
   "map": {
     "lat": "56.9296211",
     "lon": "24.2071313"
-  }
+  },
+  "projects": [
+    {
+      "title_lv": "Objekts 1",
+      "title_en": "Project 1",
+      "desc_lv": "",
+      "desc_en": "",
+      "images": []
+    },
+    {
+      "title_lv": "Objekts 2",
+      "title_en": "Project 2",
+      "desc_lv": "",
+      "desc_en": "",
+      "images": []
+    },
+    {
+      "title_lv": "Objekts 3",
+      "title_en": "Project 3",
+      "desc_lv": "",
+      "desc_en": "",
+      "images": []
+    }
+  ],
+  "styles": {}
 }

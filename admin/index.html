@@ -51,6 +51,20 @@ textarea{resize:vertical;min-height:110px;line-height:1.55;}
 .status.ok{color:#0A7C42;}
 .status.bad{color:var(--coral);}
 .objnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.styleblock{background:var(--fog);border-radius:12px;padding:16px;margin-top:16px;}
+.styleblock .t{font-size:12px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.ctrl{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ctrl label{font-size:12.5px;color:var(--slate);width:78px;flex-shrink:0;margin:0;}
+.ctrl input[type=range]{flex:1;}
+.ctrl .val{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink);width:44px;text-align:right;}
+.segs{display:flex;gap:4px;flex:1;}
+.segs button{flex:1;background:#fff;border:1px solid var(--line);border-radius:7px;padding:7px;font-size:12px;color:var(--ink);}
+.segs button.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.danger{background:#fff;border:1px solid #FFC9D2;color:#C0122C;width:100%;border-radius:9px;padding:11px;font-weight:600;font-size:13.5px;margin-top:8px;}
+.danger:hover{background:#FDECEF;}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.gallery .cell{position:relative;height:70px;border-radius:8px;background:var(--fog) center/cover no-repeat;border:1px solid var(--line);}
+.gallery .cell button{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(11,14,36,.72);color:#fff;font-size:12px;line-height:1;}
 .objnav button{background:var(--fog);border-radius:7px;padding:7px 11px;font-size:12.5px;color:var(--ink);}
 .objnav button.on{background:var(--ink);color:#fff;}
 .warn{background:#FFF4E5;border:1px solid #FFD9A0;border-radius:8px;padding:11px 13px;font-size:12.5px;color:#8A5A00;margin-top:14px;}
@@ -82,7 +96,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.55;}
     <div class="side-body" id="panel">
       <div class="hint">
         <b>Kā rediģēt:</b> uzklikšķiniet uz jebkura teksta, virsraksta vai objekta bildes priekšskatījumā pa kreisi — šeit atvērsies rediģēšanas lauki.<br><br>
-        Rediģēt var arī <b>skaitļus</b>, <b>attēlus</b> un <b>partneru logotipus</b> — vienkārši uzklikšķiniet uz tiem.<br><br>Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
+        Rediģēt var arī <b>skaitļus</b>, <b>attēlus</b>, <b>partneru logotipus</b> un <b>realizētos objektus</b> — vienkārši uzklikšķiniet uz tiem.<br><br>Katram tekstam var mainīt arī <b>izmēru, novietojumu un atstatumu</b>.<br><br>Ar <b>LV / EN</b> slēdzi pārslēdziet, kuras valodas tekstu rediģējat.<br><br>
         Kad viss gatavs, spiediet <b>Publicēt</b> — izmaiņas parādīsies lapā ~20 sekundēs.
       </div>
     </div>
@@ -133,6 +147,8 @@ $('loginBtn').onclick = async () => {
     if(!Array.isArray(content.partners)) content.partners = Array.isArray(content.objects) ? content.objects : [];
     if(!content.numbers) content.numbers = {};
     if(!content.images) content.images = {};
+    if(!Array.isArray(content.projects)) content.projects = [];
+    if(!content.styles) content.styles = {};
     $('login').style.display = 'none';
     $('app').style.display = 'grid';
   }catch(err){
@@ -230,6 +246,79 @@ function renderPanel(){
     return;
   }
 
+  if(sel.kind === 'project'){
+    content.projects = content.projects || [];
+    const i = sel.index;
+    if(!content.projects[i]) content.projects[i] = { title_lv:'', title_en:'', desc_lv:'', desc_en:'', images:[] };
+    const o = content.projects[i];
+    o.images = Array.isArray(o.images) ? o.images : [];
+    p.innerHTML = `
+      <div class="objnav">${content.projects.map((_,n)=>
+        `<button class="${n===i?'on':''}" data-go="${n}">${n+1}.</button>`).join('')}</div>
+      <div class="field">
+        <label>Objekta bildes (pirmā būs galvenā)</label>
+        <div class="gallery" id="gal">${o.images.map((src,n)=>
+          `<div class="cell" style="background-image:url('${src}')"><button data-del="${n}">×</button></div>`).join('')
+          || '<div style="grid-column:1/-1;font-size:12.5px;color:var(--slate);">Vēl nav pievienota neviena bilde</div>'}</div>
+        <input type="file" id="projFile" accept="image/*" multiple>
+        <div class="k">Var izvēlēties vairākas uzreiz</div>
+      </div>
+      <div class="field"><label>Nosaukums (latviski)</label>
+        <input type="text" id="ptl" value="${(o.title_lv||'').replace(/"/g,'&quot;')}"></div>
+      <div class="field"><label>Nosaukums (angliski)</label>
+        <input type="text" id="pte" value="${(o.title_en||'').replace(/"/g,'&quot;')}"></div>
+      <div class="field"><label>Apraksts (latviski)</label>
+        <textarea id="pdl">${(o.desc_lv||'').replace(/</g,'&lt;')}</textarea></div>
+      <div class="field"><label>Apraksts (angliski)</label>
+        <textarea id="pde">${(o.desc_en||'').replace(/</g,'&lt;')}</textarea></div>
+      <button class="btn btn-sec" id="addProj" style="width:100%;">+ Pievienot objektu</button>
+      <button class="danger" id="delProj">Dzēst šo objektu</button>`;
+
+    p.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { sel={kind:'project',index:Number(b.dataset.go)}; renderPanel(); });
+    const bind = (id, f) => { const el=$(id); if(el) el.oninput = e => { f(e.target.value); markDirty(); pushToPreview(); }; };
+    bind('ptl', v => o.title_lv = v);
+    bind('pte', v => o.title_en = v);
+    bind('pdl', v => o.desc_lv = v);
+    bind('pde', v => o.desc_en = v);
+
+    p.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      if(!confirm('Dzēst šo bildi no objekta?')) return;
+      o.images.splice(Number(b.dataset.del), 1);
+      markDirty(); pushToPreview(); renderPanel();
+    });
+    $('projFile').onchange = e => {
+      const files = Array.from(e.target.files || []);
+      if(!files.length) return;
+      let pending = files.length;
+      files.forEach(f => {
+        if(f.size > 4*1024*1024){ setStatus('Kāda bilde par lielu (maks. 4 MB)','bad'); pending--; return; }
+        const rd = new FileReader();
+        rd.onload = () => {
+          const name = 'proj-' + Date.now() + '-' + Math.random().toString(36).slice(2,7) + '-' + f.name.toLowerCase().replace(/[^a-z0-9.]+/g,'-');
+          const path = 'images/' + name;
+          newImages.push({ path, dataUrl: rd.result });
+          o.images.push('/' + path);
+          if(--pending <= 0){ markDirty(); pushToPreview(); renderPanel(); setStatus('Bildes tiks augšupielādētas, kad spiedīsiet Publicēt'); }
+        };
+        rd.readAsDataURL(f);
+      });
+    };
+    $('addProj').onclick = () => {
+      content.projects.push({ title_lv:'Jauns objekts', title_en:'New project', desc_lv:'', desc_en:'', images:[] });
+      sel = { kind:'project', index: content.projects.length - 1 };
+      markDirty(); pushToPreview(); renderPanel();
+    };
+    $('delProj').onclick = () => {
+      if(content.projects.length <= 1){ setStatus('Jāpaliek vismaz vienam objektam','bad'); return; }
+      if(!confirm('Dzēst šo objektu?')) return;
+      if(!confirm('Vai tiešām? Objekts un tā bildes vairs nebūs redzamas mājaslapā.')) return;
+      content.projects.splice(i,1);
+      sel = { kind:'project', index: Math.max(0, i-1) };
+      markDirty(); pushToPreview(); renderPanel();
+    };
+    return;
+  }
+
   if(sel.kind === 'number'){
     const k = sel.key;
     content.numbers = content.numbers || {};
@@ -242,6 +331,7 @@ function renderPanel(){
       </div>
       <div class="warn">Šis ir jūsu pašu norādīts skaitlis — pārliecinieties, ka tas atbilst patiesībai, jo tas ir publiski redzams.</div>`;
     $('nv').oninput = e => { content.numbers[k] = e.target.value; markDirty(); pushToPreview(); };
+    renderStyleBlock(k, p);
     return;
   }
 
@@ -301,6 +391,81 @@ function renderPanel(){
   $('tv').oninput = e => {
     content[lang][key] = e.target.value;
     markDirty(); pushToPreview();
+  };
+  renderStyleBlock(key, p);
+}
+
+// ---------- Noformējuma vadība ----------
+function renderStyleBlock(key, p){
+  content.styles = content.styles || {};
+  const st = content.styles[key] || {};
+  const scale = st.scale || 1;
+  const space = (st.space === 0 || st.space) ? st.space : '';
+  const box = document.createElement('div');
+  box.className = 'styleblock';
+  box.innerHTML = `
+    <div class="t">Noformējums</div>
+    <div class="ctrl">
+      <label>Izmērs</label>
+      <input type="range" id="stScale" min="0.6" max="2" step="0.05" value="${scale}">
+      <span class="val" id="stScaleV">${Math.round(scale*100)}%</span>
+    </div>
+    <div class="ctrl">
+      <label>Novietojums</label>
+      <div class="segs">
+        <button data-al="">Auto</button>
+        <button data-al="left">Kreisi</button>
+        <button data-al="center">Centrā</button>
+        <button data-al="right">Labi</button>
+      </div>
+    </div>
+    <div class="ctrl">
+      <label>Atstatums</label>
+      <input type="range" id="stSpace" min="-40" max="80" step="2" value="${space === '' ? 0 : space}">
+      <span class="val" id="stSpaceV">${space === '' ? 'auto' : space + 'px'}</span>
+    </div>
+    <button class="danger" id="stHide">${st.hidden ? 'Atjaunot lauku' : 'Paslēpt šo lauku'}</button>
+    <button class="btn btn-sec" id="stReset" style="width:100%;margin-top:8px;">Atiestatīt noformējumu</button>`;
+  p.appendChild(box);
+
+  function upd(patch, silent){
+    content.styles[key] = Object.assign({}, content.styles[key], patch);
+    markDirty();
+    if(!silent) pushToPreview();
+  }
+  const sc = box.querySelector('#stScale');
+  sc.oninput = e => {
+    const v = Number(e.target.value);
+    box.querySelector('#stScaleV').textContent = Math.round(v*100) + '%';
+    upd({ scale: v });
+  };
+  const sp = box.querySelector('#stSpace');
+  sp.oninput = e => {
+    const v = Number(e.target.value);
+    box.querySelector('#stSpaceV').textContent = v + 'px';
+    upd({ space: v });
+  };
+  box.querySelectorAll('[data-al]').forEach(b => {
+    if((st.align || '') === b.dataset.al) b.classList.add('on');
+    b.onclick = () => {
+      box.querySelectorAll('[data-al]').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      upd({ align: b.dataset.al });
+    };
+  });
+  box.querySelector('#stHide').onclick = () => {
+    const cur = (content.styles[key] || {}).hidden;
+    if(!cur){
+      if(!confirm('Paslēpt šo lauku no mājaslapas?')) return;
+      if(!confirm('Vai tiešām? Lauks vairs nebūs redzams apmeklētājiem.')) return;
+    }
+    upd({ hidden: !cur });
+    renderPanel();
+  };
+  box.querySelector('#stReset').onclick = () => {
+    if(!confirm('Atiestatīt šī lauka noformējumu uz sākotnējo?')) return;
+    delete content.styles[key];
+    markDirty(); pushToPreview(); renderPanel();
   };
 }
 
