@@ -259,6 +259,27 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 
 
 
+
+/* ===== PRODUKTU LAPA: noliktava + risinājums + divas kartes ===== */
+.prod-top{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;margin-bottom:22px;}
+@media(max-width:900px){.prod-top{grid-template-columns:1fr;}}
+.prod-card{background:var(--fog);border:1px solid var(--line);border-radius:20px;padding:28px 30px;}
+.wh-block{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
+@media(max-width:560px){.wh-block{grid-template-columns:1fr;gap:18px;}}
+.wh-block .wh-left h2{font-size:clamp(20px,2vw,26px);font-weight:600;line-height:1.2;}
+.wh-block .wh-left .weak{color:var(--mist);display:block;}
+.wh-block .wh-stat{font-family:'JetBrains Mono',monospace;font-size:clamp(30px,3.4vw,42px);font-weight:500;color:var(--coral);margin-top:8px;line-height:1;}
+.wh-block .wh-stat span[data-i18n]{font-size:.34em;color:var(--slate);}
+.wh-block .wh-list{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 18px;}
+.wh-block .wh-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+.wh-block .wh-row:last-child{border-bottom:none;}
+.sol-block{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;}
+@media(max-width:560px){.sol-block{grid-template-columns:1fr;}}
+.sol-block h3{font-size:clamp(19px,1.9vw,24px);font-weight:600;line-height:1.25;margin-top:6px;}
+.sol-block p{color:var(--slate);margin-top:12px;font-size:14.5px;line-height:1.6;}
+.sol-art{display:flex;align-items:center;justify-content:center;background:center/cover no-repeat;border-radius:14px;min-height:150px;}
+.sol-art svg{width:100%;max-width:210px;height:auto;}
+
 /* ===== PAR MUMS + REALIZĒTIE OBJEKTI ===== */
 .about-sec{background:var(--paper);}
 .about-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center;}
@@ -523,7 +544,7 @@ body.edit-mode .light-on-overlay{display:none !important;}
    Katra sadaļa aizņem visu ekrānu un "pieķeras" ritinot, tāpēc vienlaikus
    nekad nav redzamas divas sadaļas. Ieslēdzas tikai tad, ja ekrāns ir
    pietiekami liels, lai saturs tajā ietilptu — citādi paliek parasta ritināšana. */
-@media (min-width:901px) and (min-height:840px){
+@media (min-width:901px) and (min-height:900px){
   html{
     scroll-snap-type:y mandatory;
     scroll-padding-top:0;
@@ -536,8 +557,10 @@ body.edit-mode .light-on-overlay{display:none !important;}
     display:flex;
     flex-direction:column;
     justify-content:center;
+    /* Vienāda atkāpe augšā un apakšā -> saturs ir patiesi centrēts ekrānā,
+       un augšējā atkāpe garantē, ka tas nekad neaiziet zem navigācijas. */
     padding-top:var(--anchor-offset, 150px);
-    padding-bottom:40px;
+    padding-bottom:70px;
   }
   .hero2 > .wrap, section > .wrap, footer > .wrap{width:100%;}
   /* Kājenei nevajag pilnu ekrānu — tā turas pie kontaktu sadaļas apakšas */
@@ -553,25 +576,28 @@ body.edit-mode .light-on-overlay{display:none !important;}
   /* --- Saturs aizpilda pieejamo augstumu, nevis peld ekrāna vidū ---
      Slaideriem obligāti jādod KONKRĒTS augstums, citādi tie izaug
      līdz visu kartīšu kopgarumam. */
-  :root{ --page-h: calc(100dvh - var(--anchor-offset, 150px) - 40px); }
+  :root{ --page-h: calc(100dvh - var(--anchor-offset, 150px) - 70px); }
 
   /* Sākums: partneru josla aug līdz ar ekrānu */
-  .hero2-art{height:min(var(--page-h), 700px);min-height:0;}
+  .hero2-art{height:min(calc(var(--page-h) - 34px), 700px);min-height:0;}
 
-  /* Produkti: abas kartes vienādā augstumā, attēls stiepjas */
-  .promo-grid{min-height:min(var(--page-h), 620px);}
-  .promo-card{height:100%;}
-  .promo-thumb{flex:1;min-height:180px;}
+  /* Produkti: augšējā rinda + divas kartes vienā ekrānā */
+  .promo-card{height:100%;padding:24px;gap:12px;}
+  .promo-card p{font-size:14px;}
+  .promo-thumb{flex:1;min-height:110px;max-height:170px;}
+  .prod-card{padding:20px 22px;}
+  .prod-top{gap:18px;margin-bottom:18px;}
+  .wh-block .wh-row{padding:9px 0;}
 
   /* Pakalpojumi: režģa rindas sadalās vienmērīgi */
   .demand-grid{min-height:min(calc(var(--page-h) - 210px), 470px);}
   .demand-card, .demand-center{min-height:0;}
 
   /* Par mums: objektu slaideris aug līdz ar ekrānu */
-  .proj-stage{height:min(var(--page-h), 700px);min-height:0;}
+  .proj-stage{height:min(calc(var(--page-h) - 62px), 700px);min-height:0;}
 
   /* Kontakti: trīs kolonnas vienā augstumā */
-  .contact-grid{min-height:min(var(--page-h), 680px);}
+  .contact-grid{min-height:min(calc(var(--page-h) - 8px), 680px);}
   .cmap{min-height:0;height:100%;}
   .cmap iframe{min-height:0;height:100%;}
 }
@@ -654,6 +680,43 @@ body.edit-mode .light-on-overlay{display:none !important;}
 <!-- ===== PROMO CARDS ===== -->
 <section id="produkti">
   <div class="wrap">
+
+    <!-- Augšējā rinda: noliktavas klāsts + risinājums -->
+    <div class="prod-top reveal">
+      <div class="prod-card wh-block">
+        <div class="wh-left">
+          <h2 data-i18n-html="wh-h2"><span class="weak">ELSPOT</span><br>noliktavas klāsts</h2>
+          <div class="wh-stat"><span data-num="wh-total">1200</span><span data-i18n="wh-stat-label">+ pozīcijas</span></div>
+        </div>
+        <div class="wh-list">
+          <div class="wh-row"><span class="k" data-i18n="wh-k1">Apgaismojums</span><span class="v"><span data-num="wh-1">320</span></span></div>
+          <div class="wh-row"><span class="k" data-i18n="wh-k2">Rozetes un slēdži</span><span class="v"><span data-num="wh-2">280</span></span></div>
+          <div class="wh-row"><span class="k" data-i18n="wh-k3">Zemējuma sistēmas</span><span class="v"><span data-num="wh-3">140</span></span></div>
+          <div class="wh-row"><span class="k" data-i18n="wh-k4">Zibensaizsardzība</span><span class="v"><span data-num="wh-4">90</span></span></div>
+          <div class="wh-row"><span class="k" data-i18n="wh-k5">Kabeļi un vadi</span><span class="v"><span data-num="wh-5">370</span></span></div>
+        </div>
+      </div>
+
+      <div class="prod-card sol-block">
+        <div class="sol-text">
+          <span class="tag" data-i18n="solution-tag">Risinājums</span>
+          <h3 data-i18n="solution-h2">Viss elektromateriālu ceļš — vienuviet</h3>
+          <p data-i18n="solution-p">Strādājam tieši ar ražotājiem, tāpēc varam garantēt sortimentu, cenu un piegādes termiņu jebkura izmēra objektam — no viena slēdža līdz pilnai rūpnīcas elektroapgādei.</p>
+        </div>
+        <div class="sol-art" data-img="solution">
+          <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="180,40 280,90 180,140 80,90" fill="#161D42"/>
+            <polygon points="80,90 180,140 180,220 80,170" fill="#2A3373"/>
+            <polygon points="280,90 180,140 180,220 280,170" fill="#3B4590"/>
+            <polygon points="150,105 180,120 180,150 150,135" fill="#FF4D4D"/>
+            <polygon points="180,120 210,105 210,135 180,150" fill="#FF7A7A"/>
+            <circle cx="180" cy="60" r="10" fill="none" stroke="#FF4D4D" stroke-width="2"/>
+            <path d="M180 70 L180 40" stroke="#FF4D4D" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
     <div class="promo-grid reveal">
       <div class="promo-card">
         <div class="promo-thumb" data-img="promo1">
@@ -1301,6 +1364,40 @@ function closeProject(){
   window.addEventListener('resize', update);
   window.addEventListener('load', update);
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+})();
+
+
+// ===== Enkuru klikšķis kopā ar sadaļu fiksēšanu =====
+// Bez šī gludā ritināšana un scroll-snap "cīnās", un lapa apstājas pusceļā,
+// tāpēc fonā vēl paliek redzama iepriekšējā sadaļa.
+(function initAnchorNav(){
+  const root = document.documentElement;
+  let timer = null;
+
+  function goTo(target){
+    const el = document.getElementById(target);
+    if(!el) return false;
+    const prevSnap = root.style.scrollSnapType;
+    root.style.scrollSnapType = 'none';           // atslēdzam fiksēšanu
+    const offset = parseFloat(getComputedStyle(root).getPropertyValue('--anchor-offset')) || 0;
+    const snapOn = getComputedStyle(root).scrollSnapType !== 'none' || window.innerWidth > 900;
+    const top = window.scrollY + el.getBoundingClientRect().top - (snapOn ? 0 : offset);
+    window.scrollTo({ top: Math.max(0, Math.round(top)), behavior: 'smooth' });
+    clearTimeout(timer);
+    timer = setTimeout(() => { root.style.scrollSnapType = prevSnap || ''; }, 900);
+    return true;
+  }
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id = a.getAttribute('href').slice(1);
+    if(!id) return;
+    if(goTo(id)){
+      e.preventDefault();
+      history.replaceState(null, '', '#' + id);
+    }
+  });
 })();
 
 // ===== Bildes palielinājums ar atgriešanās pogu =====
