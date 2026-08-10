@@ -73,6 +73,117 @@ function looksLikeSpam(name, message) {
   return null;
 }
 
+
+// ===== PIELIKUMU PĀRBAUDE =====
+// Uzmanību: šī NAV pilnvērtīga pretvīrusu programma. Tā ir strukturāla pārbaude,
+// kas noķer visbiežākos uzbrukuma veidus. Ja iestatīts VIRUSTOTAL_API_KEY,
+// papildus tiek veikta īsta pretvīrusu pārbaude ar VirusTotal.
+const MAX_FILES = 3;
+const MAX_TOTAL_BYTES = 3 * 1024 * 1024;
+
+const ALLOWED = {
+  pdf:  { mimes: ['application/pdf'], sigs: [[0x25,0x50,0x44,0x46]] },
+  xlsx: { mimes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          sigs: [[0x50,0x4B,0x03,0x04],[0x50,0x4B,0x05,0x06]] },
+  xls:  { mimes: ['application/vnd.ms-excel'], sigs: [[0xD0,0xCF,0x11,0xE0]] },
+  csv:  { mimes: ['text/csv','application/vnd.ms-excel','text/plain'], sigs: null },
+};
+
+function hasSignature(buf, sigs) {
+  if (!sigs) return true;
+  return sigs.some(sig => sig.every((b, i) => buf[i] === b));
+}
+
+// PDF: atsakām, ja iekšā ir izpildāms saturs vai iegulti faili
+const PDF_DANGER = [/\/JavaScript/i, /\/JS\b/i, /\/Launch/i, /\/EmbeddedFile/i, /\/RichMedia/i, /\/XFA/i];
+// XLSX ir ZIP arhīvs — atsakām, ja tajā ir makro vai OLE objekti
+const XLSX_DANGER = ['vbaProject.bin', 'vbaData.xml', 'oleObject', '.bin\u0000'];
+
+function inspectFile(name, buf) {
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  const spec = ALLOWED[ext];
+  if (!spec) return `Neatļauts faila tips: ${name}`;
+  if (!hasSignature(buf, spec.sigs)) return `Faila saturs neatbilst tā tipam: ${name}`;
+
+  // Vispārīga pārbaude: izpildāmo failu paraksti jebkur faila sākumā
+  const head = buf.slice(0, 4);
+  if (head[0] === 0x4D && head[1] === 0x5A) return `Izpildāms fails nav atļauts: ${name}`;        // MZ (.exe)
+  if (head[0] === 0x7F && head[1] === 0x45 && head[2] === 0x4C && head[3] === 0x46)
+    return `Izpildāms fails nav atļauts: ${name}`;                                                // ELF
+
+  if (ext === 'pdf') {
+    const txt = buf.toString('latin1');
+    const hit = PDF_DANGER.find(re => re.test(txt));
+    if (hit) return `PDF satur izpildāmu saturu un netika pieņemts: ${name}`;
+  }
+  if (ext === 'xlsx') {
+    const txt = buf.toString('latin1');
+    const hit = XLSX_DANGER.find(s => txt.includes(s));
+    if (hit) return `Excel fails satur makro vai iegultus objektus: ${name}`;
+  }
+  if (ext === 'xls') {
+    const txt = buf.toString('latin1');
+    if (/_VBA_PROJECT|Macros/i.test(txt)) return `Excel fails satur makro: ${name}`;
+  }
+  if (ext === 'csv') {
+    const txt = buf.toString('utf8').slice(0, 200000);
+    // CSV formulu injekcija — šūna, kas sākas ar =, +, -, @ un izsauc ārēju komandu
+    if (/(^|[\r\n,;])\s*[=+\-@][^\r\n]*(cmd\||DDE|WEBSERVICE|HYPERLINK|IMPORTXML)/i.test(txt))
+      return `CSV satur formulu, kas var izpildīt komandas: ${name}`;
+  }
+  return null;
+}
+
+// Neobligāta īsta pretvīrusu pārbaude (VirusTotal). Aktivizējas, ja ir API atslēga.
+async function virusTotalCheck(buf, name) {
+  const key = process.env.VIRUSTOTAL_API_KEY;
+  if (!key) return null;
+  try {
+    const hash = crypto.createHash('sha256').update(buf).digest('hex');
+    const r = await fetch(`https://www.virustotal.com/api/v3/files/${hash}`, {
+      headers: { 'x-apikey': key },
+    });
+    if (r.status === 404) return null;               // nav redzēts iepriekš — paļaujamies uz strukturālo pārbaudi
+    if (!r.ok) return null;                          // pakalpojums nepieejams — nebloķējam
+    const j = await r.json();
+    const st = j && j.data && j.data.attributes && j.data.attributes.last_analysis_stats;
+    if (st && (st.malicious > 0 || st.suspicious > 1)) {
+      return `Fails atzīmēts kā bīstams un netika pieņemts: ${name}`;
+    }
+  } catch (e) { /* nebloķējam, ja pārbaude neizdodas */ }
+  return null;
+}
+
+async function processAttachments(files) {
+  if (!Array.isArray(files) || !files.length) return { attachments: [], error: null };
+  if (files.length > MAX_FILES) return { attachments: [], error: 'Pārāk daudz pielikumu' };
+
+  let total = 0;
+  const attachments = [];
+  for (const f of files) {
+    const name = String(f.name || '').replace(/[\r\n\\/]/g, '_').slice(0, 120);
+    if (!/^[\w \-.()\u00C0-\u017F]+\.(pdf|xls|xlsx|csv)$/i.test(name)) {
+      return { attachments: [], error: `Nederīgs faila nosaukums: ${name}` };
+    }
+    let buf;
+    try { buf = Buffer.from(String(f.data || ''), 'base64'); }
+    catch { return { attachments: [], error: `Nederīgs faila saturs: ${name}` }; }
+
+    total += buf.length;
+    if (!buf.length) return { attachments: [], error: `Tukšs fails: ${name}` };
+    if (total > MAX_TOTAL_BYTES) return { attachments: [], error: 'Pielikumi pārsniedz 3 MB' };
+
+    const structural = inspectFile(name, buf);
+    if (structural) return { attachments: [], error: structural };
+
+    const av = await virusTotalCheck(buf, name);
+    if (av) return { attachments: [], error: av };
+
+    attachments.push({ filename: name, content: buf });
+  }
+  return { attachments, error: null };
+}
+
 const esc = s => String(s || '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;');
@@ -127,6 +238,7 @@ module.exports = async (req, res) => {
   const email = String(body.email || '').trim().slice(0, 200);
   const phone = String(body.phone || '').trim().slice(0, 60);
   const message = String(body.message || '').trim().slice(0, 5000);
+  const object = String(body.object || '').trim().slice(0, 200);
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Trūkst obligāto lauku' });
@@ -146,6 +258,14 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok: true });
   }
 
+  // --- Pielikumu pārbaude (otrais slānis; pirmais notiek pārlūkā) ---
+  let attachments = [];
+  if (Array.isArray(body.files) && body.files.length) {
+    const checked = await processAttachments(body.files);
+    if (checked.error) return res.status(400).json({ error: checked.error });
+    attachments = checked.attachments;
+  }
+
   const port = Number(SMTP_PORT) || 587;
 
   try {
@@ -161,12 +281,15 @@ module.exports = async (req, res) => {
       from: MAIL_FROM || SMTP_USER,   // vienmēr sava pastkaste, nevis apmeklētāja
       to: MAIL_TO,
       replyTo: name + ' <' + email + '>',
-      subject: 'Pieteikums no mājaslapas — ' + name,
+      subject: (attachments.length ? 'Cenas pieprasījums no mājaslapas — ' : 'Pieteikums no mājaslapas — ') + name,
+      attachments,
       text:
         'Jauns pieteikums no mājaslapas\n\n' +
         'Vārds / uzņēmums: ' + name + '\n' +
         'E-pasts: ' + email + '\n' +
-        'Tālrunis: ' + (phone || '—') + '\n\n' +
+        'Tālrunis: ' + (phone || '—') + '\n' +
+        'Objekts: ' + (object || '—') + '\n' +
+        'Pielikumi: ' + (attachments.length ? attachments.map(a => a.filename).join(', ') : '—') + '\n\n' +
         'Ziņa:\n' + message + '\n',
       html:
         '<h2 style="font-family:Arial,sans-serif;color:#161D42;">Jauns pieteikums no mājaslapas</h2>' +
@@ -174,6 +297,8 @@ module.exports = async (req, res) => {
         '<tr><td style="padding:6px 14px 6px 0;color:#5B6178;">Vārds / uzņēmums</td><td><b>' + esc(name) + '</b></td></tr>' +
         '<tr><td style="padding:6px 14px 6px 0;color:#5B6178;">E-pasts</td><td><a href="mailto:' + esc(email) + '">' + esc(email) + '</a></td></tr>' +
         '<tr><td style="padding:6px 14px 6px 0;color:#5B6178;">Tālrunis</td><td>' + (esc(phone) || '—') + '</td></tr>' +
+        '<tr><td style="padding:6px 14px 6px 0;color:#5B6178;">Objekts</td><td>' + (esc(object) || '—') + '</td></tr>' +
+        '<tr><td style="padding:6px 14px 6px 0;color:#5B6178;">Pielikumi</td><td>' + (attachments.length ? esc(attachments.map(a => a.filename).join(', ')) : '—') + '</td></tr>' +
         '</table>' +
         '<p style="font-family:Arial,sans-serif;font-size:14px;color:#161D42;white-space:pre-wrap;margin-top:16px;">' + esc(message) + '</p>',
     });

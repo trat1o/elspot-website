@@ -114,7 +114,14 @@
     "projects-label": "Realizētie objekti",
     "proj-hint": "Uzklikšķiniet uz objekta, lai apskatītu vairāk",
     "proj-back": "Atpakaļ",
-    "lb-back": "Samazināt"
+    "lb-back": "Samazināt",
+    "q-title": "Pieprasīt cenu",
+    "q-sub": "Aizpildiet formu un pievienojiet specifikāciju vai tāmi, ja tāda ir. Atbildam darba dienās 24 stundu laikā.",
+    "q-object": "Objekts / projekts",
+    "q-files-l": "Pielikumi (PDF, Excel)",
+    "q-drop-t": "Ievelciet failus vai uzklikšķiniet",
+    "q-drop-s": "Atļauti PDF, XLS, XLSX un CSV faili. Līdz 3 failiem, kopā ne vairāk par 3 MB.",
+    "q-note": "Pielikumi tiek pārbaudīti automātiski. Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu."
   },
   "en": {
     "nav-products": "Products",
@@ -231,7 +238,14 @@
     "projects-label": "Completed projects",
     "proj-hint": "Click a project to see more",
     "proj-back": "Back",
-    "lb-back": "Shrink"
+    "lb-back": "Shrink",
+    "q-title": "Request a quote",
+    "q-sub": "Fill in the form and attach a specification or estimate if you have one. We reply within 24 hours on business days.",
+    "q-object": "Project / site",
+    "q-files-l": "Attachments (PDF, Excel)",
+    "q-drop-t": "Drag files here or click to select",
+    "q-drop-s": "PDF, XLS, XLSX and CSV allowed. Up to 3 files, 3 MB in total.",
+    "q-note": "Attachments are checked automatically. By sending this request you agree that we may contact you about this enquiry."
   },
   "numbers": {
     "wh-total": "1200",

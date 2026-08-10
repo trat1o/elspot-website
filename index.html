@@ -462,6 +462,62 @@ footer{background:var(--ink-deep);color:#fff;padding:90px 0 40px;}
 .formmsg.ok{display:block;background:#E8F7EF;color:#0A7C42;}
 .formmsg.bad{display:block;background:#FDECEF;color:#C0122C;}
 
+
+/* ===== CENAS PIEPRASĪJUMA LOGS (pilnekrāna) ===== */
+.quote-modal{
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:600;
+  background:rgba(11,14,36,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+}
+.quote-modal.open{opacity:1;pointer-events:auto;}
+.quote-box{
+  background:#fff;border-radius:22px;width:min(760px,100%);max-height:92vh;overflow-y:auto;
+  padding:34px 36px;position:relative;
+  transform:translateY(14px) scale(.985);transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.quote-modal.open .quote-box{transform:translateY(0) scale(1);}
+.quote-close{
+  position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--line);background:#fff;color:var(--ink);font-size:20px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.quote-close:hover{background:var(--fog);border-color:var(--coral);}
+.quote-box h2{font-size:clamp(22px,2.6vw,30px);font-weight:600;line-height:1.2;padding-right:48px;}
+.quote-box .sub{font-size:14.5px;color:var(--slate);margin-top:10px;line-height:1.6;}
+.qf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;}
+@media(max-width:600px){.qf-grid{grid-template-columns:1fr;}.quote-box{padding:26px 22px;}}
+.qf-row.full{grid-column:1 / -1;}
+.qf-row label{display:block;font-size:12.5px;font-weight:600;color:var(--slate);margin-bottom:6px;}
+.qf-row input,.qf-row textarea{
+  width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 13px;
+  font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:#fff;
+}
+.qf-row input:focus,.qf-row textarea:focus{outline:none;border-color:var(--coral);}
+.qf-row textarea{resize:vertical;min-height:110px;}
+.qf-drop{
+  border:1.5px dashed var(--line);border-radius:12px;padding:18px;text-align:center;
+  background:var(--fog);cursor:pointer;transition:border-color .2s ease,background .2s ease;
+}
+.qf-drop:hover,.qf-drop.over{border-color:var(--coral);background:#fff;}
+.qf-drop .t{font-size:14px;font-weight:600;color:var(--ink);}
+.qf-drop .s{font-size:12px;color:var(--slate);margin-top:5px;line-height:1.5;}
+.qf-files{list-style:none;margin-top:10px;}
+.qf-files li{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);
+  border-radius:9px;margin-bottom:7px;font-size:13px;background:#fff;
+}
+.qf-files .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.qf-files .sz{color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+.qf-files .rm{border:none;background:none;color:var(--coral);cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;}
+.qf-files .ok{color:#0A7C42;font-size:14px;}
+.quote-box .btn{width:100%;justify-content:center;margin-top:18px;padding:15px 26px;}
+.qf-note{font-size:12px;color:var(--slate);margin-top:12px;line-height:1.55;}
+.qf-msg{font-size:13.5px;margin-top:12px;display:none;padding:11px 13px;border-radius:9px;}
+.qf-msg.ok{display:block;background:#E8F7EF;color:#0A7C42;}
+.qf-msg.bad{display:block;background:#FDECEF;color:#C0122C;}
+body.quote-open{overflow:hidden;}
+
 /* ===== IEEJAS ANIMĀCIJA (atkārtoti izmantota no galvenā šablona) ===== */
 .light-on-overlay{
   position:fixed;top:0;right:0;bottom:0;left:0;z-index:999;background:#000000;overflow:hidden;
@@ -902,6 +958,54 @@ body.edit-mode .light-on-overlay{display:none !important;}
   </div>
 </div>
 
+
+<!-- ===== CENAS PIEPRASĪJUMA LOGS ===== -->
+<div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
+  <div class="quote-box">
+    <button type="button" class="quote-close" id="quoteClose" aria-label="Aizvērt">✕</button>
+    <h2 id="quoteTitle" data-i18n="q-title">Pieprasīt cenu</h2>
+    <div class="sub" data-i18n="q-sub">Aizpildiet formu un pievienojiet specifikāciju vai tāmi, ja tāda ir. Atbildam darba dienās 24 stundu laikā.</div>
+
+    <form id="quoteForm" novalidate>
+      <div class="qf-grid">
+        <div class="qf-row">
+          <label data-i18n="cf-l1">Vārds, uzņēmums *</label>
+          <input type="text" name="name" required>
+        </div>
+        <div class="qf-row">
+          <label data-i18n="cf-l2">E-pasts *</label>
+          <input type="email" name="email" required>
+        </div>
+        <div class="qf-row">
+          <label data-i18n="cf-l3">Tālrunis</label>
+          <input type="tel" name="phone">
+        </div>
+        <div class="qf-row">
+          <label data-i18n="q-object">Objekts / projekts</label>
+          <input type="text" name="object">
+        </div>
+        <div class="qf-row full">
+          <label data-i18n="cf-l4">Jūsu jautājums vai objekta apraksts *</label>
+          <textarea name="message" required></textarea>
+        </div>
+        <div class="qf-row full">
+          <label data-i18n="q-files-l">Pielikumi (PDF, Excel)</label>
+          <div class="qf-drop" id="qfDrop">
+            <div class="t" data-i18n="q-drop-t">Ievelciet failus vai uzklikšķiniet</div>
+            <div class="s" data-i18n="q-drop-s">Atļauti PDF, XLS, XLSX un CSV faili. Līdz 3 failiem, kopā ne vairāk par 3 MB.</div>
+            <input type="file" id="qfFiles" multiple accept=".pdf,.xls,.xlsx,.csv,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" style="display:none;">
+          </div>
+          <ul class="qf-files" id="qfList"></ul>
+        </div>
+      </div>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+      <button type="submit" class="btn btn-primary" id="qfBtn" data-i18n="cf-btn">Nosūtīt pieprasījumu →</button>
+      <div class="qf-note" data-i18n="q-note">Pielikumi tiek pārbaudīti automātiski. Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.</div>
+      <div class="qf-msg" id="qfMsg"></div>
+    </form>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="wrap foot-grid">
@@ -1006,6 +1110,13 @@ const translations = {
     'impact-h2':'A trusted electrical materials partner since 2019',
     'impact-p':'ELSPOT combines a wide product range with technical consultation and reliable delivery — so your next project keeps moving without interruption.',
     'impact-btn':'Request a Quote →',
+    'q-title':'Request a quote',
+    'q-sub':'Fill in the form and attach a specification or estimate if you have one. We reply within 24 hours on business days.',
+    'q-object':'Project / site',
+    'q-files-l':'Attachments (PDF, Excel)',
+    'q-drop-t':'Drag files here or click to select',
+    'q-drop-s':'PDF, XLS, XLSX and CSV allowed. Up to 3 files, 3 MB in total.',
+    'q-note':'Attachments are checked automatically. By sending this request you agree that we may contact you about this enquiry.',
     'contact-tag':'Contact', 'contact-h2':'Get in touch',
     'contact-p':'We reply within 24 hours on business days. Send a request or call us directly.',
     'map-hint':'Drive to us',
@@ -1192,6 +1303,134 @@ function applyImages(imgs){
         : 'Nozares dati īslaicīgi nav pieejami';
       n.removeAttribute('data-i18n');
     });
+})();
+
+
+// ===== CENAS PIEPRASĪJUMA LOGS =====
+(function initQuote(){
+  const modal = document.getElementById('quoteModal');
+  const form  = document.getElementById('quoteForm');
+  if(!modal || !form) return;
+
+  const drop = document.getElementById('qfDrop');
+  const input = document.getElementById('qfFiles');
+  const list = document.getElementById('qfList');
+  const btn = document.getElementById('qfBtn');
+  const msg = document.getElementById('qfMsg');
+
+  const MAX_FILES = 3;
+  const MAX_TOTAL = 3 * 1024 * 1024;      // Vercel pieprasījuma ierobežojums
+  const ALLOWED_EXT = ['pdf','xls','xlsx','csv'];
+  // Faila "paraksts" — pirmie baiti. Pārbauda, vai fails tiešām ir tas, par ko uzdodas.
+  const SIGNATURES = {
+    pdf:  [[0x25,0x50,0x44,0x46]],                       // %PDF
+    xlsx: [[0x50,0x4B,0x03,0x04],[0x50,0x4B,0x05,0x06]], // ZIP (XLSX ir ZIP)
+    xls:  [[0xD0,0xCF,0x11,0xE0]],                       // OLE2
+  };
+  let picked = [];
+  let formToken = null;
+
+  function fetchToken(){
+    fetch('/api/contact', { cache:'no-store' })
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(t => { formToken = t; }).catch(()=>{ formToken = null; });
+  }
+  fetchToken();
+
+  const isEn = () => document.documentElement.lang === 'en';
+  function say(text, kind){ msg.className = 'qf-msg ' + (kind||''); msg.textContent = text; }
+  function fmt(b){ return b < 1024*1024 ? Math.round(b/1024) + ' KB' : (b/1024/1024).toFixed(1) + ' MB'; }
+
+  function checkSignature(buf, ext){
+    if(ext === 'csv') return true;                       // CSV ir vienkāršs teksts
+    const sigs = SIGNATURES[ext === 'xlsx' ? 'xlsx' : ext];
+    if(!sigs) return false;
+    const b = new Uint8Array(buf.slice(0, 8));
+    return sigs.some(s => s.every((v,i) => b[i] === v));
+  }
+
+  function renderList(){
+    list.innerHTML = picked.map((f,i) =>
+      `<li><span class="ok">✓</span><span class="nm">${escAttr(f.name)}</span>` +
+      `<span class="sz">${fmt(f.size)}</span>` +
+      `<button type="button" class="rm" data-rm="${i}" aria-label="Noņemt">✕</button></li>`).join('');
+    list.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
+      picked.splice(Number(b.dataset.rm), 1); renderList(); say('','');
+    });
+  }
+
+  async function addFiles(files){
+    for(const f of Array.from(files)){
+      if(picked.length >= MAX_FILES){
+        say(isEn() ? 'Maximum 3 files.' : 'Ne vairāk kā 3 faili.', 'bad'); break;
+      }
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      if(!ALLOWED_EXT.includes(ext)){
+        say(isEn() ? `File type not allowed: ${f.name}` : `Neatļauts faila tips: ${f.name}`, 'bad'); continue;
+      }
+      const total = picked.reduce((s,x)=>s+x.size,0) + f.size;
+      if(total > MAX_TOTAL){
+        say(isEn() ? 'Total attachment size must stay under 3 MB.' : 'Pielikumu kopējais izmērs nedrīkst pārsniegt 3 MB.', 'bad'); continue;
+      }
+      const buf = await f.arrayBuffer();
+      if(!checkSignature(buf, ext)){
+        say(isEn() ? `File contents do not match its type: ${f.name}` : `Faila saturs neatbilst tā tipam: ${f.name}`, 'bad'); continue;
+      }
+      let binary = ''; const bytes = new Uint8Array(buf);
+      for(let i=0;i<bytes.length;i++) binary += String.fromCharCode(bytes[i]);
+      picked.push({ name:f.name, size:f.size, type:f.type || '', data: btoa(binary) });
+      say('','');
+    }
+    renderList();
+  }
+
+  drop.addEventListener('click', () => input.click());
+  input.addEventListener('change', e => { addFiles(e.target.files); input.value = ''; });
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { if(e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+
+  function open(){
+    modal.classList.add('open');
+    document.body.classList.add('quote-open');
+    if(!formToken) fetchToken();
+    setTimeout(()=>{ const f = form.querySelector('input[name="name"]'); if(f) f.focus(); }, 260);
+  }
+  function close(){ modal.classList.remove('open'); document.body.classList.remove('quote-open'); }
+  window.openQuote = open;
+
+  // Jebkura "Pieprasīt cenu" poga atver logu
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.navcta, [data-open-quote]');
+    if(t){ e.preventDefault(); if(typeof closeMobileMenu === 'function') closeMobileMenu(); open(); return; }
+    if(e.target.closest('#quoteClose')){ e.preventDefault(); close(); return; }
+    if(e.target === modal) close();
+  });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    if(!data.name || !data.email || !data.message){
+      say(isEn() ? 'Please fill in all required fields.' : 'Lūdzu, aizpildiet visus obligātos laukus.', 'bad'); return;
+    }
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = isEn() ? 'Sending…' : 'Sūta…';
+    try{
+      const r = await fetch('/api/contact', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({}, data, formToken || {}, { files: picked }))
+      });
+      const j = await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(j.error || 'error');
+      form.reset(); picked = []; renderList(); fetchToken();
+      say(isEn() ? 'Thank you! We will get back to you shortly.' : 'Paldies! Sazināsimies ar jums tuvākajā laikā.', 'ok');
+    }catch(err){
+      say((err && err.message && err.message !== 'error') ? err.message
+        : (isEn() ? 'Sending failed. Please write to us by email instead.' : 'Neizdevās nosūtīt. Lūdzu, rakstiet mums uz e-pastu.'), 'bad');
+    }finally{ btn.disabled = false; btn.textContent = orig; }
+  });
 })();
 
 // ===== Kontaktforma =====
