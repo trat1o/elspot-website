@@ -29,6 +29,17 @@ img,svg{max-width:100%;display:block;}
 @media(max-width:640px){.wrap{padding:0 20px;}}
 section{padding:110px 0;position:relative;}
 @media(max-width:640px){section{padding:70px 0;}}
+
+/* Enkuru saites: sadaļa apstājas zem navigācijas kapsulas, nevis aiz tās.
+   --anchor-offset aprēķina JS pēc faktiskā kapsulas augstuma. */
+#produkti, #pakalpojumi, #par-mums, #kontakti{
+  scroll-margin-top:var(--anchor-offset, 150px);
+}
+@media(max-width:760px){
+  #produkti, #pakalpojumi, #par-mums, #kontakti{
+    scroll-margin-top:var(--anchor-offset, 130px);
+  }
+}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-size:14px;font-weight:600;border-radius:30px;transition:all .3s ease;cursor:pointer;border:1px solid transparent;}
@@ -1257,6 +1268,23 @@ function closeProject(){
   });
 })();
 
+
+
+// ===== Enkuru atkāpe: seko navigācijas kapsulas faktiskajam augstumam =====
+(function initAnchorOffset(){
+  function update(){
+    const nav = document.querySelector('.pill-nav');
+    if(!nav) return;
+    const r = nav.getBoundingClientRect();
+    // Kapsulas apakšmala (lapas augšā) + neliela atstarpe
+    const top = parseFloat(getComputedStyle(document.querySelector('.pill-nav-wrap')).top) || 22;
+    document.documentElement.style.setProperty('--anchor-offset', Math.round(top + r.height + 28) + 'px');
+  }
+  update();
+  window.addEventListener('resize', update);
+  window.addEventListener('load', update);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+})();
 
 // ===== Bildes palielinājums ar atgriešanās pogu =====
 let lbList = [], lbIdx = 0, lbCaption = '';
