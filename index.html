@@ -40,6 +40,8 @@ section{padding:110px 0;position:relative;}
     scroll-margin-top:var(--anchor-offset, 130px);
   }
 }
+
+
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-size:14px;font-weight:600;border-radius:30px;transition:all .3s ease;cursor:pointer;border:1px solid transparent;}
@@ -515,6 +517,43 @@ body.edit-mode .light-on-overlay{display:none !important;}
 }
 .edit-box .bar button.del{background:#FF1F3D;}
 .edit-box .bar button:hover{opacity:.88;}
+
+/* ===== SADAĻAS KĀ ATSEVIŠĶAS LAPAS =====
+   Katra sadaļa aizņem visu ekrānu un "pieķeras" ritinot, tāpēc vienlaikus
+   nekad nav redzamas divas sadaļas. Ieslēdzas tikai tad, ja ekrāns ir
+   pietiekami liels, lai saturs tajā ietilptu — citādi paliek parasta ritināšana. */
+@media (min-width:901px) and (min-height:840px){
+  html{
+    scroll-snap-type:y mandatory;
+    scroll-padding-top:0;
+  }
+  .hero2, section, footer{
+    min-height:100vh;
+    min-height:100dvh;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:var(--anchor-offset, 150px);
+    padding-bottom:40px;
+  }
+  .hero2 > .wrap, section > .wrap, footer > .wrap{width:100%;}
+  /* Kājenei nevajag pilnu ekrānu — tā turas pie kontaktu sadaļas apakšas */
+  footer{
+    min-height:auto;
+    justify-content:flex-start;
+    padding-top:70px;
+    scroll-snap-align:end;
+  }
+  /* Pakalpojumu režģis ir platāks par .wrap, tāpēc tam savs izlīdzinājums */
+  #pakalpojumi{justify-content:center;}
+}
+
+/* Ļoti gari ekrāni: neizstiepjam saturu pārmērīgi */
+@media (min-width:901px) and (min-height:1150px){
+  .hero2, section{padding-top:calc(var(--anchor-offset, 150px) + 40px);}
+}
 </style>
 </head>
 <body>
