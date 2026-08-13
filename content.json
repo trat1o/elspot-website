@@ -267,9 +267,9 @@
       "image": "/images/logo-1786615206688-kontakt.jpg"
     },
     {
-      "label_lv": "Ražotājs 2",
-      "label_en": "Manufacturer 2",
-      "image": ""
+      "label_lv": "SYLVANIA",
+      "label_en": "SYLVANIA",
+      "image": "/images/logo-1786615259140-sylvania-logo.svg"
     },
     {
       "label_lv": "Ražotājs 3",
@@ -339,26 +339,6 @@
     {
       "label_lv": "Ražotājs 16",
       "label_en": "Manufacturer 16",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotājs 17",
-      "label_en": "Manufacturer 17",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotājs 18",
-      "label_en": "Manufacturer 18",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotājs 19",
-      "label_en": "Manufacturer 19",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotājs 20",
-      "label_en": "Manufacturer 20",
       "image": ""
     }
   ],
