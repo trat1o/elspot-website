@@ -148,17 +148,19 @@ section{padding:110px 0;position:relative;}
 .obj-strip{display:flex;flex-direction:column;gap:12px;padding:12px;animation:objScroll 72s linear infinite;}
 .obj-strip:hover{animation-play-state:paused;}
 .obj-card{
-  position:relative;height:110px;border-radius:14px;flex-shrink:0;
+  position:relative;height:124px;border-radius:14px;flex-shrink:0;overflow:hidden;
   background:#fff;border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;padding:18px 22px;
+  display:flex;align-items:center;justify-content:center;padding:16px 22px;
   transition:border-color .25s ease, box-shadow .25s ease;
 }
 .obj-card:hover{border-color:rgba(255,77,77,.4);box-shadow:0 6px 18px rgba(22,29,66,.07);}
+/* Logo vienmēr pilnās krāsās. Izmēru un novietojumu aprēķina JS pēc tam,
+   kad no attēla ir atmesta tukšā mala (skat. fitLogo). */
 .obj-card img{
   max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
-  filter:grayscale(1);opacity:.72;transition:filter .25s ease, opacity .25s ease;
+  transition:transform .25s ease;
 }
-.obj-card:hover img{filter:none;opacity:1;}
+.obj-card:hover img{transform:translate(var(--lx,0), var(--ly,0)) scale(1.03);}
 .obj-card .cap{
   font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;
   color:var(--mist);letter-spacing:.01em;text-align:center;
@@ -1524,6 +1526,89 @@ function applyStyles(styles){
   });
 }
 
+
+// ===== Logo pielāgošana kartītei =====
+// Daudziem ražotāju logo failiem apkārt ir liela tukša mala. Ja to neņem vērā,
+// pārlūks ietilpina VISU audeklu, un pats logo paliek mazs. Šeit uz audekla
+// nomērām, kur sākas un beidzas patiesais saturs, un ietilpinām tikai to.
+const logoTrimCache = new Map();
+
+function measureLogo(src){
+  if(logoTrimCache.has(src)) return logoTrimCache.get(src);
+  const job = new Promise(resolve => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const NW = img.naturalWidth, NH = img.naturalHeight;
+      if(!NW || !NH) return resolve(null);
+      try{
+        const W = Math.min(NW, 400), H = Math.max(1, Math.round(NH * (W / NW)));
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        const ctx = c.getContext('2d', { willReadFrequently:true });
+        ctx.drawImage(img, 0, 0, W, H);
+        const d = ctx.getImageData(0, 0, W, H).data;
+        let minX = W, minY = H, maxX = -1, maxY = -1;
+        for(let y = 0; y < H; y++){
+          for(let x = 0; x < W; x++){
+            const i = (y * W + x) * 4;
+            if(d[i+3] < 20) continue;                                   // caurspīdīgs
+            if(d[i] > 245 && d[i+1] > 245 && d[i+2] > 245) continue;     // balts fons
+            if(x < minX) minX = x;
+            if(x > maxX) maxX = x;
+            if(y < minY) minY = y;
+            if(y > maxY) maxY = y;
+          }
+        }
+        if(maxX < 0) return resolve(null);
+        resolve({
+          l: minX / W, t: minY / H,
+          w: (maxX - minX + 1) / W, h: (maxY - minY + 1) / H,
+          nw: NW, nh: NH
+        });
+      }catch(e){ resolve(null); }   // piem. cita domēna attēls
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+  logoTrimCache.set(src, job);
+  return job;
+}
+
+async function fitLogo(card){
+  const img = card.querySelector('img');
+  if(!img || card.dataset.fitted === '1') return;
+  const t = await measureLogo(img.src);
+  if(!t) return;                                  // neizdevās nomērīt -> paliek standarta izskats
+  const cs = getComputedStyle(card);
+  const CW = card.clientWidth  - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const CH = card.clientHeight - parseFloat(cs.paddingTop)  - parseFloat(cs.paddingBottom);
+  if(CW <= 0 || CH <= 0) return;
+  const cw = t.w * t.nw, ch = t.h * t.nh;
+  const k = Math.min(CW / cw, CH / ch);            // ietilpinām tikai saturu
+  img.style.position = 'absolute';
+  img.style.maxWidth = 'none';
+  img.style.maxHeight = 'none';
+  img.style.width  = (t.nw * k) + 'px';
+  img.style.height = (t.nh * k) + 'px';
+  img.style.left = '50%';
+  img.style.top  = '50%';
+  const cx = (t.l + t.w / 2) * t.nw, cy = (t.t + t.h / 2) * t.nh;
+  img.style.setProperty('--lx', (-cx * k) + 'px');
+  img.style.setProperty('--ly', (-cy * k) + 'px');
+  img.style.transform = `translate(${-cx * k}px, ${-cy * k}px)`;
+  card.dataset.fitted = '1';
+}
+
+function fitAllLogos(root){
+  (root || document).querySelectorAll('.obj-card').forEach(c => {
+    const img = c.querySelector('img');
+    if(!img) return;
+    if(img.complete) fitLogo(c);
+    else img.addEventListener('load', () => fitLogo(c), { once:true });
+  });
+}
+
 // ===== Realizēto objektu slaideris ar galeriju =====
 let siteProjects = [
   { title_lv:'Objekts 1', title_en:'Project 1', desc_lv:'', desc_en:'', images:[] },
@@ -1940,6 +2025,7 @@ function buildHeroArt(){
   // Ilgums aug līdz ar partneru skaitu -> ritināšanas ātrums paliek nemainīgs
   const strip = art.querySelector('.obj-strip');
   if(strip) strip.style.animationDuration = Math.max(40, siteObjects.length * 12) + 's';
+  if(typeof fitAllLogos === 'function') fitAllLogos(art);
 }
 buildHeroArt();
 </script>

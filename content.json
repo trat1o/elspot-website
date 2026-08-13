@@ -262,29 +262,29 @@
   },
   "partners": [
     {
-      "label_lv": "KONTAKT SIMON",
-      "label_en": "KONTAKT SIMON",
-      "image": "/images/logo-1786612134629-kontakt.jpg"
+      "label_lv": "Ražotājs 1",
+      "label_en": "Manufacturer 1",
+      "image": ""
     },
     {
-      "label_lv": "SYLVANIA",
-      "label_en": "SYLVANIA",
-      "image": "/images/logo-1786611786627-sylvania-logo.svg"
+      "label_lv": "Ražotājs 2",
+      "label_en": "Manufacturer 2",
+      "image": ""
     },
     {
-      "label_lv": "ABB",
-      "label_en": "ABB",
-      "image": "/images/logo-1786612336570-abb-logo.svg"
+      "label_lv": "Ražotājs 3",
+      "label_en": "Manufacturer 3",
+      "image": ""
     },
     {
-      "label_lv": "Legrand",
-      "label_en": "Legrand",
-      "image": "/images/logo-1786612430061-logo-legrand-sa.svg"
+      "label_lv": "Ražotājs 4",
+      "label_en": "Manufacturer 4",
+      "image": ""
     },
     {
-      "label_lv": "Grand Meyer",
-      "label_en": "Grand Meyer",
-      "image": "/images/logo-1786612243402-grand-meyer.webp"
+      "label_lv": "Ražotājs 5",
+      "label_en": "Manufacturer 5",
+      "image": ""
     },
     {
       "label_lv": "Ražotājs 6",
@@ -334,6 +334,31 @@
     {
       "label_lv": "Ražotājs 15",
       "label_en": "Manufacturer 15",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 16",
+      "label_en": "Manufacturer 16",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 17",
+      "label_en": "Manufacturer 17",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 18",
+      "label_en": "Manufacturer 18",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 19",
+      "label_en": "Manufacturer 19",
+      "image": ""
+    },
+    {
+      "label_lv": "Ražotājs 20",
+      "label_en": "Manufacturer 20",
       "image": ""
     }
   ],
