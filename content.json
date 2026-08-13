@@ -358,11 +358,16 @@
   },
   "projects": [
     {
-      "title_lv": "Objekts 1",
-      "title_en": "Project 1",
+      "title_lv": "Jelgavas Tehnoloģiju vidusskola",
+      "title_en": "Jelgava Technology Secondary School",
       "desc_lv": "",
       "desc_en": "",
-      "images": []
+      "images": [
+        "/images/proj-1786626755121-svcmz-20230411-131024-1536x1152.jpg",
+        "/images/proj-1786626755121-ui1ci-20230421-112605-1-1536x1152.jpg",
+        "/images/proj-1786626755123-ory80-20230518-100611-1-scaled.jpg",
+        "/images/proj-1786626755124-9zfwi-20230530-161630-1536x1152.jpg"
+      ]
     },
     {
       "title_lv": "Objekts 2",
