@@ -264,7 +264,7 @@
     {
       "label_lv": "KONTAKT SIMON",
       "label_en": "KONTAKT SIMON",
-      "image": "/images/logo-1786611742454-586a63c430088-kontakt-simon.png"
+      "image": "/images/logo-1786612134629-kontakt.jpg"
     },
     {
       "label_lv": "SYLVANIA",
@@ -274,12 +274,12 @@
     {
       "label_lv": "ABB",
       "label_en": "ABB",
-      "image": "/images/logo-1786611814083-abb.png"
+      "image": "/images/logo-1786612123630-abb.png"
     },
     {
       "label_lv": "Legrand",
       "label_en": "Legrand",
-      "image": "/images/logo-1786611878271-legrand.webp"
+      "image": "/images/logo-1786612086149-legrand.png"
     },
     {
       "label_lv": "Ražotājs 5",
@@ -354,11 +354,6 @@
     {
       "label_lv": "Ražotājs 19",
       "label_en": "Manufacturer 19",
-      "image": ""
-    },
-    {
-      "label_lv": "Ražotājs 20",
-      "label_en": "Manufacturer 20",
       "image": ""
     }
   ],
