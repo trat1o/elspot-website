@@ -270,12 +270,14 @@
     {
       "label_lv": "SYLVANIA",
       "label_en": "SYLVANIA",
-      "image": "/images/logo-1786615259140-sylvania-logo.svg"
+      "image": "/images/logo-1786615259140-sylvania-logo.svg",
+      "website": "https://www.sylvania-group.com/"
     },
     {
       "label_lv": "ABB",
       "label_en": "ABB",
-      "image": "/images/logo-1786615302348-abb-logo.svg"
+      "image": "/images/logo-1786615302348-abb-logo.svg",
+      "website": "https://new.abb.com/lv"
     },
     {
       "label_lv": "LEGRAND",
