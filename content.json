@@ -423,5 +423,28 @@
       ]
     }
   ],
-  "styles": {}
+  "styles": {
+    "hero-tag": {
+      "dx": 9,
+      "dy": -86
+    },
+    "hero-h1": {
+      "dx": 1,
+      "dy": -83,
+      "scale": 0.991
+    },
+    "hero-lead": {
+      "scale": 0.999,
+      "dx": -2,
+      "dy": -74
+    },
+    "hero-btn2": {
+      "dx": 6,
+      "dy": -61
+    },
+    "hero-btn1": {
+      "dx": 0,
+      "dy": -65
+    }
+  }
 }
