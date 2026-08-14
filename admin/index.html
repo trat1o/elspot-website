@@ -224,6 +224,11 @@ function renderPanel(){
         <label>Nosaukums (angliski)</label>
         <input type="text" id="oen" value="${(o.label_en||'').replace(/"/g,'&quot;')}">
       </div>
+      <div class="field">
+        <label>Mājaslapas saite (neobligāti)</label>
+        <input type="text" id="ourl" placeholder="piem. abb.com" value="${(o.website||'').replace(/"/g,'&quot;')}">
+        <div class="k">Ja aizpildīts, uzklikšķinot uz logo, apmeklētājs tiks aizvests uz šo lapu jaunā cilnē</div>
+      </div>
       <div style="display:flex;gap:8px;">
         <button class="btn btn-sec" id="addObj">+ Pievienot partneri</button>
         <button class="btn btn-sec" id="delObj" style="color:#FF1F3D;">Dzēst šo</button>
@@ -234,6 +239,7 @@ function renderPanel(){
     });
     $('olv').oninput = e => { content.partners[i].label_lv = e.target.value; markDirty(); pushToPreview(); };
     $('oen').oninput = e => { content.partners[i].label_en = e.target.value; markDirty(); pushToPreview(); };
+    $('ourl').oninput = e => { content.partners[i].website = e.target.value; markDirty(); pushToPreview(); };
     $('imgFile').onchange = e => {
       const f = e.target.files[0]; if(!f) return;
       if(f.size > 4 * 1024 * 1024){ setStatus('Bilde par lielu (maks. 4 MB)', 'bad'); return; }
@@ -254,7 +260,7 @@ function renderPanel(){
       rd.readAsDataURL(f);
     };
     $('addObj').onclick = () => {
-      content.partners.push({ label_lv:'Jauns ražotājs', label_en:'New manufacturer', image:'' });
+      content.partners.push({ label_lv:'Jauns ražotājs', label_en:'New manufacturer', image:'', website:'' });
       sel = { kind:'object', index: content.partners.length - 1 };
       markDirty(); pushToPreview(); renderPanel();
     };

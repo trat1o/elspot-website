@@ -154,6 +154,13 @@ section{padding:110px 0;position:relative;}
   transition:border-color .25s ease, box-shadow .25s ease;
 }
 .obj-card:hover{border-color:rgba(255,77,77,.4);box-shadow:0 6px 18px rgba(22,29,66,.07);}
+.obj-card[href]{cursor:pointer;}
+.obj-card[href]::after{
+  content:'';position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;
+  background:var(--fog) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%235B6178%22 stroke-width=%222.4%22%3E%3Cpath d=%22M7 17 17 7M9 7h8v8%22/%3E%3C/svg%3E') center/9px no-repeat;
+  opacity:0;transform:translateY(-3px);transition:opacity .2s ease, transform .2s ease;
+}
+.obj-card[href]:hover::after{opacity:1;transform:translateY(0);}
 /* Logo vienmēr pilnās krāsās. Izmēru un novietojumu aprēķina JS pēc tam,
    kad no attēla ir atmesta tukšā mala (skat. fitLogo). */
 .obj-card img{
@@ -2005,10 +2012,21 @@ let siteObjects = [
   { label_lv: 'Ražotājs 2', label_en: 'Manufacturer 2', image: '' },
   { label_lv: 'Ražotājs 3', label_en: 'Manufacturer 3', image: '' },
   { label_lv: 'Ražotājs 4', label_en: 'Manufacturer 4', image: '' },
-  { label_lv: 'Ražotājs 5', label_en: 'Manufacturer 5', image: '' },
-  { label_lv: 'Ražotājs 6', label_en: 'Manufacturer 6', image: '' },
+  { label_lv: 'Ražotājs 5', label_en: 'Manufacturer 5', image: '', website: '' },
+  { label_lv: 'Ražotājs 6', label_en: 'Manufacturer 6', image: '', website: '' },
 ];
 function escAttr(s){ return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+function safeUrl(u){
+  const s = String(u || '').trim();
+  if(!s) return '';
+  // Ja norādīts cits protokols (piem. ftp://, javascript:) - noraidām uzreiz.
+  if(/^[a-z][a-z0-9+.-]*:/i.test(s) && !/^https?:\/\//i.test(s)) return '';
+  const withProto = /^https?:\/\//i.test(s) ? s : ('https://' + s);
+  try{
+    const parsed = new URL(withProto);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+  }catch(e){ return ''; }
+}
 function buildHeroArt(){
   const art = document.getElementById('heroArt');
   if(!art) return;
@@ -2018,7 +2036,10 @@ function buildHeroArt(){
     const inner = o.image
       ? `<img src="${escAttr(o.image)}" alt="${escAttr(name)}" loading="lazy">`
       : `<span class="cap">${escAttr(name)}</span>`;
-    return `<div class="obj-card" data-obj-index="${i}" title="${escAttr(name)}">${inner}</div>`;
+    const url = safeUrl(o.website);
+    const tag = url ? 'a' : 'div';
+    const linkAttrs = url ? ` href="${escAttr(url)}" target="_blank" rel="noopener noreferrer sponsored"` : '';
+    return `<${tag} class="obj-card" data-obj-index="${i}" title="${escAttr(name)}"${linkAttrs}>${inner}</${tag}>`;
   }).join('');
   // Saturs dublēts, lai izveidotu nepārtrauktu ritināšanas cilpu
   art.innerHTML = `<div class="obj-strip">${renderSet()}${renderSet()}</div>`;
